@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<link rel="stylesheet" href="http://cdn.tbmj.net/trade/web/css/bootstrap-switch.css" />
+<script type="text/javascript" src="http://cdn.tbmj.net/trade/web/js/bootstrap-switch.js" ></script>
+<style>
+.ddghbt { width: 100%px ; background: #ffeee5 ; font-size: 14px ; color: #333333 ; padding: 7px 10px ; font-family: "微软雅黑", "黑体", "宋体" ;margin-right: 10px; }
+.ddnr {  border: 1px #ffe2d2 solid ;  margin-top: 10px ;  }
+.ddnrbt { background: #ffeee5 ; padding: 10px 5px ; color: #fe620d ; font-size: 12px ; }
+.dddx { margin: 20px ; padding: 15px ; font-size: 16px ; text-align: center ; border: 1px #cccccc solid ; }
+.dddx span { color: #fe620d ; font-weight: bold ; font-size: 14px ; }
+.ddsz { border-width: 1px 0px 0px 0px; border-color: #ffe2d2 ; font-size: 12px ; border-style: solid ; line-height: 18px ; padding: 5px 10px 0px 10px; }
+.ddsz_left { float:left ; }
+.ddsz_right { float: right ; text-align: right ;padding-top: 3px; }
+
+.wlghbt { width: 100%px ; background: #e2f1ff; font-size: 14px ; color: #333333 ; margin-top: 10px ; padding: 7px 10px ; font-family: "微软雅黑", "黑体", "宋体" ; }
+.wlnr { border: 1px #d9edff solid ; width: 300px ; margin-top: 10px ;  }
+.wlnrbt { background: #e2f1ff; padding: 10px 5px ; color: #0e6ac1 ; font-size: 14px ; }
+.wldx { margin: 20px ; padding: 15px ; font-size: 16px ; text-align: center ; border: 1px #cccccc solid ; }
+.wldx span { color: #fe620d ; font-weight: bold ; font-size: 18px ; }
+.wlsz { border-width: 1px 0px 0px 0px; border-color:  #d9edff ; font-size: 14px ; border-style: solid ; line-height: 24px ; padding: 5px 10px ; }
+.wlsz_left { float:left ; }
+.wlsz_right { float: right ; text-align: right ; }
+
+.pjghbt { width: 100%px ; background: #f5ffe3; font-size: 14px ; color: #333333 ; margin-top: 10px ; padding: 7px 10px ; font-family: "微软雅黑", "黑体", "宋体" ; }
+.pjnr { border: 1px #e5f4ca solid ; width: 300px ; margin-top: 10px ;  }
+.pjnrbt { background: #f5ffe3  ; padding: 10px 5px ; color: #6aa300 ; font-size: 14px ; }
+.pjdx { margin: 20px ; padding: 15px ; font-size: 16px ; text-align: center ; border: 1px #cccccc solid ; }
+.pjdx span { color: #fe620d ; font-weight: bold ; font-size: 18px ; }
+.pjsz { border-width: 1px 0px 0px 0px; border-color: #e5f4ca ; font-size: 14px ; border-style: solid ; line-height: 24px ; padding: 5px 10px ; }
+.pjsz_left { float:left ; }
+.pjsz_right { float: right ; text-align: right ; }
+
+.clear { clear:both; overflow:hidden; }
+</style>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+<div style="margin-left: 10px;" class="container">
+    <div  id="adv_top" style="display:none;margin-top: 10px;margin-right: 10px;">
+    </div>
+    	<!--<div>
+    	<img src="http://cdn.zzgdapp.com/yunying/trade/advertisement/jiaoyi1.jpg" width="100%" />
+    	</div>-->
+<div class="sui-msg msg-large msg-block msg-info" style="margin-top: 10px;margin-right: 10px;" id="smstop">
+  <div class="msg-con" style="margin-left: -30px;">短信剩余:<span id="smsnums"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span> <a href="javascript:showsmsbuy();" class="sui-btn  btn-primary">购买</a></div>
+ <!-- <s class="msg-icon"></s>-->
+</div>
+     <!-- <ul class="nav nav-tabs" id="myTab" >
+		  <li class="active"><a data-toggle="tab" href="#myzdrate" onclick="tradedots('rateset')">自动评价<span id="badnum"></span></a></li>
+		  <li ><a data-toggle="tab" href="#ratelogs" onclick="tradedots('ratelog')">评价日志<span id="neutralnum"></span></a></li>
+		  <li ><a data-toggle="tab" onclick="showblackname('1')" href="#ratebalckname" >黑名单<span id="neutralnum2"></span></a></li>
+		  <li ><a data-toggle="tab" href="#blacklog" onclick="showblacklog('1')" >拦截日志<span id="#blacklognum"></span></a></li>
+     </ul>-->
+    <!-- <ul class="nav nav-pills">
+              <li class="dropdown active">
+                <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">短信设置<b class="caret"></b></a>
+                <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                  <li role="presentation"><a data-toggle="tab" href="#myzdrate" >订单催付</a></li>
+                  <li role="presentation"><a data-toggle="tab" href="#smssend">发货提醒</a></li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation"><a data-toggle="tab" href="#myzdrate">短信签名</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a data-toggle="tab" href="#ratelogs" >评价日志<span id="neutralnum"></span></a>
+              </li>
+         </ul>-->
+     <ul class="sui-nav nav-tabs" id="smstab">
+		  <li class="active"><a data-toggle="tab" href="#smsindex" >订单关怀<span id="badnum"></span></a></li>
+		  <li ><a data-toggle="tab" href="#sms_set" onclick="tradedots('ratelog')">系统设置</a></li>
+		  <li ><a data-toggle="tab" onclick="showsmslog('1');" href="#sms_log" >关怀日志</a></li>
+		  <!--<li ><a data-toggle="tab" href="#blacklog" onclick="showblacklog('1')" >拦截日志<span id="#blacklognum"></span></a></li>-->
+     </ul>
+		    
+	<div class="tab-content" style="overflow: visible;">
+		<div id="smsindex" class="tab-pane active">
+			<div id="smsall" style="text-align: right;margin:-15px 10px 5px 0;">
+				<a  class="sui-btn  btn-primary"  onclick="opensms()" >一键开启</a>
+			</div>
+			<div class="ddghbt" >订单关怀</div>
+			<div class="grid-demo">
+				  <div class="sui-row-fluid">
+						<div class="span4" >
+							<div class="ddnr">
+							     <div class="ddnrbt"><b>订单催付提醒 </b><!--<a title="使用帮助"><img align="right" src="http://cdn.zzgdapp.com/trade/web/html/hlep.png" alt="及时提醒买家付款，尽快发货。减少订单流失！" /></a>--></div>
+								 <div class="dddx"><a  onclick="looksmslog('smspay');" href="javascript:void(0);">今日发送：<span id="smspay_total"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span>条</a></div>
+							     <div class="ddsz">
+								      <div class="ddsz_left">
+								<div id="smspay-switch" class="switch " data-on-label="<i class='sui-icon icon-pc-right'></i>" data-off-label="<i class='sui-icon icon-pc-error'></i>">
+								    <input  type="checkbox"  />
+								</div><span id="smspay-text"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span>
+								      </div>
+									  <div class="ddsz_right"><a data-toggle="tab" class="sui-btn  btn-primary" href="#smspay" onclick="showsmss('smspay');">设置</a></div>
+									  <div class="clear"></div>
+								 </div>
+							</div>
+				    	</div>
+				    	<div class="span4" >
+				    		<div class="ddnr">
+							     <div class="ddnrbt"><b>卖家发货提醒</b><!--<a title="使用帮助"><img align="right" src="http://cdn.zzgdapp.com/trade/web/html/hlep.png" alt="及时提醒买家付款，尽快发货。减少订单流失！" /></a>--></div>
+								 <div class="dddx"><a  onclick="looksmslog('smssend');" href="javascript:void(0);">今日发送：<span id="smssend_total"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span>条</a></div>
+							     <div class="ddsz">
+								      <div class="ddsz_left">
+								<div id="smssend-switch" class="switch " data-on-label="<i class='sui-icon icon-pc-right'></i>" data-off-label="<i class='sui-icon icon-pc-error'></i>">
+								    <input  type="checkbox"  />
+								</div><span id="smssend-text"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span>
+								      </div>
+									  <div class="ddsz_right"><a data-toggle="tab" href="#smssend" class="sui-btn  btn-primary" onclick="showsmss('smssend');">设置</a></div>
+									  <div class="clear"></div>
+								 </div>
+							</div>
+				    	</div>
+				   </div>
+				</div>
+				   <!-- 	<div class="span2" >
+				    		<div class="ddnr">
+							     <div class="ddnrbt">订单催付提醒 <a title="使用帮助"><img align="right" src="http://cdn.zzgdapp.com/trade/web/html/hlep.png" alt="及时提醒买家付款，尽快发货。减少订单流失！" /></a></div>
+								 <div class="dddx">今日发送：<span>23</span>条</div>
+							     <div class="ddsz">
+								      <div class="ddsz_left">
+								<div id="smspay-switch-index" class="switch " data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove'></i>">
+								    <input  type="checkbox"  />
+								</div>
+								      </div>
+									  <div class="ddsz_right">设置</div>
+									  <div class="clear"></div>
+								 </div>
+							</div>
+				   </div>-->
+
+		</div>
+			<!-- 自动评价 -->
+		  <div id="smspay" class="tab-pane">
+<div class="sui-msg  msg-block msg-info" style="margin-top: 10px;margin-right: 10px;">
+  <div class="msg-con">使用说明:
+    <p>
+      1、当客户下单后在设定的时间内没有付款，软件会自动发送短信提醒买家付款；<br>
+      2、每天只要几条短信钱，就可以很方便的将未付款订单转换成店铺的实际销售额；<br>
+      <span style="color: red;">注意：同一个手机号每天只会收到一条该类型(订单催付)短信，即使买家拍下多笔订单；</span><br>
+      <span style="color: red;">注意：每晚8点后不发短信，延迟到次日早上8点发送。</span>
+    </p>
+  </div>
+  <s class="msg-icon"></s>
+</div>
+				<div class="grid-demo">
+				  <div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong >订单催付：</strong>
+				    	</div>
+						<div class="span8">
+				    		下单后<span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner"><a  role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+       		    	<input value="10" name="smspaysel" id="smspaysel" type="hidden"><i class="caret"></i><span id="smspayselval">10分钟</span></a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10">10分钟</a></li>             
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="15">15分钟</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="30">30分钟</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="60">1小时</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="120">2小时</a></li>
+        			</ul>
+			</span>
+		</span>对用户发送催付短信。
+				    	</div>
+				</div>
+				</div>
+				<br/>
+
+
+					<div class="grid-demo">
+				  <div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>其他设定：</strong>
+				    	</div>
+				    	<div class="span8">
+				    		<label  class="checkbox-pretty inline checked">
+							    <input type="checkbox"  id="smspaycheck1"  ><span>曾经给过本店铺差评的买家不发送</span>
+							</label>
+							<label  class="checkbox-pretty  checked">
+							    <input type="checkbox"  id="smspaycheck2"  ><span>低于设定金额的订单不发送</span>
+							</label>
+							<span>当前设置的最低订单金额：<span id="smspaytext" style="color: red;"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span>元<a id="setpay_smspay" style="margin-left: 5px;" href="javascript:setpay('smspay')">设置</a></span>
+
+				    	</div>
+				    </div>
+				   </div>
+<br/>
+					<div class="grid-demo">
+				  <div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>短信签名：</strong>
+				    	</div>
+				    	<div class="span10" >
+				    		<span><a href="javascript:void(0);" onclick="showset();" title="设置短信签名">【<span id="smspayspan"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span>】</a>
+				    		<div class="sui-msg  msg-tips" ><div class="msg-con">根据短信运营商规则，系统默认在短信尾部追加，具体参照下面短信预览</div><s class="msg-icon"></s></div>
+				    		</span>
+				    	</div>
+				    </div>
+				  </div>
+<br/>
+						<div class="grid-demo">
+				  <div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>短信内容：</strong>
+						</div>
+	<div class="span7">
+		<label class="radio-pretty  checked">
+		    <input type="radio"  name="smspayradio" id="default_model1" value="0" onclick="showtemp('smspayradio',this.value)"><span id="smspayradio0">亲爱的<买家姓名>，您拍下的宝贝我们一直为您留着，麻烦您确认一下，成功后我们立即为您送达宝贝哦。</span>
+		 </label>
+		<br />
+		<br />
+		<label class="radio-pretty  checked">
+		    <input type="radio"  name="smspayradio" id="default_model2" value="1" onclick="showtemp('smspayradio',this.value)"><span id="smspayradio1">亲，您在<卖家旺旺>购买的宝贝还未成功，请尽快确认以便我们以最快的速度送达宝贝哦！</span>
+		  </label>
+		<br />
+		<br />
+		<label class="radio-pretty  checked">
+		    <input type="radio"  name="smspayradio" id="default_model3" value="2" onclick="showtemp('smspayradio',this.value)"><span id="smspayradio2">亲爱的<买家旺旺>，您下单的宝贝还没成功哦，这个订单我们已经给您预留了，每天下午4点前确认会当天发的哦~</span>
+		  </label>
+		<br />
+		<br />
+		<label class="radio-pretty  checked">
+		    <input type="radio"  name="smspayradio" id="default_model4" value="3" onclick="showtemp('smspayradio',this.value)">
+			<span id="smspayradio3">亲，您在<卖家旺旺>购买的宝贝还未付款，请尽快付款以便我们以最快的速度发货哦!</span>
+			<a href="javascript:void(0);" onclick="showMsgD('smspay')" >编辑自定义模板</a>
+			
+			
+		  </label>
+
+</div>
+				    	<div class="span3">
+ <table border="0" cellpadding="0" cellspacing="0" width="178">
+	
+
+		  <tr>
+		   <td colspan="3"><img name="phone_r1_c1" src="http://cdn.zzgdapp.com/trade/web/images/phone_r1_c1.gif" width="178" height="74" border="0" id="phone_r1_c1" alt="" /></td>
+		  </tr>
+		  <tr valign="top">
+		   <td rowspan="2" width="17"><img src="http://cdn.zzgdapp.com/trade/web/images/phone_r2_c1.gif" width="17" border="0" id="phone_r2_c1" ></td>
+		   <td background="http://cdn.zzgdapp.com/trade/web/images/phone_r2_c2.gif" width="143" height="154"><div id="smspayradiophone_content" style="word-break:break-all;width:95%;margin-left: 5px; margin-top: 5px;font-size: 12px; font-family: 微软雅黑;overflow:scroll;overflow-x:hidden;min-height: 150px;max-height: 150px;"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></div></td>
+		   <td rowspan="2" width="16"><img src="http://cdn.zzgdapp.com/trade/web/images/phone_r2_c3.gif" width="16"  border="0" id="phone_r2_c3" ></td>
+		   <td><img src="http://cdn.zzgdapp.com/trade/web/images/spacer.gif" width="1" height="154" border="0" alt="" /></td>
+		  </tr>
+		  <tr>
+		   <td><img src="http://cdn.zzgdapp.com/trade/web/images/phone_r3_c2.gif" width="145" height="64"></td>
+		   <td><img src="http://cdn.zzgdapp.com/trade/web/images/spacer.gif" width="1" height="64" border="0" alt="" /></td>
+		  </tr>
+	</table>
+				    	</div>
+				    </div>
+				  </div>
+			<div style="float: right;margin-right: 190px;margin-bottom: 10px;">
+			<a class="sui-btn btn-large btn-primary" data-toggle="tab" href="#smsindex" onclick="savesms('smspay')" >保存</button>
+			<a style="margin-left: 10px;" class="sui-btn btn-large "  data-toggle="tab" href="#smsindex" onclick="showsmsindex()">取消</a>
+			</div>
+			<p></p>
+
+
+		 	 </div>
+		 	<!--
+             	作者：306800838@qq.com
+             	时间：2014-06-03
+             	描述：发货提醒
+             -->
+		 	<div id="smssend" class="tab-pane">
+		 		<div class="sui-msg  msg-block msg-info" style="margin-top: 10px;margin-right: 10px;">
+  <div class="msg-con">使用说明:
+    <p>
+      1、当卖家开始发货的时候，软件立即给客户发送短信告知买家已经发货；<br>
+      2、发货短信会让买家感到卖家的贴心售后关怀，以及加深店铺在买家心中的形象；<br>
+      <span style="color: red;">注意：同一个手机号每天只会收到一条该类型(发货提醒)短信，即使买家拍下多笔订单；</span><br>
+      <span style="color: red;">注意：每晚8点后不发短信，延迟到次日早上8点发送。</span>
+    </p>
+  </div>
+  <s class="msg-icon"></s>
+</div>
+
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong >发货提醒：</strong>
+				    	</div>
+						<div class="span10" >
+								    		卖家发货后立即发送短信
+				    	</div>
+				  </div>
+				</div>
+<br />
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>其他设定：</strong>
+				    	</div>
+				    	<div class="span10" >
+				    		<label  class="checkbox-pretty  checked">
+							    <input type="checkbox"  id="smssendcheck3"  ><span>无需物流的订单不发送</span>
+							</label>
+				    		<label  class="checkbox-pretty  checked">
+							    <input type="checkbox"  id="smssendcheck1"  ><span>曾经给过本店铺差评的买家不发送</span>
+							</label>
+							<label  class="checkbox-pretty  checked">
+							    <input type="checkbox"  id="smssendcheck2"  ><span>低于设定金额的订单不发送</span>
+							</label>
+							
+							<span >当前设置的最低订单金额：<span id="smssendtext" style="color: red;"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span><a id="setpay_smssend" style="margin-left: 5px;" href="javascript:setpay('smssend')">设置</a></span>
+
+				    	</div>
+				    </div>
+				</div>
+				<br />
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>短信签名：</strong>
+				    	</div>
+				    	<div class="span10" >
+				    		<span><a href="javascript:void(0);" onclick="showset();" title="设置短信签名">【<span id="smssendspan"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></span>】</a>
+				    		<div class="sui-msg  msg-tips" ><div class="msg-con">根据短信运营商规则，系统默认在短信尾部追加，具体参照下面短信预览</div><s class="msg-icon"></s></div>
+				    		</span>
+				    	</div>
+				    </div>
+				</div>
+				<br />
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+						<strong>请选择短信内容</strong>
+						</div>
+	<div class="span7">
+		<label class="radio-pretty  checked">
+		    <input type="radio"  name="smssendradio"  value="0" onclick="showtemp('smssendradio',this.value)"><span id="smssendradio0"><买家姓名>，亲的宝贝已经发货了！“<物流公司>”派送，运单号<物流单号>,请记得及时收货噢！</span>
+		 </label>
+		<br />
+		<br />
+		<label class="radio-pretty  checked">
+		    <input type="radio"  name="smssendradio"  value="1" onclick="showtemp('smssendradio',this.value)"><span id="smssendradio1"><买家姓名>，您的宝贝已经发货了！请保持手机畅通方便快递联系您，签收前记得先检查包装哟！</span>
+		 </label>
+		<br />
+		<br />
+		<label class="radio-pretty  checked">
+		    <input type="radio"  name="smssendradio"  value="2" onclick="showtemp('smssendradio',this.value)"><span id="smssendradio2">亲爱的<买家姓名>，感谢您的惠顾，宝贝已经发货啦，请知悉，<卖家旺旺>祝您生活愉快。</span>
+		 </label>
+		<br />
+		<br />
+		<label class="radio-pretty  checked">
+		    <input type="radio"  name="smssendradio"  value="3" onclick="showtemp('smssendradio',this.value)">
+		    <span id="smssendradio3">亲爱的<买家姓名>，感谢您的惠顾，宝贝已经发货啦，麻烦收到快递后给予5分好评，联系客服即可领取优惠券</span>
+		    <a href="javascript:void(0);" onclick="showMsgD('smssend')" >编辑自定义模板</a>
+		 </label>
+</div>
+				    	<div class="span3" >
+ <table border="0" cellpadding="0" cellspacing="0" width="178">
+	
+
+		  <tr>
+		   <td colspan="3"><img name="phone_r1_c1" src="http://cdn.zzgdapp.com/trade/web/images/phone_r1_c1.gif" width="178" height="74" border="0" id="phone_r1_c1" alt="" /></td>
+		  </tr>
+		  <tr valign="top">
+		   <td rowspan="2" width="17"><img src="http://cdn.zzgdapp.com/trade/web/images/phone_r2_c1.gif" width="17" border="0" id="phone_r2_c1" ></td>
+		   <td background="http://cdn.zzgdapp.com/trade/web/images/phone_r2_c2.gif" width="143" height="154"><div id="smssendradiophone_content" style="word-break:break-all;width:95%;margin-left: 5px; margin-top: 5px;font-size: 12px; font-family: 微软雅黑;min-height: 150px;max-height: 150px;"><div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div></div></td>
+		   <td rowspan="2" width="16"><img src="http://cdn.zzgdapp.com/trade/web/images/phone_r2_c3.gif" width="16"  border="0" id="phone_r2_c3" ></td>
+		   <td><img src="http://cdn.zzgdapp.com/trade/web/images/spacer.gif" width="1" height="154" border="0" alt="" /></td>
+		  </tr>
+		  <tr>
+		   <td><img src="http://cdn.zzgdapp.com/trade/web/images/phone_r3_c2.gif" width="145" height="64"></td>
+		   <td><img src="http://cdn.zzgdapp.com/trade/web/images/spacer.gif" width="1" height="64" border="0" alt="" /></td>
+		  </tr>
+	</table>
+				    	</div>
+				    </div>
+				</div>
+				<div style="float: right;margin-right: 190px;margin-bottom: 10px;">
+			<a class="sui-btn btn-large btn-primary" data-toggle="tab" href="#smsindex" onclick="savesms('smssend')" >保存</a>
+			<a style="margin-left: 10px;"  class="sui-btn btn-large "  data-toggle="tab" href="#smsindex" onclick="showsmsindex()">取消</a>
+			</div>
+
+		 	 </div>
+		 	 <!-- 系统设置 -->
+			<div id="sms_set" class="tab-pane">
+				<p style="line-height: 1.2em;">
+					<div class="sui-msg  msg-tips" ><div class="msg-con">为了达到更高的效果，请设置短信签名，如不设置则默认卖家旺旺或运营商签名</div><s class="msg-icon"></s></div>
+				</p>
+		 		<p style="line-height: 1.2em;">短信签名：<input type="text" id="setsmsspan" class="input-medium"></p>
+		 		<p style="color: grey;line-height: 1.0em;">签名格式为【XXX】，最多12个字符，不能含空格或者是纯数字、纯英文。</p>
+		 		<p style="line-height: 1.0em;">预警手机号：<input type="text" id="setsmsphone" class="input-small"></p>
+		 		<span style="color: grey;line-height: 1.0em;">当剩余短信低于
+		 			<span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner"><a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown" data-trigger="hover" class="dropdown-toggle"  style="min-width: 40px;">
+       		    	<input value="10" name="setsmsphone_num" id="setsmsphone_num" type="hidden"><i class="caret"></i><span id="setsmsphone_numval">100</span></a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu" style="max-width: 40px;">
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">5</a></li>             
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10">10</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="50">50</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="100">100</a></li>
+        			</ul>
+			</span>
+		</span>条时，自动发送短信至预警手机号，提醒卖家充值。</span>
+		 		<input type="button" class="btn btn-primary" style="padding: 3px 10px;" onclick="setsms('');" value="保存">
+		 	</div>
+		 	 <!-- 短信日志 -->
+			<div id="sms_log" class="tab-pane">
+			<p>共累计提交短信<span id='smslognums'>0</span> 条记录</p>
+			<span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner"><a  role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+       		    	<input value="all" name="smslogsel" id="smslogsel" onchange="showsmslog('1')" type="hidden"><i class="caret"></i><span id="smslogselval">全部</span></a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="all">全部</a></li>             
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="smspay">订单催付</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="smssend">发货提醒</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="smstrade">手动发送</a></li>
+        			</ul>
+			</span>
+		</span>
+					<table id="sampleneutral" class="sui-table table-bordered" style="margin-top: 10px;">
+						<thead ><tr><th width="14%">发送时间</th>
+								<th width="14%">订单编号</th>
+								<th width="14%">发送号码</th>
+								<th width="30%">短信内容</th>
+								<th width="14%">状态</th>
+								<th width="7%">计费条数</th>
+								<th width="7%">短信类型</th>
+							</tr>
+						</thead>
+						<tbody id="mysmslogs">
+						</tbody>
+					</table>	    		
+ 					<div id="smslogcontent"></div>
+		 		 </div>
+
+		 		 
+
+ <!--    <div id="smsset"  style="Z-INDEX:99998; POSITION:absolute;width:650px;height:300px;display:none;background-color:#FFF;">
+<div style="padding: 10px;max-height: 200px;">
+
+</div>
+
+	</div>-->
+	
+	 <!--Profile Form旺旺客服工作台客服调试用户界面-->
+	 <div id="smsset" tabindex="-1" role="dialog" data-hasfoot="true" data-backdrop="static" class="sui-modal hide fade" data-width="480px" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">系统设置</h4>
+      </div>
+      <div class="modal-body" style="overflow: initial;">
+      	<p style="color: red;line-height: 1.2em;">*为了达到更高的效果，请设置短信签名，如不设置则默认卖家旺旺或运营商签名</p>
+		 	<p style="line-height: 1.2em;">短信签名：<input type="text" id="setsmsspan_mini" class="input-medium"></p>
+		 	<p style="color: grey;line-height: 1.0em;">签名格式为【XXX】，最多12个字符，不能含空格或者是纯数字、纯英文。</p>
+		 	<p style="line-height: 1.0em;">预警手机号：<input type="text" id="setsmsphone_mini" class="input-small"></p>
+		 	<span style="color: grey;line-height: 1.0em;">当剩余短信低于<span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner"><a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle"  style="min-width: 40px;">
+       		    	<input value="10" name="setsmsphone_num_mini" id="setsmsphone_num_mini" type="hidden"><i class="caret"></i><span id="setsmsphone_num_minival">100</span></a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu" style="max-width: 40px;">
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">5</a></li>             
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10">10</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="50">50</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="100">100</a></li>
+        			</ul>
+			</span>
+		</span>条时，自动发送短信至预警手机号，提醒卖家充值。</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large" onclick="setsms('_mini');">保存</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+     
+	 <!--Profile Form旺旺客服工作台客服调试用户界面-->
+	 <div id="wwkef" tabindex="-1" role="dialog" data-hasfoot="true"  data-backdrop="static" class="sui-modal hide fade" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">wwkfDebug</h4>
+      </div>
+      <div class="modal-body" >
+			  <div class="control-group">
+			    <label class="control-label" for="balcknick">buyerNick:</label>
+			    <div class="controls">
+			      <input type="text" id="wwkefnick" placeholder="please enter seller's nick~">
+			    </div>
+			  </div>
+			  
+			  	<div class="control-group">
+			    <label class="control-label" for="balcknick">password for look:</label>
+			    <div class="controls">
+			      <input type="password" id="wwpass1" >
+			    </div>
+			  </div>
+			  
+			  <div class="control-group">
+			    <label class="control-label" for="balcknick">*password for wirte:</label>
+			    <div class="controls">
+			      <input type="password" id="wwpass2" >
+			    </div>
+			  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large" onclick="wwkefsure();">Sure</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">close</button>
+      </div>
+    </div>
+  </div>
+</div>
+	 <div id="sensms_content" tabindex="-1" role="dialog" data-hasfoot="true"  data-backdrop="static" class="sui-modal hide fade" data-width="580px">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">短信内容</h4>
+      </div>
+      <div class="modal-body">
+      	<form class="sui-form form-horizontal">
+		    <a style="margin-left: 5px" class="btn btn-mini" href="javascript:void(0);" onclick="insertwords('<买家姓名>')"><买家姓名></a>
+			<a style="margin-left: 5px" class="btn btn-mini" href="javascript:void(0);" onclick="insertwords('<买家旺旺>')"><买家旺旺></a>
+			<a style="margin-left: 5px" class="btn btn-mini" href="javascript:void(0);" onclick="insertwords('<卖家旺旺>')"><卖家旺旺></a>			
+			<a style="margin-left: 5px" class="btn btn-mini" href="javascript:void(0);" onclick="insertwords('<订单编号>')"><订单编号></a>
+			<a style="margin-left: 5px" class="btn btn-mini" href="javascript:void(0);" onclick="insertwords('<下单时间>')"><下单时间></a>
+			<a style="margin-left: 5px" id="sendbutspan1" class="btn btn-mini" href="javascript:void(0);" onclick="insertwords('<物流公司>')"><物流公司></a>
+			<a style="margin-left: 5px" id="sendbutspan2" class="btn btn-mini" href="javascript:void(0);" onclick="insertwords('<物流单号>')"><物流单号></a>
+		  <p>
+		  		  <div class="sui-msg  msg-tips" ><div class="msg-con">先用鼠标选择要插入的位置，点击<名称>就可以插入对应的值哦！</div><s class="msg-icon"></s></div>
+		  </p>
+		  <div class="control-group">
+ 		<textarea onmousedown = "savePossms(this)" onmouseup="savePossms(this)" style="resize: none;width:537px;height: 70px;" id="defaultsms_content"></textarea>
+		</div>
+		<p>短信签名:【<span id="default_sign"></span>】 <span id="check_words" style="float: right;"></span></p>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  id="savedefault_btn" data-ok="modal" class="sui-btn btn-primary btn-large" >保存</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--
+	作者：306800838@qq.com
+	时间：2014-06-09
+	描述：短信购买
+-->
+<script>
+var gsmsnum=0;/*全局短信剩余量*/
+/**
+ * 购买短信
+ * @author Duanhq
+ */
+
+function showsmsbuy(){
+	//var loadi = layer.load(0,0);
+	var loadi=layer.load('加载中...',5);
+		$.ajax({
+	        type: 'POST',
+	        data:{type:'set',nick:user_nick},
+		    url: '<?php echo APP_WEB_INDEX_ROOT; ?>/iytrade/smsbuy',
+		        success: function(data){
+		        	layer.close(loadi);
+		        	var smsdata=JSON.parse(data);
+		        	var datas=smsdata.set;
+		        	var html='<div style="margin: 20px;"><table class="sui-table table-bordered" ><thead><tr><th>套餐包名称</th><th>操作</th></tr></thead><tbody>';
+		        	for(index in datas){
+		        		html+='<tr><td>'+datas[index].title+'</td><td><a href="javascript:void(0);" onclick="smsbuy('+datas[index].id+')">立即购买</a></td></tr>';
+		        	}
+		        	html+='</tbody></table>';
+		        	html+='<div >如果剩余短信条数为0，请购买后再开启短信关怀</div></div>';
+		        	var datas=smsdata.log;
+		        	var htmls='<div style="margin: 0 10px 10px 10px;"><table class="sui-table table-bordered" ><thead><tr><th>购买时间</th><th>套餐包</th><th>金额</th></tr></thead><tbody>';
+		        	for(index in datas){
+		        		htmls+='<tr><td align="center" style="border:solid 1px #C0C0C0;border-collapse:collapse;width:30%;">'+datas[index].paytime+'</td><td align="center" style="border:solid 1px #C0C0C0;border-collapse:collapse;width:50%;">'+datas[index].typetitle+'</td><td align="center" style="border:solid 1px #C0C0C0;border-collapse:collapse;width:20%;">'+datas[index].price+'元</td></tr>';
+		        	}
+		        	htmls+='</tbody></table></div>';
+		        	
+		        	layer.tab({
+					    area: [($(window).width() - 110) +'px', ($(window).height() - 110) +'px'],
+					    offset: ['50px', ''],
+					    data: [
+					        {title: '购买', content:html},
+					        {title: '记录', content:htmls}                    
+					    ]
+					});
+				},
+		       error: function(){
+		       		layer.close(loadi);
+		    	    $.alert('<p>操作失败，请重试！</p>');
+				}
+		    });
+}
+/**
+ * 购买短信-支付宝协议
+ * @author Duanhq
+ */
+function smsbuy(id){
+	layer.close(layer.index);
+	var loadi=layer.load(5);
+	$.ajax({
+	        type: "get",
+		        url: 'http://sms.zzgdapp.com/pay/alipay?type=tradesms&nick='+user_nick+'&typeid='+id,
+	  	    beforeSend: function(XMLHttpRequest){
+		            /*ShowLoading(); */
+	             },
+	        success: function(data){
+	        	layer.close(loadi);
+	            if(data=='sql_error'){
+		           	$.alert('<p>sql_error:订单生成失败，请重试！</p>');
+	            }else{
+	            	/* window.open(data);*/
+	            	 QN.application.invoke({
+	   		"cmd" : "browserUrlEmbedded",
+	   		"param" : { "url" : data,id : '1', "title" : "短信订购", "width" : '900', "height" : '720' }
+	   	});
+	            	 layer.confirm('完成付款了吗？', function(){
+					    layer.close(layer.index);
+					    showsms();
+					});
+	            }
+	           		
+	  	            },
+		        complete: function(XMLHttpRequest, textStatus){
+	  	    /*HideLoading(); */
+
+	  	},
+	       error: function(){
+		        /*请求出错处理*/
+		       		layer.close(loadi);
+		    	    $.alert('<p>操作失败，请重试！</p>');
+	       }
+	    });
+}
+</script>
+<!--
+	作者：306800838@qq.com
+	时间：2014-06-09
+	描述：1.smsindex首页初始化加载
+		2.短信条数初始化加载
+		3.每日短信发送量初始化加载
+-->
+<script>
+/**
+ * 初始化
+ * @author Duanhq
+ */
+var isauth=false;
+var mydata='off';
+function showsms(){
+	QN.application.invoke({
+		 "cmd": "getLoginuser",
+		 "success": function (e){
+			 if(typeof  e=== 'string'){
+	            	e = JSON.parse(e);
+	            }
+			 user_nick=decodeURI(e.user_nick);
+			 $.ajax({
+				type: 'POST',
+				data:{nick:user_nick},
+				url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/zdrate',
+				success: function(data){
+					isauth=true;
+					mydata=data;
+				},
+				error: function(){
+				}
+			});
+			 if(e.sub_user_nick!=null&&e.sub_user_nick!=''){
+			 	$('#smssend-switch').bootstrapSwitch('setActive', false);
+			 	$('#smspay-switch').bootstrapSwitch('setActive', false);
+			 	$("#smsall").html('<div class="sui-msg  msg-tips" ><div class="msg-con">子帐号无法操作短信开关</div><s class="msg-icon"></s></div>');
+			 	/*subnick=decodeURI(e.sub_user_nick);
+			 	$('#suboff').show();*/
+			 }else{
+				 /*subnick='';*/
+			 }
+		 }
+	 });
+	 
+	$('#smstab').show();
+	$('#smspay-text').show();
+	$('#smssend-text').show();
+	/*$('#smspaytext').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>加载中..');*/
+	$('#smssendspan').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+	$('#smspayspan').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+	$('#smspayradiophone_content').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+	$('#smsnums').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+
+
+
+	$('#setpay_smspay').show();
+	$.ajax({
+	     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/sms',
+	     type: 'POST',
+	     data:{nick:user_nick},
+	     dataType: 'html',
+	     timeout: 10000,
+	     error: function(){/*获取失败*/
+	    	 layer.close(loadi);
+		     $('#smspay-text').text('加载失败');
+		     $('#smsnums').text('加载失败');
+		     $('#smspayspan').html('加载失败');
+		     $('#smssendspan').html('加载失败');
+	     },
+	     success: function(data){/*获取成功*/
+	    	 var datas=JSON.parse(data);
+			$('#smspayspan').html(datas.smsspan);
+			$('#smssendspan').html(datas.smsspan);
+			$('#setsmsspan').val(datas.smsspan);
+			$('#setsmsspan_mini').val(datas.smsspan);
+			$('#default_sign').html(datas.smsspan);
+			$('#setsmsphone').val(datas.telphone);
+			$('#setsmsphone_mini').val(datas.telphone);
+			$('#setsmsphone_num').val(datas.telnum);
+			$('#setsmsphone_numval').html(datas.telnum);
+
+      		
+      		$('#setsmsphone_num_mini').val(datas.telnum);
+			$('#setsmsphone_num_minival').html(datas.telnum);
+
+		    if(datas.smsspan==''){
+		    	$('#smsset').modal('show');
+		    	window.localStorage.setItem(user_nick+'smsspan','notfind');
+		    }else{
+		    	window.localStorage.setItem(user_nick+'smsspan',datas.smsspan);
+		    }
+		    gsmsnum=datas.smsnum;
+		    $('#smsnums').text(datas.smsnum+'条');/*剩余短信条数*/
+		    if(datas.smspay=='on'){
+				$('#smspay-switch').bootstrapSwitch('setState', true);
+			}else{
+			 	$('#smspay-switch').bootstrapSwitch('setState', false);
+			}
+			if(datas.smssend=='on'){
+				$('#smssend-switch').bootstrapSwitch('setState', true);
+			}else{
+			 	$('#smssend-switch').bootstrapSwitch('setState', false);
+			}
+			$('#smspay-text').hide();
+			$('#smssend-text').hide();
+			$('#smssend_total').text(0);
+			$('#smspay_total').text(0);
+			$('#smstrade_total').text(0);
+			for(index in datas.total){
+				var total=datas.total[index];
+				$('#'+total.type+'_total').text(total.smsnum);
+			}
+			switcheventListen();/*开关按钮注册监听*/
+	     }
+	 });
+}
+/**
+ * 为短信开关按钮注册事件
+ * @author Duanhq
+ */
+var gisall=false;
+function switcheventListen(){
+		$('#smspay-switch').on('switch-change', function (e, data) {
+		if(gisall){
+			return;
+		}
+	    var value = data.value;
+	    var texts='';
+	    if(value){
+	    	value='on';
+	    	text='开启';
+	    	if(gsmsnum==0){
+				showsmsbuy();
+				return;
+			}
+	    }else{
+	    	value='off';
+	    	text='关闭';
+	    }
+	    switchoption('smspay',value,text);
+	});
+	$('#smssend-switch').on('switch-change', function (e, data) {
+		if(gisall){
+			return;
+		}
+		
+	    var value = data.value;
+	    var texts='';
+	    if(value){
+	    	value='on';
+	    	text='开启';
+	    	if(gsmsnum==0){
+				showsmsbuy();
+				return;
+			}
+	    }else{
+	    	value='off';
+	    	text='关闭';
+	    }
+	    switchoption('smssend',value,text);
+	});
+}
+function switchoption(type,switchoff,text){
+		var loadi = layer.load(0,0);
+		if(isauth){
+			if(mydata=='off'&&switchoff=='on'){
+				QN.application.invoke({
+					"cmd": "translateUrl",
+			   		"param":{'url':"https://oauth.taobao.com/authorize?response_type=code&client_id=21085840&redirect_uri=<?php echo APP_WEB_INDEX_ROOT;?>/tc/trades?scope=item&view=web&state=tradepcsms"},
+			   		"success": function (e){
+			   			
+			   			if(typeof  e=== 'string'){
+			   				e = JSON.parse(e);
+			   			}
+			   			window.location.href=e.url;
+
+			   		}
+			   	});
+			 }else{
+			 		if(switchoff=='on'){
+						QN.top.invoke({/*应用为用户开通的增量消息服务*/
+							"cmd": 'taobao.tmc.user.permit',
+							"method": "get",
+							"success": function (resp){
+								$.ajax({
+							     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/switchoption',
+							     type: 'POST',
+							     data:{type:type,nick:user_nick,smsoff:switchoff},
+							     dataType: 'html',
+							     timeout: 10000,
+							     success: function(data){
+							     			console.log('tmc yes');
+								        	layer.close(loadi);
+									        layer.msg(text+'成功!', 2, 1);
+								 },
+								 error: function(){
+									       	layer.close(loadi);
+									       	if(switchoff=='on'){
+												$('#'+type+'-switch').bootstrapSwitch('setState', false);
+											}else{
+											 	$('#'+type+'-switch').bootstrapSwitch('setState', true);
+											}
+								    	    $.alert('<p>'+text+'失败，请重试！</p>');
+								
+								 }
+							 	});
+							},
+							"error": function (msg) {
+								if(msg.sub_code=='subuser.has-no-permission'){
+									/* $.alert('<p>该子帐号无此操作权限, 请通过主帐号设置开通相应权限!</p>');
+									showMsg('hint'); */
+								}else{
+									layer.close(loadi);
+									if(switchoff=='on'){
+										$('#'+type+'-switch').bootstrapSwitch('setState', false);
+									}else{
+										$('#'+type+'-switch').bootstrapSwitch('setState', true);
+									}
+								    $.alert('<p>开通消息失败，请重试！</p>');
+								}
+							}
+						});
+					}else{
+						$.ajax({
+					     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/switchoption',
+					     type: 'POST',
+					     data:{type:type,nick:user_nick,smsoff:switchoff},
+					     dataType: 'html',
+					     timeout: 10000,
+					     success: function(data){
+						        	layer.close(loadi);
+							        layer.msg(text+'成功!', 2, 1);
+								},
+						       error: function(){
+							       	layer.close(loadi);
+							       	if(switchoff=='on'){
+										$('#'+type+'-switch').bootstrapSwitch('setState', false);
+									}else{
+									 	$('#'+type+'-switch').bootstrapSwitch('setState', true);
+									}
+						    	    $.alert('<p>'+text+'失败，请重试！</p>');
+						
+							}
+					 	});
+					}
+			 	
+			 }
+		}else{
+			$.ajax({
+				type: 'POST',
+				data:{nick:user_nick},
+				url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/zdrate',
+				success: function(data){
+					layer.close(loadi);
+					isauth=true;
+					mydata=data;
+					switchoption(type,switchoff,text);
+				},
+				error: function(){
+					layer.close(loadi);
+					$.alert('<p>授权信息获取失败，请重试!</p>');
+					if(switchoff=='on'){
+						$('#'+type+'-switch').bootstrapSwitch('setState', false);
+					}else{
+						$('#'+type+'-switch').bootstrapSwitch('setState', true);
+					}
+				}
+			});
+		}
+}
+/**
+ * 一键开启所有短信关怀
+ * @author Duanhq
+ */
+function opensms(){
+	if(gsmsnum==0){
+			showsmsbuy();
+			return;
+		}
+	var loadi = layer.load(0,0);
+	if(isauth){
+		if(mydata=='off'){
+			QN.application.invoke({
+					"cmd": "translateUrl",
+			   		"param":{'url':"https://oauth.taobao.com/authorize?response_type=code&client_id=21085840&redirect_uri=<?php echo APP_WEB_INDEX_ROOT;?>/tc/trades?scope=item&view=web&state=tradepcsms"},
+			   		"success": function (e){
+			   			
+			   			if(typeof  e=== 'string'){
+			   				e = JSON.parse(e);
+			   			}
+			   			window.location.href=e.url;
+
+			   		}
+			});
+		}else{
+			QN.top.invoke({/*应用为用户开通的增量消息服务*/
+				"cmd": 'taobao.tmc.user.permit',
+				"method": "get",
+				"success": function (resp){
+					$.ajax({
+					     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/opensms',
+					     type: 'POST',
+					     data:{nick:user_nick,smsoff:'on'},
+					     dataType: 'html',
+					     timeout: 10000,
+					     success: function(data){
+						        	layer.close(loadi);
+							        layer.msg('一键开启成功!', 2, 1);
+							        gisall=true;
+							        $('#smssend-switch').bootstrapSwitch('setState', true);
+							        $('#smspay-switch').bootstrapSwitch('setState', true);
+							        gisall=false;
+						 },
+						 error: function(){
+							       	layer.close(loadi);
+						    	    $.alert('<p>一键开启失败，请重试！</p>');
+						
+						 }
+				 	});
+				},
+				"error": function (msg) {
+					if(msg.sub_code=='subuser.has-no-permission'){
+						/* $.alert('<p>该子帐号无此操作权限, 请通过主帐号设置开通相应权限!</p>');
+						showMsg('hint'); */
+					}else{
+						layer.close(loadi);
+					    $.alert('<p>开通消息失败，请重试！</p>');
+					}
+				}
+			});
+		}
+	}else{
+			$.ajax({
+				type: 'POST',
+				data:{nick:user_nick},
+				url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/zdrate',
+				success: function(data){
+					layer.close(loadi);
+					isauth=true;
+					mydata=data;
+					opensms();
+				},
+				error: function(){
+					layer.close(loadi);
+					$.alert('<p>授权信息获取失败，请重试!</p>');
+				}
+			});
+	}
+
+}
+</script>
+<!--
+	作者：306800838@qq.com
+	时间：2014-06-09
+	描述：短信各类型设置
+-->
+<script>
+/**
+ * 初始化各类型数据
+ * @author Duanhq
+ */
+var ischuangm=false;
+function showsmss(type){
+	ischuangm=false;
+	$('#smstop').hide();
+	$('#smstab').hide();
+	var loadi = layer.load(0,0);
+	$.ajax({
+	     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/smspay',
+	     type: 'POST',
+	     data:{type:type,nick:user_nick},
+	     dataType: 'html',
+	     timeout: 10000,
+	     error: function(){/*获取失败*/
+	    	layer.close(loadi);
+		     $('#smspay-text').text('加载失败');
+	     },
+	     success: function(data){/*获取成功*/
+	    	layer.close(loadi);
+		     var datas=JSON.parse(data);
+		     switch(type){
+		     	case 'smspay':
+		     	{
+		     		showsmspay(datas);break;
+		     	}
+		     	case 'smssend':
+		     	{
+		     		showsmssend(datas);break;
+		     	}
+		     }
+	     }
+	 });
+}
+/**
+ * 加载数据
+ * 1.订单催付
+ * @author Duanhq
+ */
+function showsmspay(datas){
+	if(datas.smscompy==3){
+		ischuangm=true;
+		$('#smspayradio0').text('【订单提醒】亲爱的<买家姓名>，您拍下的宝贝我们一直为您留着，麻烦您付下款，成功后我们立即为您发货哦。');
+		$('#smspayradio1').text('【订单提醒】亲，您在<卖家旺旺>购买的宝贝还未付款，请尽快付款以便我们以最快的速度发货哦！');
+		$('#smspayradio2').text('【订单提醒】亲爱的<买家旺旺>，您的宝贝还没付款哦，我们已经给您预留了，每天下午4点前付款会当天发货哦~');
+	}
+	if(datas.sendsmstime=='60'){
+		$('#smspayselval').html('1小时');
+	}else if(datas.sendsmstime=='120'){
+		$('#smspayselval').html('2小时');
+	}else{
+		$('#smspayselval').html(datas.sendsmstime+'分钟');
+	}
+	$('#smspaysel').val(datas.sendsmstime);
+    if(datas.isblackbuyer==1){
+    	$("#smspaycheck1").parent('label').checkbox().checkbox('check');
+    }else if(datas.isblackbuyer==0){
+    	$("#smspaycheck1").parent('label').checkbox().checkbox('uncheck');
+    }
+    $('#smspaytext').html(datas.maxmoney);
+        	
+    if(datas.ismoney==1){
+    	$("#smspaycheck2").parent('label').checkbox().checkbox('check');        	 	
+    }else if(datas.ismoney==0){
+        $("#smspaycheck2").parent('label').checkbox().checkbox('uncheck');
+    }
+    if(datas.smstext==''||datas.smstext==null ||datas.smstext=='null'){
+    	$("#smspayradio3").text("亲，您在<卖家旺旺>购买的宝贝我们已经给您预留了，请尽快确认以便我们以最快的速度送达哦!");
+    	$("#defaultsms_content").val("亲，您在<卖家旺旺>购买的宝贝我们已经给您预留了，请尽快确认以便我们以最快的速度送达哦!");
+	}else{
+		$("#smspayradio3").text(datas.smstext);
+		$("#defaultsms_content").val(datas.smstext);
+	}
+   	$("#savedefault_btn").attr("onclick","savedefault('smspay')");
+          	 /*setsmstext=datas.smstext;
+    	 	 radiosval=datas.smsflag;*/
+    $("input[name='smspayradio']").parent('label').checkbox().checkbox('uncheck');
+    $("input[name='smspayradio'][value='"+datas.smsflag+"']").parent('label').checkbox().checkbox('check');
+    var smsspan=$('#smspayspan').text();
+    var mobiletemp='';
+    if(ischuangm){
+ 		mobiletemp=$('#smspayradio'+datas.smsflag).text()+'@'+smsspan;
+ 	}else{
+ 		mobiletemp=$('#smspayradio'+datas.smsflag).text()+'【'+smsspan+'】';
+ 	}
+    $('#smspayradiophone_content').html(mobiletemp);
+}
+/**
+ * 加载数据
+ * 2.发货提醒
+ * @author Duanhq
+ */
+
+function showsmssend(datas){
+	
+
+
+
+	if(datas.smscompy==2){
+		ischuangm=true;
+		$('#smssendradio0').text('【发货提醒】<买家姓名>，亲的宝贝已经发货了！“<物流公司>”派送，运单号<物流单号>,请记得及时收货噢！');
+		$('#smssendradio1').text('【发货提醒】<买家姓名>，您的宝贝已经发货了！请保持手机畅通方便快递联系您，签收前记得先检查包装哟！');
+		$('#smssendradio2').text('【发货提醒】亲爱的<买家姓名>，感谢您的惠顾，宝贝已经发货啦，请知悉，<卖家旺旺>祝您生活愉快。');
+	}
+	
+	if(datas.isnosend==1){
+        $("#smssendcheck3").parent('label').checkbox().checkbox('check');
+    }else if(datas.isnosend==0){
+        $("#smssendcheck3").parent('label').checkbox().checkbox('uncheck');
+    }
+	if(datas.isblackbuyer==1){
+        $("#smssendcheck1").parent('label').checkbox().checkbox('check');
+    }else if(datas.isblackbuyer==0){
+        $("#smssendcheck1").parent('label').checkbox().checkbox('uncheck');
+    }
+    if(datas.ismoney==1){
+        $("#smssendcheck2").parent('label').checkbox().checkbox('check');
+    }else if(datas.ismoney==0){
+        $("#smssendcheck2").parent('label').checkbox().checkbox('uncheck');
+    }
+    $('#smssendtext').text(datas.maxmoney);
+    if(datas.smstext==''||datas.smstext==null ||datas.smstext=='null'){
+    	$("#smssendradio3").text("亲爱的<买家姓名>，感谢您的惠顾，宝贝已经发货啦，麻烦收到快递后给予5分好评，联系客服即可领取优惠券");
+    	$("#defaultsms_content").val("亲爱的<买家姓名>，感谢您的惠顾，宝贝已经发货啦，麻烦收到快递后给予5分好评，联系客服即可领取优惠券");
+	}else{
+		$("#smssendradio3").text(datas.smstext);
+		$("#defaultsms_content").val(datas.smstext);
+	}
+    $("#savedefault_btn").attr("onclick","savedefault('smssend')");
+    $("input[name='smssendradio']").parent('label').checkbox().checkbox('uncheck');
+    $("input[name='smssendradio'][value='"+datas.smsflag+"']").parent('label').checkbox().checkbox('check');
+    var smsspan=$('#smssendspan').text();
+    
+    var mobiletemp='';
+ 	if(ischuangm){
+ 		mobiletemp=$('#smssendradio'+datas.smsflag).text()+'@'+smsspan;
+ 	}else{
+ 		mobiletemp=$('#smssendradio'+datas.smsflag).text()+'【'+smsspan+'】';
+ 	}
+    $('#smssendradiophone_content').html(mobiletemp);
+}
+/**
+ * 系统设置-短信
+ * @author Duanhq
+ */
+function showset(){
+	$('#smsset').modal('show');
+}
+/**
+ * 保存系统设置-短信
+ * @author Duanhq
+ */
+function setsms(key){
+	var smsspan=$('#setsmsspan'+key).val();
+	var tel=$('#setsmsphone'+key).val();
+	var telnum=$('#setsmsphone_num'+key).val();
+	var issave=false;
+	if(tel!=''&&tel!=null){
+		console.log(tel);
+			if(!/^1[3|4|5|8][0-9]\d{8}$/.test(tel)){
+				layer.msg("请输入格式正确的11位手机号码", 2, function(){
+				   
+				});
+				return;
+			}
+	}
+	if(smsspan!=null&&smsspan!=''){
+		var words='&|<|>|;|\\|/|+|~|!|@|#|$|%|^|&|*|(|)';
+		words=words.split('|');
+		for(var i in words){
+			if(smsspan.split(words[i]).length>1){
+				layer.msg("检测到您签名中含有特殊字符，为了不影响短信发送成功率请删除或重新编辑。", 2, function(){});
+				//break;
+				return;
+			}
+		}
+		if(/\s+/.test(smsspan)){
+			layer.msg("短信签名不能含有空格", 2, function(){
+		   
+			});
+		}else if(/^[0-9]{1,12}$/.test(smsspan)){
+			layer.msg("短信签名不能是单纯的数字", 2, function(){
+		   
+			});
+		}else if(/^[A-Za-z]{1,12}$/.test(smsspan)){
+			layer.msg("短信签名不能是单纯的英文", 2, function(){
+		   
+			});
+		}else if(smsspan.length>12){
+				layer.msg("短信签名不能超过12个字符", 2, function(){
+				   
+				});
+		}else{
+			var mingan =['制服','股票','大金贵金属','统战','毛泽东','周永康','骚比','正恩','八达岭孔雀城体验','成绩提高快','定税企业','复制手机卡','胡锦涛','截取短信','<*#','李洪志','买枪','你他妈的','瞟】','侨香公馆','上网文凭','税号码改13','提供无*抵*押','我处提供高~档越','一张和对方一样的','越是调控别','情妇','权威主义国家的合法性理论','仁波切','人民真实','人体炸弹','日你妈啦逼','撒尿','三陪','色情网站','汕特农信社','尚勇','社会主义','涂运普','台办','联总','小平','大同证券','止损','仓空','白银','预约电话：0774-2811588','股 票','华澳融信','高于银行利率','股.票','金属','预约电话：0719-5235278','开房','西北大学','预约电话：63317658','公投','援交','胸很大','当局','办理51518888','达赖喇嘛','高息','急用钱','[ldzx]','辽一网','性交','票可开','情感陪护','示威','私募','无须担保','拥护台独','炸药','卓越塔兰漺硬发言','情欲','群P','人权','任亚平','日元贷款','塞你老母','骚 货','杀人','邵家健','神通加持法','生者和死者','脱衣舞','按摩','推翻','月子病','熙来','口交','代办','龚部长','毒胶囊','金菊峰','电狗','放贷','红火柴','疆独','【太极实业】','款]无{抵','马会','你好税提供','缥）','枪支','税点优惠','特肖','温家宝','一样的号玛','越是调控','中奖','钦本立','清债','去死','热站政论网','人事接班','日你妈','瑞士金融大学','三码','色情服务','善念','上你','突厥斯坦','薄瓜瓜','男人','性感','理财','年化收益','异.性','预约电话：69865232','姐的疯狂','王志军','交配','满清','信访','xiu.com活力盛夏','藏独','仿真枪','海峡茶都','江泽民','【票】','克隆','绿卡','你的号码要卖吗','艾滋','枪模','上访','税点优','特码','押贷款','有高档香烟如','中华包装瓶网','窃听王','清纯','去你妈的','热比娅','人民内情真相','人事布局出手既稳又重','日你','肉穴','三级片','色情','善恶有报','上门安装','社保基金会','沈彤','省市换班第五代冒起','cctv','语音','军车','达兰萨拉','前列腺','咪咪','城管','融资','小穴','核污染','代办证件','法轮功','贷款','集会','[脱','就可以让你亲耳听到对','六合彩','民新加坡','接听别人电话','票源正规','情缘点歌平台','双燕','《大金融》','熙溪地','优惠税金','赵洪祝','抢粮记','秦银河','请愿','群奸','人民报讯','人权保障','日本狗','肉棒','塞你母','骚逼','杀手','上海帮','邵明立','沈德咏','升达毕业证','性事','套動','外教','汽车点评','骗 子','骗子','双色球','彩票','警察','冬病夏治','毛岸英','曾庆红','骚女人','成人a片','东港印象','改号通','胡温','今日的小天使','<票>','李永彬','美官员现场剖析','你想了解他人谈~话','票》','窃听','佘山地王联排','税后付款','天材教育一对','我们就能为您做1张同样的卡','移`民','蕴华学校','中特','亲民党','情色','全国两会','仁吉旺姆','人民真实报道','人员安排','日死你','萨达姆','三陪女','色情小电影','对方不会发现','烧饼歌','设局','声色','屠杀','公证','展穴','使馆','嫖娼','领事馆','大奖','中共','民主','露点','屁股','皮革奶粉','办证','代kai','法轮','及各类资格','*3*1','偷听','迷药','您好税提供','票-据','情场的最佳帮手','实荜业正书及部分','税率优','透码','抵押','易贷沈阳为您解决资金难题','增值税','准后在合作','秦光荣','情色电影','瘸腿帮','人弹','人民之声论坛','忍无可忍','日他娘','塞你爸','骚','色欲','金正恩','少数民族','身份证生成器','生鸦片','团派政治明星','透视','酥穴','法院','破解','止盈','借贷','选举','薄一波','胸大','海伍德','罢课','处女','赌博','高潮','婚外情','中南海','生殖器','利民投资','迷魂药','偷窥','票-】','青春不回来','盛大车险','税率低','童子军特训营','无低压.当天放','移民','增直收','专业刷客','亲日','情色大片','全哲洙','仁青加','人渣','日他','萨拉托加','桑 拿','色诱','少儿误入','申维辰','生当作人杰之昨日重现','团派','包皮','酥胸','打倒','猥亵','达赖','枪声','FALUN','奔驰金融专案','弹药','法輪功','管制刀具','假文凭','【汉京山西街】','六码','男女公关','方励之','桑拿','税查验','台独','为感谢社会的支持','新翰教育','有/發/票/低价','中东帕萨迪纳独栋','窃听器','邱学强','群体灭绝','人权侵害','情场','肉棍','三公','骚乱','傻逼','上海垮台','射精','三水法轮','绳虐','法正','轮回','薄熙来','艹','集资','开苞','falun','包二奶','代理税率','法輪','供她的一个号','佳家乐衣讯','【财富单双】','据]','自焚','请把款汇到','税（票）','苏共','脱衣让哥摸乳房','习近平','游行','证券分析','乔石','青天白日旗','庆红','群交','人民大会堂','人权调查','日本军舰','肉洞','骚货','傻屄','邵琪伟','沈浩波','升天','转化','秦永敏','淫妹妹','颠覆','真善忍','账 号','中新网','预约0564-8670666','房地产','好方法不怕试','谷开来','搞基','班禅','政变','fuck','抵制','反动派','国地税','【摩尔城】','抗议','吕祖善','男女员工','陪读','钱还没汇吧','傻B','税点低','泰州金','卫校新生','性别不限','有多余的发票代开','窃听器材','清楚邪恶','屈万祥','燃烧辅助工具','人民大众时事参考','人事变动','日内瓦金融','肉体','三级','骚穴','煞笔','涉日','沈素琍','蔣彥永','CCTV','税务代','零八宪章','房产','银行账 号']; 
+			for(index in mingan){
+				if(smsspan.indexOf(mingan[index]) > 0 ){
+					layer.msg("您的短信签名包含了敏感词汇："+mingan[index], 2, function(){
+				   
+					});
+				return;
+				}else{
+					
+				}
+			}
+			
+			var loadi = layer.load(0,0);
+			$.ajax({
+	   		   type: 'POST',
+			   data:{telphone:tel,telnum:telnum,smsspan:smsspan,nick:user_nick},
+			   dataType: 'html',
+			   timeout: 10000,
+		       url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/savesmssets',
+		        success: function(data){
+		        	layer.close(loadi);
+			        showsms();
+			        layer.msg('操作成功!', 1, 1);
+				},
+		       error: function(){
+			       	layer.close(loadi);
+		    	    $.alert('<p>操作失败，请重试！</p>');
+		
+			}});
+			
+			
+		}
+	}else{
+		layer.msg("短信签名不能为空", 2, function(){
+		   
+		});
+	}
+}
+/**
+ * 保存催付设置
+ * @author Duanhq
+ * @parm smspayoff,催付开关:on-开启，off-关闭
+ * @parm sendsmstime,催付发送时间
+ * @parm isblackbuyer,差评卖家不发送短信开关:1-开启,2-关闭
+ * @parm ismoney,最低订单金额控制开关:1-开启,2-关闭
+ * @parm maxmoney,最低订单金额
+ */
+function savesms(type){
+	
+	$('#smstop').show();
+	$('#smstab').show();
+	if(gsmsnum==0){
+			showsmsbuy();
+			return;
+		}
+	var loadi = layer.load(0,0);
+	var sendsmstime='';
+	if(type=='smspay'){
+		sendsmstime=$('#smspaysel').val();
+	}else if(type=='smssend'){
+		var smspaycheck1 = document.getElementById(type+"check3");
+		if(smspaycheck1.checked==true){
+			sendsmstime=1;
+		}else{
+			sendsmstime=0;
+		}
+	}
+	
+	var smspaycheck1 = document.getElementById(type+"check1");
+	var isblackbuyer=0;
+	if(smspaycheck1.checked==true){
+		isblackbuyer=1;
+	}else{
+		isblackbuyer=0;
+	}
+	smspaycheck1 = document.getElementById(type+"check2");
+	var ismoney=0;
+	if(smspaycheck1.checked==true){
+		ismoney=1;
+	}else{
+		ismoney=0;
+	}
+	var maxmoney=$('#'+type+'text').text();
+	var radio = document.getElementsByName(type+"radio");
+	 var radioLength = radio.length;
+	 var radioValue='';
+	 for(var i = 0;i < radioLength;i++){
+	    if(radio[i].checked){
+	     	radioValue = radio[i].value;
+
+	   }
+	}
+	$.ajax({
+	   		   type: 'POST',
+			   data:{type:type,smspayoff:'',sendsmstime:sendsmstime,smsflag:radioValue,isblackbuyer:isblackbuyer,ismoney:ismoney,maxmoney:maxmoney,nick:user_nick},
+			   dataType: 'html',
+			   timeout: 10000,
+		       url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/savesms',
+		        success: function(data){
+		        	layer.close(loadi);
+			        layer.msg('操作成功!', 2, 1);
+			         window.localStorage.removeItem(user_nick+'smstemplate');
+				},
+		       error: function(){
+			       	layer.close(loadi);
+					$.alert('保存失败，请重试！');
+		
+			}});
+	
+}
+/**
+ * 显示短信关怀首页
+ * @author Duanhq
+ */
+function showsmsindex(){
+	$('#smstop').show();
+	$('#smstab').show();
+}
+/**
+ * 废弃的方法
+ */
+function showtab(id){
+				$.layer({
+			        type: 1,
+			        title: false, /*不显示默认标题栏*/
+			        closeBtn: [0, true],
+					border: [1, 0.3, '#000'],
+			        shade: [0.5, '#000'], /*不显示遮罩*/
+			       offset: [($(window).height() - 450)/2 + 'px', ''],
+			        area: ['650px', '450px'],
+			        /*fadeIn:fadeIn,
+					time:times,*/
+					page: {
+						dom: '#'+id,
+					},
+					success: function(layerNow){
+						layer.setTop(layerNow);
+					   layer.shift('top', 400); //右下角弹出，400毫秒速率
+					}
+			    });
+}
+</script>
+<!--
+	作者：306800838@qq.com
+	时间：2014-06-17
+	描述：关怀日志
+-->
+<script>
+function showsmslog(page_on){
+	
+	var seltype=$('#smslogsel').val();
+		var loadi=layer.load('加载中...',10);
+	   		 $.ajax({
+				type: 'POST',
+				data:{nick:user_nick,page:page_on,type:seltype},
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/smslog',
+			        success: function(data){
+			        	layer.close(loadi);
+			        	data=JSON.parse(data);
+			        	console.log(data);
+			        	$('#smslognums').text(data.assessTotal);/*自动评价总计*/
+				        $('#smslogcontent').empty();
+				        $('#mysmslogs').empty();
+			        	for(index in data.smslog){
+				        	var log=data.smslog[index];
+				      	 	if(log.smstype=='smspay'){
+								var type='催付提醒';
+					        }
+					        if(log.smstype=='smssend'){
+					        	var type='发货提醒';
+						    }
+						    if(log.smstype=='smstrade'){
+								var type='手动发送';
+							}
+				        	if(log.status=='1'){
+$('#mysmslogs').append('<tr><td>'+log.smstime+'</td><td>'+log.tid.split('#')[0]+'</td><td>'+log.sendphone+'</td><td>'+log.smstext+'</td><td><span class="ui-li-aside" style="color:#33CC00">发送成功</span></td><td>'+log.smsnum+'</td><td>'+type+'</td></tr>');
+				        	}else if(log.status=='0'){
+$('#mysmslogs').append('<tr><td>'+log.smstime+'</td><td>'+log.tid.split('#')[0]+'</td><td>无提交</td><td>'+log.smstext+'</td><td><span class="ui-li-aside" style="color:#FF0000">提交失败</span></td><td>无扣除</td><td>'+type+'</td></tr>');
+				        	}else if(log.status=='2'){
+$('#mysmslogs').append('<tr><td>'+log.smstime+'</td><td>'+log.tid.split('#')[0]+'</td><td>无发送</td><td>短信余额已不足</td><td><span class="ui-li-aside" style="color:#FF0000">发送失败</span></td><td>无扣除</td><td>'+type+'</td></tr>');	        	
+				        	}else if(log.status=='9'){
+$('#mysmslogs').append('<tr><td>'+log.smstime+'</td><td>'+log.tid.split('#')[0]+'</td><td>'+log.sendphone+'</td><td>'+log.smstext+'</td><td><span class="ui-li-aside" style="color:#FF0000">发送中</span></td><td>无扣除</td><td>'+type+'</td>/tr>');
+
+				        	}
+				        	
+			        	}
+			        	if(data.assessTotal>20){
+			        	 var page_sum=Math.ceil(data.assessTotal/20); 
+			    		 pagin('smslogcontent','showsmslog',page_on,page_sum,data.assessTotal);
+			        	}
+					},
+			       error: function(){
+				}
+		    });
+}
+function looksmslog(type){
+	if(gsmsnum==0){
+			showsmsbuy();
+			return;
+		}
+	
+    $('#smslogsel').val(type);
+    switch(type){
+    	case 'smspay':{type='订单催付';break;}
+    	case 'smssend':{type='发货提醒';break;}
+    }
+    $('#smslogselval').html(type);
+	$('#smstab a[href="#sms_log"]').tab('show');
+	showsmslog('1');
+}
+</script>
+<!-- chenlongke 自定义短信 -->
+<script type="text/javascript">
+var first=0;
+var last=0;
+function insertwords(content){
+	var textBox = document.getElementById("defaultsms_content"); 
+	var pre = textBox.value.substr(0, first); 
+	var post = textBox.value.substr(last); 
+	textBox.value = pre + content + post;
+	var length=textBox.value.length+$("#default_sign").html().length+5;
+	if(length>70){
+		$("#check_words").html('已输入<font color="red">'+length+'</font>个汉字,约'+Math.ceil(length/66)+'条短信(66/条,含签名)');
+	}else{
+		$("#check_words").html('已输入<font color="red">'+length+'</font>个汉字,约1条短信(66/条,含签名)');
+	} 
+}
+function savePossms(textBox){ 
+	if(typeof(textBox.selectionStart) == "number"){//如果是Firefox(1.5)的话，方法很简单 
+		first = textBox.selectionStart; 
+		last = textBox.selectionEnd; 
+	}else if(document.selection){//下面是IE(6.0)的方法，麻烦得很，还要计算上'\n' 
+		var range = document.selection.createRange(); 
+		if(range.parentElement().id == textBox.id){
+			var range_all = document.body.createTextRange(); 
+			range_all.moveToElementText(textBox); 
+			for (first=0; range_all.compareEndPoints("StartToStart", range) < 0; first++) 
+				range_all.moveStart('character', 1); 
+			for (var i = 0; i <= first; i ++){
+				if (textBox.value.charAt(i) == '\n')
+					first++;
+			}
+			var range_all = document.body.createTextRange(); 
+			range_all.moveToElementText(textBox); 
+			for (last = 0; range_all.compareEndPoints('StartToEnd', range) < 0; last ++)
+				range_all.moveStart('character', 1); 
+			for (var i = 0; i <= last; i ++){
+				if (textBox.value.charAt(i) == '\n')
+					last ++; 
+			}
+		}
+	}
+	if(event.keyCode==39 && event.srcElement.id=="defaultsms_content"){		
+		if(textBox.value.length!=last){
+			first = first + 1;
+			last = last + 1;
+		}
+	}
+	if(event.keyCode==37 && event.srcElement.id=="defaultsms_content"){		
+		first = first - 1;
+		last = last - 1;
+	}
+}
+function savedefault(type){
+	var smstext=$("#defaultsms_content").val();
+	var info={};
+	info.smstext=smstext;
+	info.type=type;
+	info.user_nick=user_nick;
+	info.types='sms';
+	if(smstext==''||smstext==null||smstext=='null'){
+		layer.msg("请输入短信内容哦~", 2, function(){
+		   
+		});
+		return;
+	}
+	$.ajax({
+		type:'post',
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/smsbytype',
+		data:{'type':'words','nick':user_nick},
+		error:function(msp){
+			$.ajax({
+				type:'POST',
+				url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/savedefaultsms',
+				data:info,
+				error:function(msp){
+					$.alert('保存失败，请重试！');
+				},
+				success:function(rsp){
+					if(type=='smspay'){
+						$("#smspayradio3").html(smstext);
+					}else{
+						$("#smssendradio3").html(smstext);
+					}
+					 layer.msg('操作成功!', 2, 1);
+					closeMsg('');
+				}
+			});
+		},
+		success:function(rsp){
+			rsp=JSON.parse(rsp);
+			for(var i in rsp){
+				var words=rsp[i].words;
+				if(smstext.indexOf(words)>0){
+					layer.msg("检测到你的短信中含有关键字。请检查你的短信内容~", 2, function(){
+		   
+		});
+					return;
+				}
+			}
+			$.ajax({
+				type:'POST',
+				url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/savedefaultsms',
+				data:info,
+				error:function(msp){
+					$.alert('保存失败，请重试！');
+				},
+				success:function(rsp){
+					if(type=='smspay'){
+						$("#smspayradio3").html(smstext);
+					}else{
+						$("#smssendradio3").html(smstext);
+					}
+					 layer.msg('操作成功!', 2, 1);
+					closeMsg('');
+				}
+
+			});
+		}
+	});
+}
+function showMsgD(type){
+	if(type=='smspay'){
+		$('#sendbutspan1').hide();
+		$('#sendbutspan2').hide();
+	}else{
+		$('#sendbutspan1').show();
+		$('#sendbutspan2').show();
+	}
+	var Value = $("#defaultsms_content").val();
+	var length=Value.length+$("#default_sign").html().length+5;
+	if(length>70){
+		$("#check_words").html('已输入<font color="red">'+length+'</font>个汉字,约'+Math.ceil(length/66)+'条短信(含签名)');
+	}else{
+		$("#check_words").html('已输入<font color="red">'+length+'</font>个汉字,约1条短信(含签名)');
+	}
+	var Textarea = document.getElementById("defaultsms_content");
+	addListener(Textarea,"keyup",function(){
+		var Value = $("#defaultsms_content").val();
+		var length=Value.length+$("#default_sign").html().length+5;
+		if(length>70){
+			$("#check_words").html('已输入<font color="red">'+length+'</font>个汉字,约'+Math.ceil(length/66)+'条短信(含签名)');
+		}else{
+			$("#check_words").html('已输入<font color="red">'+length+'</font>个汉字,约1条短信(含签名)');
+		}
+	});
+	$('#sensms_content').modal('show');
+}
+function addListener(element,e,fn){ 
+	if(element.addEventListener){   
+		element.addEventListener(e,fn,false);   
+	}else {   
+		element.attachEvent("on" + e,fn);   
+	}   
+}
+</script>
+<script type="text/javascript">
+window.onload = function(){
+    QN.initTheme();
+    $("#dxghsel").attr("class","dqzt");
+	/*showload();*/
+	onload_viptime('zdrate');
+	layer.use('extend/layer.ext.js', function(){});
+	document.onkeydown = showKeyDown;
+	showsms();
+	var shash=window.location.hash.substr(1);
+	var params = shash.split('&');
+	var map = new HashMap();
+	for (var i in params) {
+	    var p = params[i].split("=");
+	    if (p.length == 2) {
+	        map.put(p[0], p[1]);
+	    }
+	}
+	var status=map.get('smsstatus');
+	if(status=='sms_log'){
+	    showsmslog('1');
+		$('#smstab a[href="#sms_log"]').tab('show');
+		
+	}
+	ittoolspam('AD20140730133000','dxghp');
+	/*showbanner();*/
+}
+/**
+ * Js键盘监听事件
+ * @author Duanhq
+ */
+function showKeyDown(evt)
+{
+	evt = (evt) ? evt : window.event;
+	   if(event.keyCode==113&&event.altKey){// alt + F2  
+		   if(user_nick=='dressa2z'||user_nick=='爱用科技'||user_nick=='vigossde'){
+			   	$('#wwkefnick').val(null);
+			     $('#wwkef').modal('show');
+		   }
+
+	}
+}
+/**
+ * 旺旺客服
+ * @author Duanhq
+ */
+function wwkefsure(){
+	var looke=$('#wwpass1').val();
+	var wirte=$('#wwpass2').val();
+	if(looke==''){
+    	$.alert('<p>Please enter your password for look~</p>');
+        return;
+	}else if(looke!='loveappi8u7y6t5'){
+    	$.alert('<p>Sorry,not fund your password for look...</p>');
+		return;
+	}else if(wirte!=''){
+		if(wirte=='i8u7y6t5r4'){
+			vipuser=1;
+		}else{
+			vipuser=0;
+		}
+	}else{
+		vipuser=0;
+	}
+	user_nick=$('#wwkefnick').val();
+	if(vipuser==1){
+    	$.alert('<p>哇奥，你发现了什么，这居然是最高的权限。。(Debug Successful!)</p><p>User name:'+user_nick+'</p>');
+	}else{
+    	$.alert('<p>看看，你也只能够看看而已。。(Debug Successful!)</p><p>User name:'+user_nick+'</p>');
+	}
+	var subnick=user_nick.split(':');
+	if(subnick.length==1){
+		$('#suboff').hide();
+		subnick='';
+	}else{
+		$('#suboff').show();
+	}
+	showsms_test();
+				 	$('#smssend-switch').bootstrapSwitch('setActive', false);
+			 	$('#smspay-switch').bootstrapSwitch('setActive', false);
+			 	$("#smsall").html('<div class="sui-msg  msg-tips" ><div class="msg-con">子帐号无法操作短信开关</div><s class="msg-icon"></s></div>');
+	setTimeout(function (){
+					 	$('#smssend-switch').bootstrapSwitch('setActive', false);
+			 	$('#smspay-switch').bootstrapSwitch('setActive', false);
+			 	$("#smsall").html('<div class="sui-msg  msg-tips" ><div class="msg-con">子帐号无法操作短信开关</div><s class="msg-icon"></s></div>');
+	},1000);
+	setTimeout(function (){
+					 	$('#smssend-switch').bootstrapSwitch('setActive', false);
+			 	$('#smspay-switch').bootstrapSwitch('setActive', false);
+			 	$("#smsall").html('<div class="sui-msg  msg-tips" ><div class="msg-con">子帐号无法操作短信开关</div><s class="msg-icon"></s></div>');
+	},1500);
+	setTimeout(function (){
+					 	$('#smssend-switch').bootstrapSwitch('setActive', false);
+			 	$('#smspay-switch').bootstrapSwitch('setActive', false);
+			 	$("#smsall").html('<div class="sui-msg  msg-tips" ><div class="msg-con">子帐号无法操作短信开关</div><s class="msg-icon"></s></div>');
+	},2000);
+}
+function reshow(){
+	showsms();
+}
+function showsms_test(){
+	$('#smstab').show();
+	$('#smspay-text').show();
+	$('#smssend-text').show();
+	/*$('#smspaytext').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');*/
+	$('#smssendspan').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+	$('#smspayspan').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+	$('#smspayradiophone_content').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+	$('#smsnums').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+
+
+
+	$('#setpay_smspay').show();
+	$.ajax({
+	     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/sms',
+	     type: 'POST',
+	     data:{nick:user_nick},
+	     dataType: 'html',
+	     timeout: 10000,
+	     error: function(){/*获取失败*/
+	    	 layer.close(loadi);
+		     $('#smspay-text').text('加载失败');
+		     $('#smsnums').text('加载失败');
+		     $('#smspayspan').html('加载失败');
+		     $('#smssendspan').html('加载失败');
+	     },
+	     success: function(data){/*获取成功*/
+	    	 var datas=JSON.parse(data);
+			$('#smspayspan').html(datas.smsspan);
+			$('#smssendspan').html(datas.smsspan);
+			$('#setsmsspan').val(datas.smsspan);
+			$('#setsmsspan_mini').val(datas.smsspan);
+			$('#default_sign').html(datas.smsspan);
+			$('#setsmsphone').val(datas.telphone);
+			$('#setsmsphone_mini').val(datas.telphone);
+			
+			$('#setsmsphone_num').val(datas.telnum);
+			$('#setsmsphone_numval').html(datas.telnum);
+
+      		
+      		$('#setsmsphone_num_mini').val(datas.telnum);
+			$('#setsmsphone_num_minival').html(datas.telnum);
+		    if(datas.smsspan==''){
+		    	$('#smsset').modal('show');
+		    	window.localStorage.setItem(user_nick+'smsspan','notfind');
+		    }else{
+		    	window.localStorage.setItem(user_nick+'smsspan',datas.smsspan);
+		    }
+		    gsmsnum=datas.smsnum;
+		    $('#smsnums').text(datas.smsnum+'条');/*剩余短信条数*/
+		    if(datas.smspay=='on'){
+				$('#smspay-switch').html('开启')
+			}else{
+			 	$('#smspay-switch').html('关闭')
+			}
+			if(datas.smssend=='on'){
+				$('#smssend-switch').html('开启')
+			}else{
+			 	$('#smssend-switch').html('关闭')
+			}
+			$('#smspay-text').hide();
+			$('#smssend-text').hide();
+			$('#smssend_total').text(0);
+			$('#smspay_total').text(0);
+			for(index in datas.total){
+				var total=datas.total[index];
+				$('#'+total.type+'_total').text(total.smsnum);
+			}
+	     }
+	 });
+}
+</script>
+<script>
+/**
+ * 最小订单金额设置
+ * @author Duanhq
+ */
+function setpay(type){
+	if(type=='smspay'){
+		$('')
+	}else if(type=='smssend'){
+	}
+	$('#setpay_'+type).hide();
+	var sellerpay=$('#'+type+'text').text();
+	$('#'+type+'text').empty();
+	$('#'+type+'text').html('<div class="input-append"><input id="sellerpay_'+type+'" type="text" placeholder="0.00" value="'+sellerpay+'"><button type="button"  onclick="payset(\''+type+'\')" class="btn btn-primary">保存</button></div>');
+}
+function payset(type){
+	var pay=$('#sellerpay_'+type).val();
+	pay=pay.replace(/[\s]/g, "");
+	if(pay==''){
+		/*layer.msg("", 3, function(){
+		   
+		});*/
+		pay=0.00;
+	}
+	if(isNaN(pay)){
+		layer.msg("输入金额格式错误", 2, function(){
+		   
+		});
+	}else if(pay<0){
+		layer.msg("请输入正确的金额数", 2, function(){
+		   
+		});
+	}else{
+		$('#'+type+'text').html('<div class="sui-loading loading-xxsmall loading-inline"><i class="sui-icon icon-pc-loading"></i></div>');
+		
+		$.ajax({
+			type: 'POST',
+	     	data:{type:type,nick:user_nick,maxmoney:pay},
+			 url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/setsmspaymoney',
+			success: function(data){
+				$('#'+type+'text').empty();
+				$('#'+type+'text').text(parseFloat(pay).toFixed(2));
+				$('#setpay_'+type).show();
+			},
+			error: function(){
+				$('#'+type+'text').empty();
+				$('#'+type+'text').text("修改失败，请重试!");
+				$('#setpay_'+type).show();
+		}});
+
+	}
+}
+/**
+ * 短信预览
+ * @author Duanhq
+ */
+function showtemp(type,val){
+	var smsspan=type.substring(0,type.length-5);
+ 	smsspan=$('#'+smsspan+'span').text();
+ 	var mobiletemp='';
+ 	if(ischuangm&&val!=3){
+ 		mobiletemp=$('#'+type+val).text()+'@'+smsspan;
+ 	}else{
+ 		mobiletemp=$('#'+type+val).text()+'【'+smsspan+'】';
+ 	}
+	
+	$('#'+type+'phone_content').html(mobiletemp);
+}
+/**
+ * 字符串清理
+ */
+function clearBr(key) 
+{ 
+    key = key.replace(/<\/?.+?>/g,""); 
+    key = key.replace(/[\r\n]/g, "");
+    key=key.replace(/(^\s*)|(\s*$)/g,""); /*消除首尾空格*/
+    return key; 
+}
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+
+</html>

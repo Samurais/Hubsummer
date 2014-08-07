@@ -1,0 +1,3465 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<script src="http://cdn.zzgdapp.com/trade/web/js/jquery-barcode-1.3.3.js"></script>
+<body onload="onload();">
+<?php require_once ("app/views/public/top.php");?>
+<div class="container" style="margin-left: 10px;">
+<div id="UC_facecontent" style="display:none;">
+	<div style="width:365px;height:595px;font-family:黑体;">
+	<div style="width:260px;height:15px;float:left;font-size:9pt;line-height:13px;">寄件人：<span class="fname">寄件人</span>&nbsp;联系电话：<span class="fmobile">寄件</span></div>
+	<div style="width:90px;height:28px;float:right;"><div style="float:right;margin-top:-2px;"></div></div>
+	<div style="width:260px;height:15px;float:left;font-size:9pt;line-height:13px;">寄件单位：</div>
+	<div style="width:270px;height:32px;float:left;font-size:9pt;line-height:15px;">寄件地址：<span class="faddress">寄件</span><div style="float:right;margin-right:52px;">货物信息：</div></div>
+	<div style="width:85px;height:85px;float:right;margin-left:5px;" id="code_UC"></div>
+	<div style="width:156px;height:55px;float:left;font-size:9pt;line-height:15px;">代收货款：<br/>运单编号：<span class="code_number" ></span><br/>订单编号：<span class="facetids" ></span></div>
+	<div style="width:112px;height:55px;float:right;font-size:9pt;line-height:15px;" class="facebaby" ></div>
+	<div style="width:360px;height:15px;float:left;"></div>
+	<div style="font-weight:bold;width:363px;height:30px;float:left;font-size:24pt;text-align:center;line-height:25px;" id="dbt_UC">地址</div>
+	<div style="width:360px;margin-top:3px;margin-bottom:3px;float:left;border-bottom:1px solid #000;"></div>
+	<div style="width:274px;height:15px;float:left;font-size:9pt;line-height:15px;">寄件人：<span class="fname">寄件人</span>&nbsp;联系电话：<span class="fmobile">寄件</span></div>
+	<div style="width:85px;height:65px;float:right;"><div style="float:right;margin-top:-2px;"></div></div>
+	<div style="width:274px;height:20px;float:left;font-size:9pt;">寄件单位：</div>
+	<div style="width:274px;height:40px;float:left;font-size:9pt;">寄件地址：<span class="faddress">寄件</span></div>
+	<div style="width:360px;height:15px;float:left;"></div>
+	<div style="width:275px;height:20px;float:left;font-size:10pt;">收件人：<span class="sname">收件人</span>&nbsp;联系电话：<span class="smobile">收件</span></div>
+	<div style="width:80px;height:90px;float:right;text-align:center;font-size:18px;">标准快递</div>
+	<div style="width:270px;height:20px;float:left;font-size:9pt;">收件单位：</div>
+	<div style="width:270px;height:40px;float:left;font-size:9pt;">收件地址：<span class="saddress">收件</span></div>
+	<div style="width:270px;height:15px;float:left;font-size:8pt;">特殊约定：不可开箱</div>
+	<div style="width:360px;height:20px;float:left;"></div>
+	<div style="width:213px;height:80px;float:left;" ><div style="margin-top: 5px;float:left;margin-left:-18px;" id="face_UC"></div></div>
+	<div style="width:150px;height:80px;float:left;line-height:15px;"><span style="font-size:12pt;" >签（代）收人：</span><br/><br/><span style="font-size:10pt;">&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;日</span><br/><span style="font-size:7pt;line-height:12px;">经收件人或寄件人的代签人签字，视为完整送达。</span></div>
+	<div style="width:150px;height:30px;float:left;">受理单位：</div>
+	<div style="width:150px;height:30px;float:right;">受理日期：<span class="facedate"></span></div>
+	<div style="width:360px;height:30px;float:left;"></div>
+	<div style="width:210px;height:65px;float:left;font-size:8pt;line-height:15px;">收件人:<span class="sname">收件人</span>&nbsp;联系电话:<span class="smobile">收件</span>
+	<div style="width:208px;height:35px;float:left;font-size:8pt;line-height:15px;">收件地址:<span class="saddress">收件</span></div>
+	<div style="width:208px;height:15px;float:left;font-size:9pt;line-height:15px;">发货日期：<span class="facedate"></span></div></div>
+	<div style="width:73px;height:25px;float:left;text-align:center;font-size:18px;">标准快递</div>
+	<div style="width:75px;height:25px;float:right;"><div style="float:right;margin-top:-2px;"></div></div>
+	<div style="width:150px;height:30px;float:right;font-size:8pt;line-height:15px;">运单编号:<span class="code_number" ></span><br/>重量：&nbsp;&nbsp;&nbsp;件数：<span class="facenum"></span></div>
+	<div style="width:180px;height:55px;float:left;"><div style="float:left;margin-top: 3px" id="faces_UC"></div></div>
+	<div style="width:180px;height:55px;float:right;font-size:9pt;line-height:15px;">货物信息：<br/><span class="facebaby" ></span></div>
+	<br/>
+	</div>
+</div>
+<div id="ZJS_facecontent" style="display:none;">
+	<div style="width:365px;height:585px;font-family:微软雅黑;">
+	<div style="font-weight:bold;width:360px;height:37px;float:left;font-size:30px;line-height:30px;" id="ZJS_dtb">江西南昌</div>
+	<div style="font-weight:bold;width:360px;height:50px;float:left;font-size:31px;text-align:center;line-height:45px;" class="facessq">地址</div>
+	<div style="font-weight:bold;width:360px;height:20px;float:left;font-size:16px;margin-bottom:5px;" class="facexxdz">详细地址</div>
+	<div style="font-weight:bold;width:128px;height:40px;float:left;font-size:18px;line-height:30px;" >&nbsp;&nbsp;&nbsp;<span class="fname"></span></div>
+	<div style="width:198px;height:40px;float:right;" ><span style="font-size:18px;font-weight:bold;" class="fmobiles">13564513520</span><br/><span class="fphones">123546520</span></div>
+	<div style="width:360px;float:left;margin-top:10px;border-top:1px solid #000;" ></div>
+	<div style="font-weight:bold;width:195px;height:80px;float:left;margin-top:10px;" id="face_ZJS">面单号</div>
+	<div style="width:130px;height:80px;float:right;margin-top:10px;">体积<br/>重量<br/>声明价格</div>
+	<div style="width:195px;height:80px;float:left;" ><span style="font-size:10px;">客户：</span><span class="shopName"></span><br/>订单号：<span class="facetids" ></span><br/><span style="font-size:16px;font-weight:bold;">签收人：</span><br/>重要提示：测试单据，不用发送</div>
+	<div style="font-weight:bold;width:130px;height:80px;float:right;"><span style="font-size:18px;">代收金额：</span><br/><span style="font-size:18px;">￥250.00</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;日</div>
+	<div style="width:360px;float:left;border-top:1px dashed #000;margin-top:5px;margin-bottom:-3px;"></div>
+	<div style="font-weight:bold;width:195px;height:20px;float:left;">宅急送</div>
+	<div style="font-weight:bold;width:130px;height:20px;float:right;" class="facedate"></div>
+	<div style="width:360px;height:20px;float:left;"></div>
+	<div style="width:180px;height:65px;float:left;">签收人：<br/>品名：<span class="facebaby" ></span><br/><span style="font-size:16px;font-weight:bold;" id="codes_ZJS"></span></div>
+	<div style="width:180px;height:65px;float:right;"><span class="fmobile" style="font-size:18px;font-weight:bold;">寄件</span><br/>订单号：<span class="facetids" ></span></div>
+	<div style="border-right:1px dashed #000;width:83px;height:90px;float:left;margin-top:60px;"><img border="0" src="http://cdn.zzgdapp.com/trade/web/images/wllogo/ZJS2.png" width="90px" height="90px" /></div>
+	<div style="border-right:1px dashed #000;width:170px;height:90px;float:left;margin-top:60px;"></div>
+	<div style="width:90px;height:90px;float:left;margin-top:60px;margin-left:10px;" id="code_ZJS"></div>
+	</div>
+	<br/>
+</div>
+<div id="ZTO_facecontent" style="display:none;">
+	<div style="width:365px;height:730px;font-family:宋体;">
+	<div style="width:176px;height:37px;float:left;"></div>
+	<div style="width:176px;height:37px;float:right;margin-left:-5px;text-align:center;font-size:20px;" class="shopName">网点</div>
+	<div style="width:360px;float:left;border-top:1px solid #000;"></div>
+	<div style="width:278px;height:35px;float:left;font-size:18px;font-weight:bold;border-bottom:1px solid #000;line-height:30px;" class="code_number">运单号</div>
+	<div style="width:81px;height:81px;margin-right:5px;float:right;border-left:1px solid #000;" id="code_ZTO"></div>
+	<div style="width:277px;height:45px;float:left;line-height:13px;font-size:10px;">寄件人：<span class="fname">寄件人</span>&nbsp;联系方式：<span class="fmobile">寄件</span><!-- &nbsp;日期：<span class="facedate"></span> --><br/>地址：<span class="faddress">寄件</span></div>
+	<div style="width:360px;float:left;border-top:1px solid #000;margin-bottom:3px;"></div>
+	<div style="width:360px;height:90px;float:left;line-height:13px;font-weight:bold;border-bottom:1px solid #000;">收件人：<span class="sname">收件</span>&nbsp;电话：<span class="smobile">收件</span><br/>地址：<span class="saddress">地址</span><br/><br/><strong>品名：<span class="facebaby" ></span></strong></div>
+	<div style="width:360px;height:50px;float:left;font-size:32pt;font-weight:bold;text-align:center;line-height:50px;font-weight:bold;border-bottom:1px solid #000;" id="dbt_ZTO">目地地</div>
+	<div style="width:363px;height:90px;float:left;text-align:center;"><div style="margin-top:20px;" id="face_ZTO"></div></div>
+	<div style="width:110px;height:82px;float:left;margin-top:25px;"><span style="line-height:130px;font-size:20px;" class="shopName">网点</span></div>
+	<div style="width:250px;height:82px;float:right;margin-top:25px;"><div style="margin-left:10px;margin-top:25px;" id="faces_ZTO">面单号</div></div>
+	<div style="width:360px;float:left;border-top:1px solid #000;margin-top:10px;"></div>
+	<div style="width:160px;height:55px;float:left;border-right:1px solid #000;line-height:30px;">产品表达</div>
+	<div style="width:190px;height:55px;float:right;font-size:18px;font-weight:bold;line-height:30px;" class="code_number">运单号</div>
+	<div style="width:360px;float:left;border-top:1px solid #000;"></div>
+	<div style="width:331px;height:90px;float:left;line-height:13px;border-bottom:1px solid #000;font-weight:bold;margin-top:3px;">收件人：<span class="sname">收件</span>&nbsp;电话：<span class="smobile">收件</span><br/>地址：<span class="saddress">地址</span><br/><br/><strong>品名：<span class="facebaby" ></span></strong></div>
+	<div style="width:33px;height:193px;float:right;border-left:1px solid #000;" ><div style="margin-top:2px;margin-left:10px;font-size:14px;font-weight:bold;width:10px;height:160px;word-break:break-all;line-height:12px;" id="facet_ZTO"></div></div>
+	<div style="width:331px;height:51px;float:left;font-size:10px;line-height:13px;border-bottom:1px solid #000;">寄件人：<span class="fname">寄件人</span>&nbsp;联系方式：<span class="fmobile">寄件</span>&nbsp;日期：<span class="facedate"></span><br/>地址：<span class="faddress">寄件</span></div>
+	<div style="width:220px;height:45px;float:left;font-size:9px;line-height:13px;border-right:1px solid #000;">您对此单的签收，代表您已验货，确认商品信息无误，包装完好，没有划痕、破损等表面质量问题</div>
+	<div style="width:110px;height:40px;float:right;font-weight:bold;">签收</div>
+	</div>
+	<br/>
+</div>
+<div id="HTKY_facecontent" style="display:none;">
+	<div style="width:365px;height:800px;font-family:黑体;">
+	<div style="width:150px;height:56px;float:left;"><div style="float:right;text-align:center;"><span style="font-size:14pt;line-height:30px;">标准快件</span><br><span style="font-size:8pt;">成就商业.精彩生活</span></div></div>
+	<div style="width:183px;height:56px;float:left;margin-left:0px;"><div style="margin-left:17px;margin-top:5px;" id="face_HTKY"></div></div>
+	<div style="width:328px;height:81px;float:left;line-height:13px;font-size:10pt;margin-left:21px;"><span class="sname">收件</span><br/>电话：<span class="smobile">收件</span><br/>地址：<span class="saddress">地址</span></div>
+	<div style="width:226px;height:50px;float:left;margin-left:3px;line-height:13px;font-size:9pt;margin-left:21px;"><span class="fname">寄件</span><br/>电话：<span class="fmobile">寄件</span><br/>地址：<span class="faddress">寄件</span></div>
+	<div style="width:100px;height:50px;float:left;line-height:13px;font-size:10pt;">付款方式：<span></span><br/>保价费用：<span></span><br/>投保金额：<span></span><br/>签单返现：<span></span></div>
+	<div style="width:328px;height:72px;float:left;line-height:60px;font-size:26pt;margin-left:21px;" id="HTKY_dtb"></div>
+	<div style="width:23px;height:70px;float:left;line-height:13px;font-size:10pt;"></div>
+	<div style="width:226px;height:70px;float:left;line-height:13px;font-size:9pt;"><div style="margin-top:5px;width:55px;height:55px;float:left" id="code_HTKY"></div><div style="margin-left:10px;float:left;"><p></p>收件人签收<p></p><p></p><div style="font-size:8pt;">运单编号：<span class="facetids" ></span><br/>打印日期：<span class="facedate"></span></div></div></div>
+	<div style="width:100px;height:70px;float:right;"><p></p>始发：<span style="font-size:13pt;" ></span><br/>到达：<span style="font-size:13pt;"></span><br/></div>
+	<div style="width:353px;height:30px;float:left;"></div>
+	<div style="width:353px;height:55px;float:left;"><div style="float:left;margin-left:-6px;margin-top:5px;" id="faces_HTKY"></div></div>
+	<div style="width:353px;height:60px;float:left;margin-top:7px;line-height:14px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sname">收件</span><div style="float:right;margin-right:20px">电话：<span class="smobile">电话</span></div><br/><div style="margin-left:5px;float:left">地址：<span class="saddress">地址</span></div></div>
+	<div style="width:250px;height:55px;float:left;margin-top:2px;line-height:13px;font-size:9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fname">寄件</span><br/><div style="margin-left:5px;float:left">电话：<span class="fmobile">电话</span><br/>地址：<span class="faddress">电话</span></div></div>
+	<div style="width:100px;height:55px;float:left;margin-top:2px;line-height:13px;font-size:9pt;">付款方式：<span></span><br/>保价费用：<span></span><br/>投保金额：<span></span><br/>签单返现：<span></span></div>
+	<div style="width:353px;height:125px;float:left;"><div style="margin-top:30px;width:60px;height:60px;margin-right:10px;float:right;" id="code_HTKYs"></div></div>
+	</div>
+	<br/>
+</div>
+<div id="EMS_facecontent" style="display:none;">
+	<div style="width:365px;height:585px;font-family:黑体;">
+	<div style="width:135px;height:72px;float:left;font-size:26px;text-align:center;line-height:70px;">标准快递</div>
+	<div style="width:195px;height:72px;float:right;margin-left:-5px;"><div style="margin-left:40px;margin-top:15px;" id="face_EMS"></div></div>
+	<div style="width:165px;height:68px;float:left;line-height:13px;font-size:12px;">寄件：<span class="fname">寄件</span>&nbsp;<span class="fmobile">寄件</span><br/><span style="margin-left: 35px;" class="shopName">寄件</span><br/><span style="margin-left: 35px;" class="faddress">寄件</span></div>
+	<div style="width:161px;height:68px;font-size:40px;text-align:center;float:right;line-height:60px;font-weight:bold;"  class="facemdd">格口</div>
+	<div style="width:330px;height:60px;float:left;line-height:13px;">收件：<span class="sname" style="font-size:16px;">收件</span>&nbsp;<span class="smobile" style="font-size:16px;">收件</span><br/><span style="margin-left: 35px;font-size:16px;" class="saddress">收件</span></div>
+	<div style="width:135px;height:60px;float:left;line-height:13px;"><p></p>付款方式：<span></span><br/>计费重量：<span></span><br/>保价金额：<span></span></div>
+	<div style="width:190px;height:60px;float:right;line-height:13px;margin-top:5px;">代件人\代收人：<span></span><br/>签收时间：<span style="line-height:13px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>年<span style="">&nbsp;&nbsp;&nbsp;</span>月<span style="">&nbsp;&nbsp;&nbsp;</span>日<span style="width: 30px;">&nbsp;&nbsp;&nbsp;</span>时<br/><span style="margin-top:0px;line-height:9px;font-size: 9px;">快递送达收收货人地址，经收件人或收件人允许的代收件人签字视为送达。</span></div>
+	<div style="width:205px;height:35px;float:left;line-height:13px;">订单号：<div style="height:33px;width:135px;float:right;" id="facet_EMS"></div></div>
+	<div style="width:120px;height:35px;float:right;line-height:13px;">件数：<span class="facenum"></span>重量：<span></span></div>
+	<div style="width:330px;height:37px;float:left;line-height:13px;">配货信息：<span class="facebaby" ></span></div>
+	<div style="width:330px;height:45px;float:left"></div>
+	<div style="width:330px;height:45px;float:left;line-height:13px;"><div style="float:left;" id="faces_EMS"></div><div style="float:right;"><img border="0" src="http://cdn.zzgdapp.com/trade/web/images/wllogo/ems2.jpg" width="120px" height="30px" /></div></div>
+	<div style="width:135px;height:60px;float:left;line-height:13px;font-size: 10px;">寄件：<span class="fname">寄件</span>&nbsp;<span class="fmobile">寄件</span><br/><span style="margin-left: 35px;" class="shopName">寄件</span><br/><span style="margin-left: 35px;" class="faddress">寄件</span></div>
+	<div style="width:190px;height:60px;float:right;line-height:13px;font-size: 10px;">收件：<span class="sname" style="font-size:16px;">收件</span>&nbsp;<span class="smobile" style="font-size:16px;">收件</span><br/><span style="margin-left: 35px;" class="saddress">收件</span></div>
+	<div style="width:237px;height:60px;float:left;line-height:13px;">备注：收货前请确认包装是否完好，有无破损，如有问题，请拒绝签收</div>
+	<div style="width:85px;height:88px;float:right" id="code_EMS"></div>
+	<div style="width:237px;height:22px;float:left;line-height:13px;">网址：www.ems.com.cn&nbsp;&nbsp;&nbsp;客服电话：11183</div>
+	</div>
+	<br/>
+</div>
+<div id="EYB_facecontent" style="display:none;">
+	<div style="width:330px;height:530px;font-family:黑体;">
+	<div style="width:135px;height:72px;float:left;font-size:26px;text-align:center;line-height:70px;">经济快递</div>
+	<div style="width:195px;height:72px;float:right;margin-left:-5px;"><div style="margin-left:40px;margin-top:5px;" id="face_EYB"></div></div>
+	<div style="width:165px;height:68px;float:left;line-height:13px;font-size:12px;">寄件：<span class="fname">寄件</span>&nbsp;<span class="fmobile">寄件</span><br/><span style="margin-left: 35px;" class="shopName">寄件</span><br/><span style="margin-left: 35px;" class="faddress">寄件</span></div>
+	<div style="width:161px;height:68px;font-size:40px;text-align:center;float:right;line-height:60px;font-weight:bold;"  class="facemdd">格口</div>
+	<div style="width:330px;height:60px;float:left;line-height:13px;">收件：<span class="sname" style="font-size:16px;">收件</span>&nbsp;<span class="smobile" style="font-size:16px;">收件</span><br/><span style="margin-left: 35px;font-size:16px;" class="saddress">收件</span></div>
+	<div style="width:135px;height:60px;float:left;line-height:13px;"><p></p>付款方式：<span></span><br/>计费重量：<span></span><br/>保价金额：<span></span></div>
+	<div style="width:190px;height:60px;float:right;line-height:13px;margin-top:5px;">代件人\代收人：<span></span><br/>签收时间：<span style="line-height:13px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>年<span style="">&nbsp;&nbsp;&nbsp;</span>月<span style="">&nbsp;&nbsp;&nbsp;</span>日<span style="width: 30px;">&nbsp;&nbsp;&nbsp;</span>时<br/><span style="margin-top:0px;line-height:9px;font-size: 9px;">快递送达收收货人地址，经收件人或收件人允许的代收件人签字视为送达。</span></div>
+	<div style="width:205px;height:35px;float:left;line-height:13px;">订单号：<div style="height:33px;width:135px;float:right;" id="facet_EYB"></div></div>
+	<div style="width:120px;height:35px;float:right;line-height:13px;">件数：<span class="facenum"></span>重量：<span></span></div>
+	<div style="width:330px;height:37px;float:left;line-height:13px;">配货信息：<span class="facebaby" ></span></div>
+	<div style="width:330px;height:10px;float:left"></div>
+	<div style="width:330px;height:45px;float:left;line-height:13px;"><div style="float:left;" id="faces_EYB"></div></div>
+	<div style="width:135px;height:60px;float:left;line-height:13px;font-size: 10px;">寄件：<span class="fname">寄件</span>&nbsp;<span class="fmobile">寄件</span><br/><span style="margin-left: 35px;" class="shopName">寄件</span><br/><span style="margin-left: 35px;" class="faddress">寄件</span></div>
+	<div style="width:190px;height:60px;float:right;line-height:13px;font-size: 10px;">收件：<span class="sname" style="font-size:16px;">收件</span>&nbsp;<span class="smobile" style="font-size:16px;">收件</span><br/><span style="margin-left: 35px;" class="saddress">收件</span></div>
+	<div style="width:237px;height:60px;float:left;line-height:13px;">备注：收货前请确认包装是否完好，有无破损，如有问题，请拒绝签收</div>
+	<div style="width:85px;height:88px;float:right" id="code_EYB"></div>
+	<div style="width:237px;height:22px;float:left;line-height:13px;">网址：www.ems.com.cn&nbsp;&nbsp;&nbsp;客服电话：11183</div>
+	</div>
+	<br/>
+</div>
+<!-- <input type="button" onclick="getFaceId();" value="get">  
+<input type="button" onclick="upFaceId();" value="up"> -->
+<div class="sui-msg  msg-block msg-info" style="margin-top: 10px;margin-right: 10px;">
+  <div class="msg-con">使用说明:
+    <div>目前只支持EMS标准、EMS经济、中通、汇通、宅急送、优速六家物流模版；</div>
+	<div>后期将陆续完善打印面单功能和增加其它物流面单模版^_^敬请期待（拆单和货到付款订单不支持批量发货）<div style="float:right;"><button data-toggle="modal" data-target="#openbuys" class="sui-btn btn-info btn-mini">查看面单</button></div></div>
+	<div><span style="color:red;">*目前还没申请过任何物流公司面单的商家请先申请后再来使用。</span>&nbsp;&nbsp;<a href="javascript:openlines('http://bangpai.taobao.com/group/thread/15074034-290311012.htm?spm=0.0.0.0.Gex2zu');" ><strong>申请帮助</strong></a></div>
+  </div>
+  <s class="msg-icon"></s>
+</div>
+<p >
+    标签选单：<button onclick="showalltids(1);" class="sui-btn btn-info btn-mini" sta="getstadata" id="stall">全部</button>
+    <button onclick="showhbtids(1);" class="sui-btn btn-mini" sta="getstadata" id="stall">合并的订单</button>
+    <button onclick="shownomemotids(1);" class="sui-btn btn-mini" sta="getstadata" id="stall">无留言且无备注</button>
+    <button onclick="showmemotids(1);" class="sui-btn btn-mini" sta="getstadata" id="stall">有留言或有备注</button>
+    <button onclick="shownopaytids(1);" class="sui-btn btn-mini" sta="getstadata" id="stall">货到付款</button>
+    <button onclick="showsplittids(1);" class="sui-btn btn-mini" sta="getstadata" id="stall">拆单发货</button>
+    <button data-toggle="modal" data-target="#select-modal" class="sui-btn btn-mini" sta="getstadata" id="stall">搜索</button>
+</p>
+<form class="sui-form sui-row-fluid form-horizontal">
+	<label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="checkall" name="checkall" class="ace-checkbox-2" onclick="checkAll();">&nbsp;<span class="lbl" >全选/反选</span></label>
+	<span class="sui-dropdown dropdown-bordered select"> 
+			<span class="dropdown-inner"> <a id="tradestat" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+				<input value="" name="category" type="hidden" onchange="checkstu();"><i class="caret"></i><span id="tradestats">待发货</span></a>
+					<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu category" name="category" id="tradestatse" style="max-height: 200px; overflow-y: auto;">
+						<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="WAIT_SELLER_SEND_GOODS">待发货</a></li>
+						<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="WAIT_BUYER_CONFIRM_GOODS">已发货</a></li>
+					</ul>
+			</span>
+		</span>
+	<select style="width:100px;height:25px;margin:0 5px 0 0;" id="changewuluid"  onchange="changewulu();" class="printmosel"></select>
+    <a href="javascript:void(0);" onclick="printqiao(3);" class="sui-btn btn-mini btn-primary"  title="先打印后发货可自动填充运单号工作效率提高10倍" id="batchsends">批量发货</a>
+    <a href="javascript:void(0);" onclick="printqiao(1);" class="sui-btn btn-mini btn-warning" >批量打印面单</a>
+</form>
+<div id="sendlists" style="margin-top:10px;"></div>
+<div style="margin-top:10px;" id="chapfys"></div>
+<!--Profile Form打印订单搜索-->
+     <div id="select-modal" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="490px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">打印订单搜索</h4>
+    					  	  </div>
+      						 <div class="modal-body" >
+	      						 <form class="sui-form"  id="picfile" name="picfile" >
+									<input style="margin:0 5px 0 0;width:290px;" type="text" placeholder="请输入订单号或用户昵称" id="selectid">
+					        	</form>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal"  data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="selecttids(1);" >搜索</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+<!--Profile Form查看订购状态-->
+	 <div id="openbuys" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="500px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">查看订购状态</h4>
+    					  	  </div>
+      						 <div class="modal-body" style="max-height: 220px;" id="face_faddr">
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal" data-keyboard="false" class="sui-btn btn-primary btn-lg"" >确定</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+	<!--Profile Form打印设置-->
+	<div id="dysz-modal" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="500px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">打印设置</h4>
+    					  	  </div>
+      						 <div class="modal-body" >
+	      						 <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+									<label>选择发货方式</label>
+										<div class="input-control control-right">
+										   <div class="controls">
+								                    &nbsp;&nbsp;<select style="width:150px;margin:0 5px 0 20px;" id="sendplan1">
+								                        <option value="online">在线下单</option>
+								                        <option value="offline">自己联系</option>
+								                    </select>
+								                </div>
+										</div>
+					             </form>
+					             <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+									<label>自动填充运单号</label>
+										<div class="input-control control-right">
+										   <div class="controls">
+										   			&nbsp;&nbsp;&nbsp;<label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="selectauto" class="ace-checkbox-2" >&nbsp;<span class="lbl" ></span></label>
+								                    <input type="text" style="width:200px;margin:0 5px 0 0px;"id="companyno" value="" placeholder="请填写起始单号">
+								                </div>
+										</div>
+					             </form>
+					             <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+									<label>是否使用宝贝简称</label>
+										<div class="input-control control-right">
+										   <div class="controls">
+										   			<label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="selectjc" class="ace-checkbox-2" >&nbsp;<span class="lbl" ></span></label>
+								                    <a href="javascript:void(0);" onclick="getBaby(1);" class="sui-btn btn-mini btn-primary">同步宝贝简称</a>
+								                    <a href="javascript:void(0);" onclick="totitleSet();" class="sui-btn btn-mini">设置商品简称</a>
+								                </div></div>
+					             </form>
+					             <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+									<label>是否自动合并订单</label>
+										<div class="input-control control-right">
+								                <div class="controls">
+								                	<label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="selecthp" class="ace-checkbox-2" >&nbsp;<span class="lbl" ></span></label>
+								                </div>
+								            </div>
+					             </form>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal" data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="playdysz();" >确定</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+	 
+	<!--Profile Form收货地址 -->
+	<div id="addr-table" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="500px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">收货信息</h4>
+    					  	  </div>
+      						 <div class="modal-body" >
+	      						 <form class="sui-form" >
+		      						 <div class="sui-control-group">
+						                <div class="controls">
+						                    <span>省/市/区:</span>
+						                    <select style="width: 130px;" id="more_shen">
+						                    </select>
+						                    <select style="width: 130px;" id="more_shi">
+						                    </select >
+						                    <select style="width: 130px;" id="more_qu">
+						                    </select>
+						                </div>
+						                <div class="controls" style="margin-top: 10px;">
+						                    <span>邮政编码:</span>
+						                    <input style="width: 130px;" type="text" id="more_zip">
+						                </div>
+						                <div class="controls" style="margin-top: 10px;">
+						                    <span>收货人姓名:</span>
+						                    <input style="width: 130px;" type="text" id="more_name">
+						                    <span>街道地址:</span>
+						                    <input style="width: 170px;" type="text" id="more_address">
+						                </div>
+						                <div class="controls" style="margin-top: 10px;">
+						                    <span>电话:</span>
+						                    <input style="width: 130px;" type="text" id="more_phone">
+						                    <span>手机:</span>
+						                    <input style="width: 130px;" type="text" id="more_mobile">
+						                </div>
+						            </div>
+					            </form>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal" id="addbut" data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="" >确定</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+	 
+	 <!--Profile Form主页面打印发货弹框 -->
+	 <div id="sendPreview" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="500px" data-height="480px">
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">打印预览</h4>
+    					  	  </div>
+      						 <div class="modal-body" >
+	      						 <form class="sui-form" >
+		      						 <p style="margin-bottom:0px;">选择打印机：<select id="printmn2" style="width:80px" onchange="defaultprints();"></select>
+								                 共<span id="allprintns" style="font-size:14;color:blue;font-weight:bold;">1</span>单  当前第<span id="oneprintns" style="font-size:14;color:blue;font-weight:bold;">1</span>单
+								          <a href="#" onclick="printfh(1)" title="上一笔">上一笔</a>
+								          <a href="#" onclick="printfh(2)" title="下一笔">下一笔</a></p>
+								          <div id="iframes" ></div>
+								      <div id="printPreviewboby" style="display:none;width:360px;height:600px;"></div>
+					            </form>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal" id="addbut" data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="checks(0);" >开始打印</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+	 
+	<!--Profile Form发货列表-->
+	<div id="plsendlist-table" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="730px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">发货列表</h4>
+    					  	  </div>
+      						 <div class="modal-body"  id="selectbody" style="overflow: scroll-y;height:300px;">
+	      						 <form class="sui-form" >
+						             <div id="plwuliuinfo">
+						             <p>&nbsp;发货方式：<select style="width:88px;height:25px;margin:0 5px 0 5px;" onchange="selectsend();" id="sendplan2" >
+									        <option value="online">在线下单</option>
+									        <option value="offline">自己联系</option>
+									    </select>
+									   	 物流公司：<select style="width:100px;height:25px;margin:0 5px 0 0;" onchange="selectop();" id="changewuluids" class="printmosel" >
+									    </select>&nbsp;&nbsp;&nbsp;<span style="color: red;">*先打印后发货可自动填充运单号工作效率提高10倍</span>
+									</p>
+						             </div>
+								        <table  class="sui-table table-striped table-bordered table-hover">
+								            <thead >
+								            <tr><th width="4%">ID</th>
+								                <th width="15%">订单号</th>
+								                <th width="50%">收货地址</th>
+								                <th width="16%">买家</th>
+								                <th width="15%">运单号</th></tr>
+								            </thead>
+								            <tbody  id="plsendlist">
+								            </tbody>
+								        </table>
+							        </form>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal"  data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="batchSend(2);" >确定发货</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+	 <!--Profile Form批量下载订单 -->
+	 <div id="batchdown" class="mesWindow" style="Z-INDEX:99998; POSITION:absolute;width:700px;height:490px;display:none;background-color:#FFF;">
+		 <div class="mesWindowTop" style="height:35px;">
+            <button type="button" class="close" style="margin-top: 6px;" onclick="closeMsg('');">×</button>
+            <h4>批量下载订单</h4>
+         </div>
+		 <div class="mesWindowContent" >
+		 <table border="1" style="text-align:center;width:100%;">
+	            <thead >
+	            <tr><td >ID</td>
+	                <td >订单号</td>
+	                <td >买家姓名</td>
+	                <td >买家旺旺</td>
+	                <td >订单详情</td>
+	                <td >实付金额</td>
+	                <td >联系方式</td>
+	                <td >收货地址</td>
+	                <td >购买时间</td>
+	                </tr>
+	            </thead>
+	            <tbody  id="batchdowns">
+	            </tbody>
+	        </table>
+	        <table id="downtable" style="text-align:center;width:100%;display:none;" border="1">
+					<thead >
+		            <tr><td >ID</td>
+		                <td >订单号</td>
+		                <td >买家姓名</td>
+		                <td >买家旺旺</td>
+		                <td >订单详情</td>
+		                <td >实付金额</td>
+		                <td >联系方式</td>
+		                <td >收货地址</td>
+		                <td >购买时间</td>
+		                </tr>
+		            </thead>
+		            <tbody  id="downtables">
+		            </tbody>
+				</table>
+        </div>
+		<div class="footer">
+			 <div  class="mesWindowBottom">
+				 <input type="button" class="btn btn-primary" style="padding: 3px 10px;" onclick="againdown('downtable','订单数据【爱用交易】');" value="开始下载"><input type="button" onclick="closeMsg('');" style="margin-left:8px;padding: 3px 10px;" value="关闭">	
+			 </div>
+		 </div>
+	 </div>
+</div>
+<script type="text/javascript">
+/***********************************/
+var sentptime=0;
+var sentptimes=0;
+var printtime='';
+var statetid='';
+var stringarr='';
+var maindatatemps=new Array();
+var printidarr=new Array();
+var printingarr=new Array();
+var printsendarry=new Array();
+var buyerop=new Array();
+var sellerop=new Array();
+var babyop=new Array();
+var gprintid='';
+var shopName='';
+var sendmnick='';
+/***********************************/
+var gpagesum=20;
+var sellernick='';
+var gtidsum=0;
+var ghpflag='on';
+var gautoflag='on';
+var gtitlestu='on';
+var gautoid=1;
+var gcompanyno='';
+var vsendplan='';
+var gcompanycode='';
+var gsendplan='online';
+var galltidarr=new Array();
+var gkdtidarr=new Array();
+var gfhtidarr=new Array();
+var sendtql=new Array();
+var gsendlogs=new Array();
+var companiesparr=new Array();
+var gcodeflag=true;
+var num_iidG='';
+var titleG='';
+var uptitleG='';
+var openStatus='';
+var tradestatus='';
+var sellertype;
+var marginY=2;
+var marginX=2;
+var sizew=100;
+var sizeh=150;
+var iyface='';
+var recursionid=0;
+var order_oid={};
+/***********************************/
+window.onerror = function(msg, url, line) {
+    if (onerror.num++ < onerror.max) {
+        return true;
+    }
+}
+onerror.max = 3;
+onerror.num = 0;
+/***********************************/
+function reshow(){
+	window.location.href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/facePrint?vers=<?php echo REAL_ROOT_VER;?>";
+}
+
+	function readonload(){
+		if(!window.openDatabase){
+	    	layer.msg('您的浏览器不支持本地数据库！',1, 3);
+	    }else{
+	        $("#chapfys").html('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">奋力加载中...</div><s class="msg-icon"></s></div>');
+	        window.setTimeout("initprint()",100);
+	    }
+	    $('[sta="getstadata"]').click(function (){
+	        $(this).attr( "class", "sui-btn btn-info btn-mini" ).siblings().attr( "class", "sui-btn btn-mini" );
+	        $("#checkall").parent('label').checkbox('uncheck');
+	    });
+	}
+/**************init 初始化************/
+function initprint(){
+    window.mydb=initMyDB();
+    deltable(mydb,'sendlists');
+    deltable(mydb,'sendlogs');
+    createMylist(mydb);
+    createsendlog(mydb);
+    gettidnum();
+    getareacode();
+}
+/**********获取订单当前用户名和订单总数*************/
+function gettidnum(){
+	QN.top.invoke({
+        "cmd": "taobao.user.seller.get",
+        "param":{
+            fields:'nick,type'
+        },
+        "method": "get",
+        "success" : function(rsp) {
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            if(rsp.code!=null){
+                geterrorinfo('getsellernick-rsp',JSON.stringify(rsp));
+            }else{
+                sellernick=rsp.user_seller_get_response.user.nick;
+                if(rsp.user_seller_get_response.user.type=='B')sellertype='TM';else sellertype='TB';
+                gettidnums();
+            }
+        },
+        error: function(msp){
+            geterrorinfo('getsellernick-msp',JSON.stringify(msp));
+        }
+    });
+}
+
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-14
+ * Time: 10:00 
+ * 获取当前状态下的订单总数
+ */	
+function gettidnums(){
+	tradestatus=window.localStorage.getItem("tradestatus"+sellernick);
+	$("#tradestatse").empty();
+	if(tradestatus=='WAIT_BUYER_CONFIRM_GOODS'){
+			$("#tradestats").html('已发货');
+			$("#tradestatse").append('<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="WAIT_SELLER_SEND_GOODS">待发货</a></li>');
+			$("#tradestatse").append('<li role="presentation" pointstu="pointstu" class="active" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="WAIT_BUYER_CONFIRM_GOODS">已发货</a></li>');
+			$("#batchsends").hide();
+		}else{
+			$("#tradestats").html('待发货');
+			$("#tradestatse").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="WAIT_SELLER_SEND_GOODS">待发货</a></li>');
+			$("#tradestatse").append('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="WAIT_BUYER_CONFIRM_GOODS">已发货</a></li>');
+			tradestatus='WAIT_SELLER_SEND_GOODS';
+			}
+    QN.top.invoke({
+        "cmd": "taobao.trades.sold.get",
+        "param": {
+            "fields":"tid",
+            "type":'tmall_i18n,fixed,auction,guarantee_trade,step,independent_simple_trade,independent_shop_trade,auto_delivery,ec,cod,game_equipment,shopex_trade,netcn_trade,external_trade,instant_trade,b2c_cod,hotel_trade,super_market_trade,super_market_cod_trade,taohua,waimai,nopaid,step',
+            "status":tradestatus,
+            "page_no":1,
+            "page_size":1
+        },
+        "method": "get",
+        "success":function (rsp){
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            if(rsp.code!=null){
+            	geterrorinfo('gettidnum-rsp',JSON.stringify(rsp));
+            }else{
+                var total= rsp.trades_sold_get_response.total_results;
+                gtidsum=total;
+                $("#tjloading").html('正在奋力加载'+gtidsum+'个订单中...');
+                if(total!=0){
+                    getshop();
+                    getBaby();
+                    getprintmodel();
+                    delfrom(mydb,sellernick);
+                    tqlgettid(total);
+                }else{
+                    $("#chapfys").html('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">您目前还没有待打印的订单！</div><s class="msg-icon"></s></div>');
+                }
+            }
+        },
+        error: function(msp){
+        	geterrorinfo('gettidnum-rsp',JSON.stringify(msp));
+        }
+    });
+}
+/**************************************/
+function tqlgettid(total)
+{
+	galltidarr.length=0;
+    var tql='';
+    var types='type=(tmall_i18n,fixed,auction,guarantee_trade,step,independent_simple_trade,independent_shop_trade,auto_delivery,ec,cod,game_equipment,shopex_trade,netcn_trade,external_trade,instant_trade,b2c_cod,hotel_trade,super_market_trade,super_market_cod_trade,taohua,waimai,nopaid,step)';
+    for(n=0;n<(total/100);++n){
+        tql+='{select orders.payment,orders.discount_fee,orders.adjust_fee,orders.divide_order_fee,orders.part_mjz_descount,orders.price,orders.pic_path,orders.outer_iid,orders.outer_sku_id,orders.title,orders.status,orders.sku_properties_name,orders.num,orders.totle_fee,orders.num_iid,payment,post_fee,created,status,orders.refund_status,seller_nick,pay_time,seller_flag,modified,has_buyer_message,tid,type,buyer_nick,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_name,receiver_mobile,receiver_phone from trades.sold where page_no='+(n+1)+' and page_size=100 and status='+tradestatus+' and '+types+'}';
+    }
+    QN.top.invoke({
+        "cmd":"tql",
+        "param":{"ql":tql},
+        "method":"post",
+        "success":function (rsp){
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            if(rsp.code!=null){
+            	geterrorinfo('tqlgettid-rsp',JSON.stringify(rsp));
+            }else{
+            	window.tqlindexn=0;
+	            var tidtotle=0;
+	            for(var iindex in rsp){
+	                var iindexn=rsp[iindex].trades_sold_get_response.trades.trade;
+	                tidtotle+=iindexn.length;
+	                }
+	            gtidsum=tidtotle;
+                for(var indexs in rsp){
+                    var orders = rsp[indexs].trades_sold_get_response.trades.trade;
+                    //alert(JSON.stringify(orders));order.type!=='cod'&&&&order.status!=='SELLER_CONSIGNED_PART'
+                    for(var index in orders)
+                    {
+                        var order=orders[index];
+                        if(order.type!='auto_delivery'&&order.type!='ec'&&order.type!='game_equipment'&&order.type!='hotel_trade'&&order.type!='taohua'&&order.type!='eticket'){
+                            if(order.receiver_district==undefined){
+                                order.receiver_district='';
+                            }
+                            var buyer_message='0';
+                            if(order.has_buyer_message){
+                                buyer_message='1';
+                            }
+                            var seller_flag=''+order.seller_flag;
+                            if(!order.receiver_phone){
+                                order.receiver_phone='';
+                            }
+                            if(!order.pay_time){
+                                order.pay_time='';
+                            }
+                            if(order.status=='SELLER_CONSIGNED_PART')order.type='split';
+                            var receiver_datas=order.receiver_name+'|:|'+order.receiver_mobile+'|:|'+order.receiver_phone+'|:|'+order.receiver_state+'|:|'+order.receiver_city+'|:|'+order.receiver_district+'|:|'+order.receiver_address+'|:|'+order.receiver_zip;
+                            var itemdata={};
+                            itemdata.tid=order.tid;
+                            itemdata.buyernick=order.buyer_nick;
+                            itemdata.created=order.created;
+                            itemdata.pay_time=order.pay_time;
+                            itemdata.payment=order.payment;
+                            itemdata.post_fee=order.post_fee;
+                            itemdata.orders=order.orders;
+                            itemdata.num_iid=order.num_iid;
+                            var data=[order.tid,order.seller_nick,order.type,order.created,order.pay_time,order.modified,order.buyer_nick,receiver_datas,seller_flag,buyer_message,JSON.stringify(itemdata)];
+                            if(order.receiver_state!=''&&order.receiver_state!=null){
+                                $("#chapfys").html('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="loadnums">奋力加载中...</div><s class="msg-icon"></s></div>');
+                            	insertdatas(mydb,data,initlists);
+                            	galltidarr.push(order.tid);
+                            }else{
+                                --gtidsum;
+                            }
+                        }else{
+                            --gtidsum;
+                        }
+                    }
+                }
+                if(gtidsum<1){
+                	$("#chapfys").empty();
+                    $("#chapfys").html('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">您目前还没有待打印的订单！</div><s class="msg-icon"></s></div>');
+                    }
+            }
+        },
+        error: function(msp){
+        	geterrorinfo('tqlgettid-msp',JSON.stringify(msp));
+        }
+    });
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:47 
+ * 打印列表.【更新】
+ */	
+function initlists(){
+    --gtidsum;
+    $("#loadnums").html('奋力加载中...还剩'+gtidsum+'个订单！');
+    if(gtidsum<1&&tqlindexn==0){
+    	tqlindexn=1;
+    	getprintset();
+    }
+}
+/***********************************/
+function showlists(tiddata){
+    if(tiddata!=''){
+        var datas={};
+        var receiver_datas=tiddata['receiver_datas'].split('|:|');
+        datas.receiver_datas=receiver_datas[0]+','+receiver_datas[1]+','+receiver_datas[2]+','+receiver_datas[3]+' '+receiver_datas[4]+' '+receiver_datas[5]+' '+receiver_datas[6]+','+receiver_datas[7];
+		datas.receiver_datase=tiddata['receiver_datas'];
+        datas.pay_time=tiddata['pay_time'];
+        if(datas.pay_time){
+        	datas.created=tiddata['pay_time'];
+            var nowtime= new Date();
+            gupdatatime=nowtime.format("yyyy-MM-dd hh:mm:ss");
+            datas.pay_times=parseInt((datetime_to_unix(gupdatatime)-datetime_to_unix(datas.pay_time))/3600);
+        }else if(tiddata['modified']){
+        	datas.created=tiddata['modified'];
+        	if(tiddata['type']!='cod'){
+	        	datas.pay_time=tiddata['modified'];
+	        	var nowtime= new Date();
+	            gupdatatime=nowtime.format("yyyy-MM-dd hh:mm:ss");
+	            datas.pay_times=parseInt((datetime_to_unix(gupdatatime)-datetime_to_unix(datas.pay_time))/3600);
+	        	}
+        }else{
+        	datas.created='';
+            datas.pay_time='';
+            datas.pay_times='';
+        }
+        if(ghpflag==='on'){
+            datas.tid_num=Number(tiddata['tid_num']);
+            datas.tid_ids=tiddata['tid_ids'];
+        }else{
+            datas.tid_num='1';
+            datas.tid_ids=tiddata['tid'];
+        }
+        if(typeof tiddata['items'] === 'string'){
+        	var tiddatas=tiddata['items'].split('|:|');
+        	}
+        var indexitem=0;
+        var tiddatase={};
+    	for(var itemint in tiddatas)
+    	{
+    		var orderse=tiddatas[itemint];
+	        if(typeof orderse === 'string')orderse = JSON.parse(orderse);
+	        if(orderse.orders.order.length > 1 )datas.showcar=true;else datas.showcar=false;
+	        for(var inorder in orderse.orders.order){
+		       if(datas.tid_ids==orderse['tid']||ghpflag==='on'){ 
+    		  	indexitem=Number(indexitem)+Number(itemint)+Number(inorder);
+	   		  	 if(orderse.orders.order[inorder].refund_status!=null&&orderse.orders.order[inorder].refund_status!='NO_REFUND'){
+		       		 switch(orderse.orders.order[inorder].refund_status){
+		       		 		case 'WAIT_SELLER_AGREE':{orderse.orders.order[inorder].status='退款中';break;}
+		       		 		case 'WAIT_BUYER_RETURN_GOODS':{orderse.orders.order[inorder].status='退款中';break;}
+		       		 		case 'WAIT_SELLER_CONFIRM_GOODS':{orderse.orders.order[inorder].status='退款中';break;}
+		       		 		case 'SELLER_REFUSE_BUYER':{orderse.orders.order[inorder].status='已拒绝退款';break;}
+		       				case 'CLOSED':{orderse.orders.order[inorder].status='退款关闭';break;}
+		       				case 'SUCCESS':{orderse.orders.order[inorder].status='退款成功';break;}
+		       		 	}
+		       	 }else{
+		            switch (orderse.orders.order[inorder].status)
+		            {
+		                case 'WAIT_BUYER_PAY':{ orderse.orders.order[inorder].status = '待付款';break;}
+		                case 'WAIT_SELLER_SEND_GOODS':{ orderse.orders.order[inorder].status = '等待发货'; break;}
+		                case 'WAIT_BUYER_CONFIRM_GOODS':{orderse.orders.order[inorder].status = '已发货';break;}
+		                case 'SELLER_CONSIGNED_PART':{ orderse.orders.order[inorder].status = '部分发货';break;}
+		                case 'TRADE_FINISHED':{orderse.orders.order[inorder].status = '已成功';break;}
+		                case 'TRADE_CLOSED':{ orderse.orders.order[inorder].status = '已关闭'; break;}
+		                case 'TRADE_CLOSED_BY_TAOBAO':{ orderse.orders.order[inorder].status = '已关闭'; break;}
+		            }
+		       	 }
+	            tiddatase[indexitem]=orderse.orders.order[inorder];
+		       }
+	        }
+	    }
+    	datas.orderse=tiddatase;
+        datas.seller_flag=tiddata['seller_flag'];
+        datas.tid=tiddata['tid'];
+        datas.kdtrue=false;
+        if($.inArray(datas.tid,gkdtidarr)>=0){
+            datas.kdtrue=true;
+        }
+        datas.items=tiddata['items'];
+        datas.buyer_nick=tiddata['buyer_nick'];
+        if(tiddata['buyer_flag']=='1'){
+            datas.buyer_flag=true;
+        }else{
+            datas.buyer_flag=false;
+        }
+        if(tradestatus=='WAIT_BUYER_CONFIRM_GOODS')datas.addredit="none;";else datas.addredit="";
+        if(tiddata['type']=='split')datas.baby_type='拆单'; else datas.baby_type='';
+        datas.dcompanyno=gcompanyno;
+        var source = $("#printlist_template").html();
+        var template=Handlebars.compile(source);
+        var htmlstr = template(datas);
+        $("#sendlists").append(htmlstr);
+        getitememo(datas.tid,datas.tid_ids);
+        var companiesparrs='';
+        $(".wuliucompany").empty();
+        var facelogis = window.localStorage.getItem("facelogis"+sellernick);
+        for(var indesx in companiesparr){
+      		 companiesparrs=companiesparr[indesx].split(',');
+      		 if(companiesparrs[1]==facelogis){
+   			 		$(".wuliucompany").append('<option value="'+companiesparr[indesx]+'" selected="selected">'+companiesparrs[0]+'</option>');
+   			 	}else{
+   			 		$(".wuliucompany").append('<option value="'+companiesparr[indesx]+'">'+companiesparrs[0]+'</option>');
+   				 	}
+      	 }
+    }
+}
+
+function changewulu(){
+	var companie=$("#changewuluid").find('option:selected').val();
+    var wuliu=companie.split(',');
+    window.localStorage.setItem("facelogis"+sellernick,wuliu[1]);
+    $(".wuliucompany").find("option[value='"+companie+"']").attr("selected",true);
+    $(".printmosel").find("option[value='"+companie+"']").attr("selected",true);
+    gcompanycode=wuliu[1];
+}
+function selectop(){
+	var companie=$("#changewuluids").find('option:selected').val();
+    var wuliu=companie.split(',');
+    window.localStorage.setItem("facelogis"+sellernick,wuliu[1]);
+    $(".wuliucompany").find("option[value='"+companie+"']").attr("selected",true);
+    $(".printmosel").find("option[value='"+companie+"']").attr("selected",true);
+    gcompanycode=wuliu[1];
+}
+
+function getitememo(tid,tid_ids){
+	try{
+		var tid_ids=''+tid_ids;
+    	var tids=tid_ids.split(",");
+        var tidnum=tids.length-1;
+    	var sellermemo='';
+    	var buyermessage='';
+        for(var index in tids){
+	        QN.top.invoke({
+	            "cmd": "taobao.trade.fullinfo.get",
+	            "param":{
+	                fields:'seller_memo,buyer_message',
+	                tid:tids[index]
+	            },
+	            "method": "get",
+	            error: function(msp){
+	                geterrorinfo('showtidlist-msp',JSON.stringify(msp));
+	            },
+	            "success" : function(rsp) {
+	                if(typeof rsp === 'string'){
+	                    var rsp = JSON.parse(rsp);
+	                }else{
+	                    var	rsp= rsp;
+	                }
+	                if(rsp.code!=null){
+	                    geterrorinfo('showtidlist-rsp',JSON.stringify(rsp));
+	                }else{
+	                    var trade =  rsp.trade_fullinfo_get_response.trade;
+	                    if(trade.seller_memo);else trade.seller_memo='';
+	                    if(trade.buyer_message);else trade.buyer_message='';
+	                    if(sellermemo=='')sellermemo=trade.seller_memo;else if(trade.seller_memo!='') sellermemo=sellermemo+';'+trade.seller_memo;
+	                    if(buyermessage=='')buyermessage=trade.buyer_message;else if(trade.buyer_message!='') buyermessage=buyermessage+';'+trade.buyer_message;
+	                    if(index==tidnum){
+	                    	var datas={};
+	                    	datas.sellermemo=sellermemo;
+	                    	datas.buyermessage=buyermessage;
+		                    if(buyermessage!='')$("#buyerly"+tid).html('买家留言：'+buyermessage);
+		                    if(sellermemo!='')$("#sellerbz"+tid).html(sellermemo);
+	                    	$('#itmesome'+tid).attr( "data-memo",JSON.stringify(datas));
+	                    }
+	                }
+	            }
+	        });
+        }
+	}catch(e){}
+}
+
+/***********************************/
+function showpageno(num,pageno,statid){
+    var page_sum=Math.ceil(num/gpagesum);
+    if(num==0){
+        $("#chapfys").html('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">您目前还没有待打印的订单！</div><s class="msg-icon"></s></div>');
+    }else{
+        newpagin('chapfys',statid,pageno,page_sum,num);
+        $('#pagesumsel').val(gpagesum);
+    }
+}
+/**** 显示全部的订单  ******/
+function showalltids(pageno){
+    var pno=(pageno-1)*gpagesum;
+    $("#sendlists").empty();
+    $("#chapfys").empty();
+    if(ghpflag==='on'){
+        var sql='nick = ? and (coalition = ? or coalition = ?) order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick,'','1'];
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and (coalition = ? or coalition = ?) order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'showalltids',showpageno);
+    }else{
+        var sql='nick = ?  order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick];
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ?  order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'showalltids',showpageno);
+    }
+}
+
+/**** 显示合并的订单  ******/
+function showhbtids(pageno){
+    var pno=(pageno-1)*gpagesum;
+    if(ghpflag==='on'){
+        var sql='nick = ? and coalition = ? order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick,'1'];
+        $("#sendlists").empty();
+        $("#chapfys").empty();
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and coalition = ? order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'showhbtids',showpageno);
+    }else{
+        var sql='nick = ? and coalition <> ? order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick,''];
+        $("#sendlists").empty();
+        $("#chapfys").empty();
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and coalition <> ?  order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'showhbtids',showpageno);
+    }
+
+}
+/**** 显示无留言的订单  ******/
+function shownomemotids(pageno){
+    var pno=(pageno-1)*gpagesum;
+    if(ghpflag==='on'){
+        var sql='nick = ? and seller_flag=0 and buyer_flag=0 and print_one= ? and (coalition = ? or coalition = ?) order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick,'off','','1'];
+        $("#sendlists").empty();
+        $("#chapfys").empty();
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and seller_flag=0 and buyer_flag=0  and print_one = ? and (coalition = ? or coalition = ?) order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'shownomemotids',showpageno);
+    }else{
+        var sql='nick = ? and seller_flag=0 and buyer_flag=0  order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick];
+        $("#sendlists").empty();
+        $("#chapfys").empty();
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and seller_flag=0 and buyer_flag=0  order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'shownomemotids',showpageno);
+    }
+
+}
+/**** 显示有留言的订单  ******/
+function showmemotids(pageno){
+    var pno=(pageno-1)*gpagesum;
+    if(ghpflag==='on'){
+        var sql='nick = ? and (seller_flag=1 or seller_flag=2 or seller_flag=3 or  seller_flag=4 or seller_flag=5 or buyer_flag=1 or print_one=?)  and (coalition = ? or coalition = ?)  order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick,'on','','1'];
+        $("#sendlists").empty();
+        $("#chapfys").empty();
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and (seller_flag=1 or seller_flag=2 or seller_flag=3 or  seller_flag=4 or seller_flag=5 or buyer_flag=1 or print_one=?)  and (coalition = ? or coalition = ?)   order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'showmemotids',showpageno);
+    }else{
+        var sql='nick = ? and (seller_flag=1 or seller_flag=2 or seller_flag=3 or  seller_flag=4 or seller_flag=5 or buyer_flag=1) order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick];
+        $("#sendlists").empty();
+        $("#chapfys").empty();
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and (seller_flag=1 or seller_flag=2 or seller_flag=3 or  seller_flag=4 or seller_flag=5 or buyer_flag=1) order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'showmemotids',showpageno);
+    }
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 14:30 
+ * 显示货到付款订单
+ */	
+function shownopaytids(pageno){
+    var pno=(pageno-1)*gpagesum;
+        var sql='nick = ? and (type= ? )  and (coalition = ? or coalition = ?)  order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick,'cod','','1'];
+        $("#sendlists").empty();
+        $("#chapfys").empty();
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and (type=?)  and (coalition = ? or coalition = ?)   order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'shownopaytids',showpageno);
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 15:20 
+ * 显示货到付款订单
+ */	
+function showsplittids(pageno){
+    var pno=(pageno-1)*gpagesum;
+        var sql='nick = ? and (type= ? )  and (coalition = ? or coalition = ?)  order by pay_time asc limit '+gpagesum+' offset '+pno;
+        var data=[sellernick,'split','','1'];
+        $("#sendlists").empty();
+        $("#chapfys").empty();
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and (type=?)  and (coalition = ? or coalition = ?)   order by pay_time asc ';
+        getdatasnum(mydb,sql,data,pageno,'shownopaytids',showpageno);
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 14:00 
+ * 全选订单
+ */	
+function checkAll(){
+    if($("#checkall").prop("checked")){
+        $("input[name='checkone']").parent('label').checkbox('check');
+        $("input[name='checkone']").parent('label').checkbox('check');
+    }else{
+        $("input[name='checkone']").parent('label').checkbox('uncheck');
+        $("input[name='checkone']").parent('label').checkbox('uncheck');
+    }
+}
+/***********************************/
+function getareacompany(tid,shen,shi,qu){
+	var areadata = window.localStorage.getItem("areadata");
+    var object = eval("(" + areadata + ")");
+    var provinces = object['province'];
+    var procode ='';
+    for(var i=0;i<provinces.length;i++)
+    {
+        if(provinces[i]['address']==shen)
+        {
+            procode = provinces[i]['addcode'];
+        }
+    }
+    var citys = object['citys'][procode];
+    var citycode = '';
+    for(var i=0;i<citys.length;i++)
+    {
+        if(citys[i]['address']==shi)
+        {
+            citycode = citys[i]['addcode'];
+        }
+
+    }
+    var districts = object['districts'][citycode];
+    var areacode='';
+    for(var i=0;i<districts.length;i++)
+    {
+        if(districts[i]['address']==qu)
+        {
+            areacode=districts[i]['addcode'];
+        }else if(districts[i]['address']=='其它区'){
+            areacode=districts[i]['addcode'];
+        }else{
+            areacode='';
+        }
+    }
+    if(areacode==''){
+        areacode=citycode;
+    }
+}
+/*************打印设置*框打开**********************/
+function onclickdysz(){
+    if(gautoflag=='off'){
+        $("#selectauto").parent('label').checkbox('uncheck');
+        $("#selectauto").parent('label').checkbox('uncheck');
+    }else{
+        $("#selectauto").parent('label').checkbox('check');
+        $("#selectauto").parent('label').checkbox('check');
+    }
+    if(ghpflag=='off'){
+        $("#selecthp").parent('label').checkbox('uncheck');
+        $("#selecthp").parent('label').checkbox('uncheck');
+    }else{
+        $("#selecthp").parent('label').checkbox('check');
+        $("#selecthp").parent('label').checkbox('check');
+    }
+    if(gtitlestu!='on'){
+        $("#selectjc").parent('label').checkbox('uncheck');
+        $("#selectjc").parent('label').checkbox('uncheck');
+    }else{
+        $("#selectjc").parent('label').checkbox('check');
+        $("#selectjc").parent('label').checkbox('check');
+    }
+  /*  $("#autoid").val(gautoid);$("#sendplan1").val(gsendplan);*/
+    $("#sendplan1").find("option[value='"+gsendplan+"']").attr("selected",true);
+    if(gcompanyno!=''){
+    $("#companyno").val(gcompanyno);
+    }
+    $('#dysz-modal').modal('show');
+    tradedots('printset');
+}
+/*******************打印设置*操作******************************/
+function onclickdysz(){
+    if(gautoflag=='off'){
+        $("#selectauto").parent('label').checkbox('uncheck');
+        $("#selectauto").parent('label').checkbox('uncheck');
+    }else{
+        $("#selectauto").parent('label').checkbox('check');
+        $("#selectauto").parent('label').checkbox('check');
+    }
+    if(ghpflag=='off'){
+        $("#selecthp").parent('label').checkbox('uncheck');
+        $("#selecthp").parent('label').checkbox('uncheck');
+    }else{
+        $("#selecthp").parent('label').checkbox('check');
+        $("#selecthp").parent('label').checkbox('check');
+    }
+    if(gtitlestu!='on'){
+        $("#selectjc").parent('label').checkbox('uncheck');
+        $("#selectjc").parent('label').checkbox('uncheck');
+    }else{
+        $("#selectjc").parent('label').checkbox('check');
+        $("#selectjc").parent('label').checkbox('check');
+    }
+  /*  $("#autoid").val(gautoid);$("#sendplan1").val(gsendplan);*/
+    $("#sendplan1").find("option[value='"+gsendplan+"']").attr("selected",true);
+    if(gcompanyno!=''){
+    $("#companyno").val(gcompanyno);
+    }
+    $('#dysz-modal').modal('show');
+    tradedots('printset');
+}
+/***********************************/
+function getareacode(){
+	var areadata = window.localStorage.getItem("areadata");
+	 if(areadata=="null"||areadata==null){
+		 $.ajax({
+		     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getArea',
+		     type: 'POST',
+		     dataType:'html',
+		     data:{},
+		     timeout:10000,
+	         success: function(datas){
+	        	window.localStorage.setItem("areadata",datas);
+	        }
+	    });
+	 }
+}
+
+/***********************************/
+function editadrr(tid,tids,tidnum){
+    var  addr=$("#adrrdatae"+tid).text();
+    var addrs=addr.split("|:|");
+    $("#more_zip").val(addrs[7]);
+    $("#more_name").val(addrs[0]);
+    $("#more_address").val(addrs[6]);
+    $("#more_phone").val(addrs[2]);
+    $("#more_mobile").val(addrs[1]);
+    var addrcmd= "addeitd('"+tids+"','"+tidnum+"');";
+    $("#addbut").attr('onclick',addrcmd);
+    loaddata(addrs[3],addrs[4],addrs[5]);
+    $('#addr-table').modal('show');
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-6-17
+ * Time: 11:30 
+ * 根据订单或用户昵称搜索
+ */	
+function selecttids(pageno){
+	var selectval=$("#selectid").val();
+	var pno=(pageno-1)*gpagesum;
+	if(Number(selectval)>9999999){
+	    if(ghpflag==='on'){
+	        var sql='nick = ? and  tid = ? order by pay_time asc limit '+gpagesum+' offset '+pno;
+	        var data=[sellernick,selectval];
+	        $("#sendlists").empty();
+	        $("#chapfys").empty();
+	        getlistsdata(mydb,sql,data,showlists);
+	        sql='nick = ? and  tid = ? order by pay_time asc ';
+	        getdatasnum(mydb,sql,data,pageno,'showmemotids',showpageno);
+	    }else{
+	        var sql='nick = ? and  tid = ? order by pay_time asc limit '+gpagesum+' offset '+pno;
+	        var data=[sellernick,selectval];
+	        $("#sendlists").empty();
+	        $("#chapfys").empty();
+	        getlistsdata(mydb,sql,data,showlists);
+	        sql='nick = ? and  tid = ? order by pay_time asc ';
+	        getdatasnum(mydb,sql,data,pageno,'showmemotids',showpageno);
+	    }
+	}else{
+		if(ghpflag==='on'){
+	        var sql='nick = ? and  buyer_nick = ? order by pay_time asc limit '+gpagesum+' offset '+pno;
+	        var data=[sellernick,selectval];
+	        $("#sendlists").empty();
+	        $("#chapfys").empty();
+	        getlistsdata(mydb,sql,data,showlists);
+	        sql='nick = ? and  buyer_nick = ? order by pay_time asc ';
+	        getdatasnum(mydb,sql,data,pageno,'showmemotids',showpageno);
+	    }else{
+	        var sql='nick = ? and  buyer_nick = ? order by pay_time asc limit '+gpagesum+' offset '+pno;
+	        var data=[sellernick,selectval];
+	        $("#sendlists").empty();
+	        $("#chapfys").empty();
+	        getlistsdata(mydb,sql,data,showlists);
+	        sql='nick = ? and  buyer_nick = ? order by pay_time asc ';
+	        getdatasnum(mydb,sql,data,pageno,'showmemotids',showpageno);
+	    }
+		}
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 晚上14:45 
+ * 修改收货地址.【更新】
+ */	
+function addeitd(tids,tidnum)
+{
+    var more_shen=$("#more_shen").find("option:selected").text();
+    var more_shi=$("#more_shi").find("option:selected").text();
+    var more_qu=$("#more_qu").find("option:selected").text();
+    var more_zip= $("#more_zip").val();
+    var more_name= $("#more_name").val();
+    var more_address= $("#more_address").val();
+    var more_phone=  $("#more_phone").val();
+    var more_mobile= $("#more_mobile").val();  
+		if(more_qu==''||more_qu==null){
+						more_qu='.';
+			}		
+    var regu = /^[0-9a-zA-Z\_]+$/;
+    var regzip = /^\d{6}$/;
+    var regmobile = /^\d\d{7,15}$/;
+    if(more_zip==''||more_name==''||more_address==''){
+    	layer.msg('亲，请填写完整的收货信息!',1, 3);
+    	return;
+        //$("input[msgstu='again']").attr("onclick","closeMsg('addr-table');");
+    }else if(!regzip.test(more_zip)&&more_zip!=''){
+    	layer.msg('亲，邮编只能是6位数字!',1, 3);
+    	return;
+    }else if(more_address.length<4||more_address.length>60){
+    	layer.msg('区县以下的街道地址最少要4个字，最多不能超过60个字！',1, 3);
+    	return;
+    }else if(more_phone==''&&more_mobile==''){
+        layer.msg('亲，电话和手机不能都为空!',1, 3);
+        return;
+    }else if(regu.test(more_address)){
+    	layer.msg('区县以下的街道地址不能全是字母，请重新填写!',1, 3);
+    	return;
+    }else if(!regmobile.test(more_mobile)&&more_mobile!=''){
+    	layer.msg('手机号码必须由8到16位数字构成!',1, 3);
+    	return;
+    }else{
+        if(tidnum=='1'){
+            QN.top.invoke({
+                "cmd": "taobao.trade.shippingaddress.update",
+                "param":{
+                    tid:tids,
+                    receiver_name:more_name,
+                    receiver_phone:more_phone,
+                    receiver_mobile:more_mobile,
+                    receiver_state:more_shen,
+                    receiver_city:more_shi,
+                    receiver_district:more_qu,
+                    receiver_address:more_address,
+                    receiver_zip:more_zip
+                },
+                "method": "get",
+                "success" : function(rsp) {
+                    if(typeof rsp === 'string'){
+                        var rsp = JSON.parse(rsp);
+                    }else{
+                        var	rsp= rsp;
+                    }
+                    var rsperror=rsp.msg;
+                    if(rsperror==undefined){
+                        gettidnum();
+                        layer.msg('修改成功！',1, 1);
+                    }else{
+                    	geterrorinfo('addeitd-rsp',JSON.stringify(rsp));
+                    }
+                },
+                error: function(msp){
+                	if(typeof msp === 'string')var msp = JSON.parse(msp);
+                	geterrorinfo('taobao.trade.shippingaddress.update',msp);
+                }
+            });
+        }else{
+            var ql='';
+            var dtids=tids.split(',');
+            for(index in dtids){
+                ql+='{update trade.shippingaddress set receiver_zip='+more_zip+',receiver_address='+more_address+',receiver_district='+more_qu+', receiver_name='+more_name+',receiver_phone='+more_phone+',receiver_mobile='+more_mobile +',receiver_state='+more_shen +',receiver_city='+more_shi+' where tid='+dtids[index]+'}';
+            }
+            QN.top.invoke({
+                "cmd":"tql",
+                "param":{"ql":ql},
+                "method":"post",
+                "success":function (rsp){
+                    if(typeof rsp === 'string'){
+                        var rsp = JSON.parse(rsp);
+                    }else{
+                        var	rsp= rsp;
+                    }
+                    gettidnum();
+                    layer.msg('修改成功！',1, 1);
+                },
+                error: function(msp){
+                	geterrorinfo('addeitd-tqlmsp',msp);
+                }
+            });
+        }
+    }
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:45 
+ * 取省.【更新】
+ */	
+function loaddata(moreshen,moreshi,morequ){
+    $("#more_shen").empty();
+    $("#more_shi").empty();
+    $("#more_qu").empty();
+    var areadata = window.localStorage.getItem("areadata");
+    var object = eval("(" + areadata + ")");
+    var provinces = object['province'];
+    var procode ='';
+    for(var i=0;i<provinces.length;i++)
+    {
+        if(provinces[i]['address']==moreshen)
+        {   procode = provinces[i]['addcode'];
+            $("#more_shen").append("<option selected='selected' value='"+provinces[i]['addcode']+","+provinces[i]['address']+"'>"+provinces[i]['address']+"</option>");
+        }else{
+            $("#more_shen").append("<option  value='"+provinces[i]['addcode']+","+provinces[i]['address']+"'>"+provinces[i]['address']+"</option>");
+        }
+
+    }
+    var citys = object['citys'][procode];
+    var citycode = '';
+    for(var i=0;i<citys.length;i++)
+    {
+        if(citys[i]['address']==moreshi)
+        {   citycode = citys[i]['addcode'];
+            $("#more_shi").append("<option selected='selected' value='"+citys[i]['addcode']+","+citys[i]['address']+"'>"+citys[i]['address']+"</option>");
+        }else{
+            $("#more_shi").append("<option  value='"+citys[i]['addcode']+","+citys[i]['address']+"'>"+citys[i]['address']+"</option>");
+        }
+    }
+    var districts = object['districts'][citycode];
+
+    for(var i=0;i<districts.length;i++)
+    {
+        if(districts[i]['address']==morequ)
+        {
+            $("#more_qu").append("<option selected='selected' value='"+districts[i]['addcode']+","+districts[i]['address']+"'>"+districts[i]['address']+"</option>");
+        }else{
+            $("#more_qu").append("<option  value='"+districts[i]['addcode']+","+districts[i]['address']+"'>"+districts[i]['address']+"</option>");
+        }
+    }
+    $("#more_shen").trigger("create");
+    $("#more_shi").trigger("create");
+    $("#more_qu").trigger("create");
+    $("#more_shen").change(p_choiceH);
+    $("#more_shi").change(c_choiceH);
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:45 
+ * 取省下面的市区.【更新】
+ */	
+function p_choiceH()
+{
+	var areadata = window.localStorage.getItem("areadata");
+    var sel= $("#more_shen").find('option:selected').val();
+    if(areadata!=null)
+    {
+        var object = eval("(" + areadata + ")");
+        var vals = sel.split(",");
+        /*取得城市的父CODE*/
+        var citys = object['citys'][vals[0]];
+        $("#more_shi").empty();
+        var citycode = '';
+        for(var i=0;i<citys.length;i++)
+        {
+            if(i==0)
+            {   citycode = citys[i]['addcode'];
+                $("#more_shi").append("<option selected='selected' value='"+citys[i]['addcode']+","+citys[i]['address']+"'>"+citys[i]['address']+"</option>");
+            }else{
+                $("#more_shi").append("<option  value='"+citys[i]['addcode']+","+citys[i]['address']+"'>"+citys[i]['address']+"</option>");
+            }
+
+        }
+        var districts = object['districts'][citycode];
+        $("#more_qu").empty();
+        for(var i=0;i<districts.length;i++)
+        {
+            if(i==0)
+            {
+                $("#more_qu").append("<option selected='selected' value='"+districts[i]['addcode']+","+districts[i]['address']+"'>"+districts[i]['address']+"</option>");
+            }else{
+                $("#more_qu").append("<option  value='"+districts[i]['addcode']+","+districts[i]['address']+"'>"+districts[i]['address']+"</option>");
+            }
+        }
+        $("#more_shi").trigger("create");
+        $("#more_qu").trigger("create");
+        $("#more_shi").change(c_choiceH);
+    }
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:45 
+ * 取市下面的区.【更新】
+ */	
+function c_choiceH()
+{
+	var areadata = window.localStorage.getItem("areadata");
+    var sel= $("#more_shi").find('option:selected').val();
+    if(areadata!=null)
+    {
+        var object = eval("(" + areadata + ")");
+        var vals = sel.split(",");
+        var districts = object['districts'][vals[0]];
+        $("#more_qu").empty();
+        for(var i=0;i<districts.length;i++)
+        {
+            if(i==0)
+            {
+                $("#more_qu").append("<option selected='selected' value='"+districts[i]['addcode']+","+districts[i]['address']+"'>"+districts[i]['address']+"</option>");
+            }else{
+                $("#more_qu").append("<option  value='"+districts[i]['addcode']+","+districts[i]['address']+"'>"+districts[i]['address']+"</option>");
+            }
+
+        }
+        $("#more_qu").trigger("create");
+    }
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:45 
+ * 获取用户打印设置 tidlog日志.【更新】
+ */	
+function getprintset(){
+	gkdtidarr.length=0;
+	gfhtidarr.length=0;
+	var printSetid = window.localStorage.getItem("printSetid"+sellernick);
+	if(printSetid=="null"||printSetid==null){
+			$.ajax({
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getprintset',
+			    type: 'POST',
+			    dataType:'html',
+			    data:{nick:sellernick},
+			    timeout:10000,
+		        success: function(data){
+		            var datas=eval('('+data+')');
+		            window.localStorage.setItem("printSetid"+sellernick,data);
+		            var setdata=datas.setdata;
+		            var logdata=datas.logdata;
+		            if(logdata!=null){
+			            gprintid=logdata['printid'];
+			            var printstu=window.localStorage.getItem("tradestatus"+sellernick);
+			        	var kdtidstu='';
+			            if(printstu=='WAIT_BUYER_CONFIRM_GOODS')kdtidstu='s';
+			            if(logdata['kdtid'+kdtidstu]!=null){
+			            var arrkds=logdata['kdtid'+kdtidstu].split(',');
+			                for(var indexk in arrkds){
+			                    var tid=Number(arrkds[indexk]);
+			                    if($.inArray(tid,galltidarr)!=-1){
+			                        gkdtidarr.push(tid);
+			                    }
+			                }
+			            }
+			            if(logdata['fhtid'+kdtidstu]!=null){
+			                var arrfhs=logdata['fhtid'+kdtidstu].split(',');
+			                for(var indexf in arrfhs){
+			                    var tid=Number(arrfhs[indexf]);
+			                    if($.inArray(tid,galltidarr)!=-1){
+			                        gfhtidarr.push(tid);
+			                    }
+			                }
+			            }
+		            }
+		            if(setdata){
+		                ghpflag=setdata.hpflag;
+		                gautoflag=setdata.autoflag;
+		                gtitlestu=setdata.memo;
+		               /* gautoid=setdata.autoid;*/
+		                gautoid=1;
+		                gsendplan=setdata.sendplan;
+		                gcompanyno=setdata.companyno;
+		                if(gtitlestu!='on'){
+		                    $("#selectjc").parent('label').checkbox('uncheck');
+		                }else{
+		                    $("#selectjc").parent('label').checkbox('check');
+		                }
+		                window.localStorage.setItem("localtitle"+sellernick,gtitlestu);
+		            }else{
+		                ghpflag='on';
+		                gautoflag='on';
+		                gtitlestu='on'
+		                gautoid=1;
+		                gsendplan='online';
+		                gcompanyno='';
+		                $("#selectjc").parent('label').checkbox('check');
+		                window.localStorage.setItem("localtitle"+sellernick,"on");
+		            }
+		            showloaddata();
+		        }
+		    });
+	}else{
+			var datas=eval('('+printSetid+')');
+	        var setdata=datas.setdata;
+	        var logdata=datas.logdata;
+	        if(logdata!=null){
+	        	var printstu=window.localStorage.getItem("tradestatus"+sellernick);
+	        	var kdtidstu='';
+	            if(printstu=='WAIT_BUYER_CONFIRM_GOODS')kdtidstu='s';
+	            gprintid=logdata['printid'];
+	            if(logdata['kdtid'+kdtidstu]!=null){
+		            var iii=0;
+	            	var arrkds=logdata['kdtid'+kdtidstu].split(',');
+	                for(var indexk in arrkds){
+	                    var tid=Number(arrkds[indexk]);
+	                    if($.inArray(tid,galltidarr)!=-1){
+	                    	iii++;
+	                        gkdtidarr.push(tid);
+	                    }
+	                }
+	            }
+	            if(logdata['fhtid'+kdtidstu]!=null){
+	                var arrfhs=logdata['fhtid'+kdtidstu].split(',');
+	                for(var indexf in arrfhs){
+	                    var tid=Number(arrfhs[indexf]);
+	                    if($.inArray(tid,galltidarr)!=-1){
+	                        gfhtidarr.push(tid);
+	                    }
+	                }
+	            }
+	        }
+	        if(setdata){
+	            ghpflag=setdata.hpflag;
+	            gautoflag=setdata.autoflag;
+	            gtitlestu=setdata.memo;
+	           /* gautoid=setdata.autoid;*/
+	            gautoid=1;
+	            gsendplan=setdata.sendplan;
+	            gcompanyno=setdata.companyno;
+	            if(gtitlestu!='on'){
+                    $("#selectjc").parent('label').checkbox('uncheck');
+                }else{
+                    $("#selectjc").parent('label').checkbox('check');
+                }
+	            window.localStorage.setItem("localtitle"+sellernick,gtitlestu);
+	        }else{
+	            ghpflag='on';
+	            gautoflag='on';
+	            gtitlestu='on'
+	            gautoid=1;
+	            gsendplan='online';
+	            gcompanyno='';
+	            $("#selectjc").parent('label').checkbox('check');
+	            window.localStorage.setItem("localtitle"+sellernick,"on");
+	        }
+	        showloaddata();
+		}
+	gettbtime();
+	getLogis();
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-12
+ * Time: 15:10
+ * 控制获取打印订单状态后再加载数据.
+ */
+function showloaddata(){
+	$("#sendlists").empty();
+    $("#chapfys").empty();
+    if(ghpflag==='on'){
+        try{
+        var sql='nick = ? and (coalition = ? or coalition = ?) order by pay_time asc limit '+gpagesum+' offset 0';
+        var data=[sellernick,'','1'];
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? and (coalition = ? or coalition = ?) order by pay_time asc ';
+        getdatasnum(mydb,sql,data,'1','showalltids',showpageno);
+        }catch(e){
+          /*  Alert(e);*/
+        }
+    }else{
+        var sql='nick = ? order by pay_time asc limit '+gpagesum+' offset 0';
+        var data=[sellernick];
+        getlistsdata(mydb,sql,data,showlists);
+        sql='nick = ? order by pay_time asc ';
+        getdatasnum(mydb,sql,data,'1','showalltids',showpageno);
+    }
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午13:55
+ * 保存打印设置.
+ */
+function saveprintset(hpdata,autodata,autoid,sendplan,companyno,gtitlestu){
+	$.ajax({
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/saveprintset',
+	    type: 'POST',
+	    dataType:'html',
+	    data:{nick:sellernick,hpflag:hpdata,autoflag:autodata,autoid:autoid,sendplan:sendplan,companyno:companyno,gtitlestu:gtitlestu},
+	    timeout:10000,
+        success: function(data){/*获取成功*/
+        	window.localStorage.removeItem("printSetid"+sellernick);
+        	layer.msg('操作成功！',1, 1);
+        }
+    });
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午13:55
+ * 获取发件人信息和快递单模版.
+ */
+function getprintmodel(){
+	window.srult='';
+	QN.top.invoke({
+        "cmd": "taobao.logistics.address.search",
+        "param":{"rdef":'send_def'},
+        "method": "get",
+        "success" : function(rsp){
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            var addrestu=rsp.logistics_address_search_response.addresses.address_result;
+            if(addrestu==undefined||addrestu=='undefined'){
+            	layer.msg('您还没有设置默认发货地址请设置后再来打印！',1, 3);
+	            }else{
+	                srult=rsp.logistics_address_search_response.addresses.address_result[0];
+	                var custmobilephone='';
+	                var custphone='';
+	                var morequ=srult.country;
+	                if(srult.mobile_phone!=undefined||typeof(srult.mobile_phone)!="undefined"){
+	                    custmobilephone=srult.mobile_phone;
+	                }
+	                if(srult.phone!=undefined||typeof(srult.phone)!="undefined"){
+	                    custphone=srult.phone;
+	                }
+	                if(srult.country==undefined||srult.country==''){
+	                	morequ='.';
+	                }
+	                var wfjr=srult.contact_name+','+custmobilephone+','+custphone+','+srult.province+','+srult.city+','+srult.country+','+srult.addr;
+	                window.localStorage.setItem("faddrmessage",wfjr);
+            }
+        },
+        error: function(msp){
+        	geterrorinfo('getprintmodel-tqlmsp',msp);
+        }
+    });
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:10
+ * 本地数据库.
+ */
+function initMyDB(){
+    var myDB=null;
+    try{
+        var dbname='printdb';
+        var version='1.0';
+        var displayname='trade_send_list';
+        var maxsize=2*1024*1024;
+        myDB = openDatabase(dbname,version,displayname,maxsize);
+    }catch(e){
+        if(e == INVALID_STATE_ERR){
+            geterrorinfo('initMyDB','Invalid database version.');
+        }else{
+            geterrorinfo('initMyDB','unknown error--'+e);
+        }
+    }
+    return myDB;
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:15
+ * 订单数据库创建 .
+ */
+function createMylist(db){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('create table if not exists sendlists(tid integer not null primary key ,nick text,type text,created text,pay_time text,modified text,buyer_nick text,receiver_datas text,seller_flag text,buyer_flag text,print_one text,print_two text,coalition text,tid_num text,tid_ids text,items text,memo text)');
+        }
+    );
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:15
+ * 存储列表信息.
+ */
+function insertdatas(db,data,callback){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('select items,tid,tid_num,tid_ids,coalition from sendlists where nick = ? and buyer_nick = ? and receiver_datas = ?  order by created desc',[data[1],data[6],data[7]],function(tx,results){
+                    if(results.rows.length>0){
+                        var printone='off';
+                        var printtwo='off';
+                        if(data[8]==1||data[8]==2||data[8]==3||data[8]==4||data[8]==5||data[9]=='true'){
+                            printone='on';
+                        }
+                        var tid=''+data[0];
+                        var row=results.rows.item(0);
+                        var addrsflag=''+row['tid'];
+                        var tidnum=Number(row['tid_num'])+1;
+                        var tidids=row['tid_ids']+','+tid;
+                        var items=row['items']+'|:|'+data[10];
+                        if(results.rows.length>1&&row['coalition']!=1&&row['coalition']!=''){
+                        	addrsflag=''+row['coalition'];
+                        }
+                        transaction.executeSql('update sendlists set items = ?,print_one = ?,print_two = ?,coalition = ?,tid_num = ?,tid_ids = ?  where nick = ? and tid = ?',[items,printone,printtwo,'1',tidnum,tidids,data[1],addrsflag]);
+                        transaction.executeSql('insert into sendlists(tid,nick,type,created,pay_time,modified,buyer_nick,receiver_datas,seller_flag,buyer_flag,print_one,print_two,coalition,tid_num,tid_ids,items,memo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],printone,printtwo,addrsflag,1,tid,data[10],'']);
+                        if (callback) callback();
+                    }else{
+                        var printone='off';
+                        var printtwo='off';
+                        var tidnum=1;
+                        var tidids=''+data[0];
+                        if(data[8]==1||data[8]==2||data[8]==3||data[8]==4||data[8]==5||data[9]=='true'){
+                            printone='on';
+                        }
+                        transaction.executeSql('insert into sendlists(tid,nick,type,created,pay_time,modified,buyer_nick,receiver_datas,seller_flag,buyer_flag,print_one,print_two,coalition,tid_num,tid_ids,items,memo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],printone,printtwo,'',tidnum,tidids,data[10],'']);
+                        if (callback) callback();
+                    }
+                },
+                function (tx,error){
+                    geterrorinfo('insertdatas',JSON.stringify(error));
+                });
+        }
+    );
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-01
+ * Time: 下午14:15
+ * callback数据资源.
+ */
+function getlistsdata(db,sql,data,callback){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('select * from sendlists where '+sql,data,function(tx,results){
+                    if(results.rows.length==0){
+                        if (callback) callback('');
+                    }else{
+                        for(var i=0;i<results.rows.length;i++){
+                           /* alert(JSON.stringify(results.rows.item(i)));*/
+                            var row=results.rows.item(i);
+                            if (callback) callback(row);
+                        }
+                    }
+                },
+                function (tx,error){
+                    geterrorinfo('getlistsdata',JSON.stringify(error));
+                });
+        }
+    );
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新...
+ * ...
+ */
+function getdatasnum(db,sql,data,pageno,statid,callback){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('select tid from sendlists where '+sql,data,function(tx,results){
+                    if (callback) callback(results.rows.length,pageno,statid);
+                },
+                function (tx,error){
+                    geterrorinfo('getdatasnum',JSON.stringify(error));
+                });
+        }
+    );
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:44
+ * 更新订单合并信息
+ */
+function updbtidhb(db,nick,data,tid){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('update sendlists set items = ?,print_one = ?,print_two = ?,coalition = ?,tid_num = ?,tid_ids = ? where  nick = ? and tid= ?',[data[5],data[3],data[4],data[0],data[1],data[2],nick,tid]);
+        }
+    );
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:45
+ * 删除指定用户订单
+ */
+function delfrom(db,nick){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('delete  from sendlists  where  nick= ?',[nick]);
+        }
+    );
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:45
+ * 删除用户指定订单tid
+ */
+function delfroms(db,nick,tid){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('delete  from sendlists  where  nick= ? and tid =?',[nick,tid]);
+        }
+    );
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:41
+ * 发货记录创建 
+ */
+function createsendlog(db){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('create table if not exists sendlogs(id integer not null primary key autoincrement ,nick text,tid text,sendtime text,sendplan text,company text,companyname text,companyno text,flag text,memo text)');
+        }
+    );
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:41
+ * 删除表
+ */
+function deltable(db,tablename){
+    db.transaction(
+        function (transaction){
+            transaction.executeSql('drop table if exists '+tablename,[]);
+        }
+    );
+}
+
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:40
+ * 翻页
+ */
+function editpagesum(){
+    var selec= $("#pagesumsel").find('option:selected').val();
+    gpagesum=selec;
+    $('.btn-info[sta="getstadata"]').click();
+    printidarr.length=0;
+    $("input[name='checkone']").parent('label').checkbox('uncheck');
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:40
+ * 字符串清楚特殊字符
+ */
+function clearBr(key)
+{
+    key = key.replace(/<\/?.+?>/g,"");
+    key = key.replace(/[\r\n]/g, "");
+    key=key.replace(/(^\s*)|(\s*$)/g,""); /*消除首尾空格*/
+    return key;
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:39
+ * divId 所在层的id*fun 方法*pageno 第几页 *pageNum页数
+ */
+function newpagin(divId,fun,pageno,pageNum,pageAll){
+	printidarr.length=0;
+	$("input[name='checkone']").parent('label').checkbox('uncheck');
+    if(pageAll<1)
+        return;
+    var str='<div  class="sui-pagination" style="margin-top:-10px;margin-bottom:30px;"><table width="100%"><tr><td align="left">第'+pageno+'页，共'+pageNum+'页(共'+pageAll+'条记录)</td><td align="right"><div  class="sui-pagination"><select id="pagesumsel"  onchange="editpagesum();" style="width:100px;margin:2px 10px 0 0;">'+
+        '<option value="20">每页20条</option><option value="40">每页40条</option><option value="80">每页80条</option><option value="100">每页100条</option><option value="120">每页120条</option><option value="140">每页140条</option><option value="180">每页180条</option><option value="200">每页200条</option></select><ul><li><a href="javascript:'+fun+'(1)">首页</a></li>';
+    if(pageNum>5){
+        if(pageno<3){
+            for ( var i = 1; i <=5; i++) {
+                if(i==pageno)
+                    str+='<li  class="active"><a href="javascript:'+fun+'('+i+')">'+i+'</a></li>';
+                else
+                    str+='<li><a href="javascript:'+fun+'('+i+')">'+i+'</a></li>';
+            }
+        }else if(pageNum-pageno>2){
+            var pagenoTemp=pageno-2;
+            for ( var i = pagenoTemp; i <pagenoTemp+5; i++) {
+
+                if(i==pageno)
+                    str+='<li  class="active"><a href="javascript:'+fun+'('+i+')">'+i+'</a></li>';
+                else
+                    str+='<li><a href="javascript:'+fun+'('+i+')">'+i+'</a></li>';
+            }
+        }else{
+
+            for ( var i = pageNum-4; i <=pageNum; i++) {
+                if(i==pageno)
+                    str+='<li  class="active"><a href="javascript:'+fun+'('+i+')">'+i+'</a></li>';
+                else
+                    str+='<li><a href="javascript:'+fun+'('+i+')">'+i+'</a></li>';
+            }
+        }
+
+    }else{
+        for ( var i = 1; i <=pageNum; i++) {
+            if(i==pageno)
+                str+='<li  class="active"><a href="javascript:'+fun+'('+i+')">'+i+'</a></li>';
+            else
+                str+='<li><a href="javascript:'+fun+'('+i+')">'+i+'</a></li>';
+        }
+    }
+
+    str+=' <li><a href="javascript:'+fun+'('+pageNum+')">尾页</a></li></ul></div></td></tr></table></div>';
+    $("#"+divId).append(str);
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-11
+ * Time: 更新14:38
+ * 下面是打印数据调度匹配.
+ */
+function printqiao(qiao){
+	if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+    var checked = document.getElementsByName("checkone");
+    var checklen=checked.length;
+    var num=0;
+    for (var i=0;i<checklen;i++ )if(checked[i].checked)num++;
+    if(num<1){
+    	layer.msg('您还没有选择订单，请选择后再操作！',1, 3);
+    	return;
+    }else if(qiao==1)printfh(3);else if(qiao==3){
+    	 var checked = document.getElementsByName("checkone");
+    	 var checklen=checked.length;
+    	 var sentstatu=0;
+	   	 for (var i=0;i<checklen;i++ )
+		    {
+		        if(checked[i].checked){
+		            if($("#nopay"+checked[i].value).html()=='没有付款时间'||$("#baby_type"+checked[i].value).html().indexOf('拆单')>0){
+		            	sentstatu++;
+		            	$("#id"+checked[i].value).parent('label').checkbox('uncheck');
+			            }
+		        }
+		    }
+	        if(sentstatu==0)plsgood('');else{
+		        if(num-sentstatu>0){
+		        	$("#twohints").html('<p>货到付款、部分发货、退款中的订单不支持批量发货将被过滤掉，是否继续批量发货！</p>');
+		    		document.getElementById('hintok').setAttribute("onclick", "plsgood('');");
+		    		$('#twohint').modal('show');
+	    	    }else{
+	    	    	layer.msg('您选择的订单都是货到付款或拆单的订单，请重新选择要批量发货的订单！',1, 3);
+	    	    	return;
+		    	    }
+		        }
+        }else batchDown();
+}
+
+	function printfh(pnum){
+		$("#iframes").empty();
+	    $("#printPreviewboby").empty();
+	    if(pnum>2){
+	        printsendarry.length=0;
+	        if(pnum>3){
+		        $("input[name='checkone']").parent('label').checkbox('uncheck');
+		        $("input[name='checkall']").parent('label').checkbox('uncheck');
+		        $("#id"+pnum).parent('label').checkbox('check');
+	        }
+	    }
+	    printidarr.length=0;
+	    printingarr.length=0;
+	    var checked = document.getElementsByName("checkone");
+	    var checklen=checked.length;
+	    var num=0;
+	    for (var i=0;i<checklen;i++ )if(checked[i].checked)num++;
+	    $("#allprintns").html(num);
+	    var oneprintnP=$("#oneprintns").html();
+	    if(pnum==1)pnum=Number(oneprintnP)-1;
+	    else if(pnum==2)pnum=Number(oneprintnP)+1;
+	    else pnum=1;
+	    if(pnum>num){
+		    $("#oneprintns").html(num);
+		    pnum=num;
+	    }else if(pnum<1){
+		    $("#oneprintns").html(1);
+		    pnum=1;
+	    }else $("#oneprintns").html(pnum);
+	    for (var i=0;i<checklen;i++ )
+	    {
+	        if(checked[i].checked){
+	        	printidarr.push(checked[i].value);
+	        }
+	    }
+	    sentptime=printidarr.length;
+	    sentptimes=0;
+	    recursionid=0;
+	    if(printsendarry.length>0){
+	    	pnum=pnum-1;
+    		var sendmtext=printsendarry[pnum];
+    	    var srcs='<?php echo APP_WEB_INDEX_ROOT;?>/trade/faceMtext#babylist='+encodeURIComponent(sendmtext);
+    	    $("#iframes").append('<iframe src="'+srcs+'" id="print_iframe" name="iframe_a" onload="PreviewWithFrame()" style="border:0;" width="360px" height="710px"></iframe>');
+    	    $("#sendPreview").modal("show");
+    		}else printsendarr(0);
+	}
+
+    function printsendarr(tidval){
+        var tid=printidarr[tidval];
+        var pnums;
+        var items = $("#itmesome"+tid).data('items');
+        var addr=$("#adrrdatae"+tid).text();
+        var memo = $("#itmesome"+tid).data('memo');
+        var sellermemo=memo.sellermemo;
+        var buyermessage=memo.buyermessage;
+        var addrs=addr.split('|:|');
+        var babylistxs=new Array();
+        var priceyh=0;
+        var outer_iids='';
+        var post_feeall=0;
+        var priceyhall=0;
+        var paymentall=0;
+        var paytime='';
+        var totalPrices=0;
+        var youhbaby=0;
+        var youhbabyall=0;
+        var buyerNick='';
+        var titlevals='';
+        var bproperty='';
+        if(typeof items === 'string'){
+            items=items.split('|:|');
+            var ditems='';
+            var indexsend=0;
+            for(var index in items){
+                ditems=JSON.parse(items[index]);
+                if(ghpflag=="on"||ditems.tid==tid){
+	                paytime=ditems.pay_time;
+	                if(paytime=='')paytime=ditems.created;
+	                paytime=paytime.substr(0, 11);
+	                post_feeall=Number(post_feeall)+Number(ditems.post_fee);
+	                buyerNick=ditems.buyernick;
+	                totalPrices=Number(totalPrices)+Number(ditems.payment);
+	                var fastorder=ditems.orders.order;
+	                for(var index in fastorder){
+	                	if((fastorder[index].refund_status=='NO_REFUND')&&(fastorder[index].status=='WAIT_SELLER_SEND_GOODS'||tradestatus=='WAIT_BUYER_CONFIRM_GOODS')){
+	                	lspro='';
+	                	titlevals=getTitle(fastorder[index].title,fastorder[index].num_iid);
+	            		bproperty='';
+	            		outer_iids=''
+	        	        if(fastorder[index].sku_properties_name!=undefined||typeof(fastorder[index].sku_properties_name)!="undefined"){
+	        	        	bproperty=fastorder[index].sku_properties_name;
+	        	            }
+	
+	        	        if(fastorder[index].outer_sku_id!=undefined||typeof(fastorder[index].outer_sku_id)!="undefined"){
+	        	        	outer_iids=fastorder[index].outer_sku_id;
+	        	        }
+	        	        if(fastorder[index].outer_sku_id==undefined||typeof(fastorder[index].outer_sku_id)=="undefined"){
+	        	            if(fastorder[index].outer_iid!=undefined||typeof(fastorder[index].outer_iid)!="undefined"){
+	        	            	outer_iids=fastorder[index].outer_iid;
+	        	            }
+	        	        }
+	        	        if(fastorder.length==1){
+	        	        	youhbaby=fastorder[index].price*fastorder[index].num-fastorder[index].payment+Number(ditems.post_fee);
+	            	        babylistxs[indexsend]=titlevals+'|:'+outer_iids+'|:'+bproperty+'|:'+fastorder[index].price+'|:'+fastorder[index].num+'|:'+youhbaby+'|:'+(fastorder[index].payment-ditems.post_fee);
+	        	        }else{
+	        	        	youhbaby=fastorder[index].price*fastorder[index].num-fastorder[index].payment;
+	            	        babylistxs[indexsend]=titlevals+'|:'+outer_iids+'|:'+bproperty+'|:'+fastorder[index].price+'|:'+fastorder[index].num+'|:'+youhbaby+'|:'+fastorder[index].payment;
+	        	        }
+	        	        youhbabyall=Number(youhbabyall)+Number(youhbaby);
+	        	        indexsend++;
+	                	}}
+	            }
+            }
+        }else{
+        	paytime=items.pay_time;
+            if(paytime=='')paytime=items.created;
+            paytime=paytime.substr(0, 11);
+            
+            post_feeall=items.post_fee;
+        	buyerNick=items.buyernick;
+        	totalPrices=items.payment;
+        	var fastorder=items.orders.order;
+        	for(var index in fastorder){
+        		if((fastorder[index].refund_status=='NO_REFUND')&&(fastorder[index].status=='WAIT_SELLER_SEND_GOODS'||tradestatus=='WAIT_BUYER_CONFIRM_GOODS')){
+        		lspro='';
+        		titlevals=getTitle(fastorder[index].title,fastorder[index].num_iid);
+        		bproperty='';
+        		outer_iids=''
+    	        if(fastorder[index].sku_properties_name!=undefined||typeof(fastorder[index].sku_properties_name)!="undefined"){
+    	        	bproperty=fastorder[index].sku_properties_name;
+    	            }
+
+    	        if(fastorder[index].outer_sku_id!=undefined||typeof(fastorder[index].outer_sku_id)!="undefined"){
+    	        	outer_iids=fastorder[index].outer_sku_id;
+    	        }
+    	        if(fastorder[index].outer_sku_id==undefined||typeof(fastorder[index].outer_sku_id)=="undefined"){
+    	            if(fastorder[index].outer_iid!=undefined||typeof(fastorder[index].outer_iid)!="undefined"){
+    	            	outer_iids=fastorder[index].outer_iid;
+    	            }
+    	        }
+    	        if(fastorder.length==1){
+    	        	youhbaby=fastorder[index].price*fastorder[index].num-fastorder[index].payment+Number(post_feeall);
+        	        babylistxs[index]=titlevals+'|:'+outer_iids+'|:'+bproperty+'|:'+fastorder[index].price+'|:'+fastorder[index].num+'|:'+youhbaby+'|:'+(fastorder[index].payment-post_feeall);
+    	        }else{
+    	        	 youhbaby=fastorder[index].price*fastorder[index].num-fastorder[index].payment;
+        	         babylistxs[index]=titlevals+'|:'+outer_iids+'|:'+bproperty+'|:'+fastorder[index].price+'|:'+fastorder[index].num+'|:'+youhbaby+'|:'+fastorder[index].payment;
+    	        }
+    	        youhbabyall=Number(youhbabyall)+Number(youhbaby);
+            	}}
+        }
+    	var babylists='';
+    	var gprintids=Number(gprintid)+tidval;
+    	if(srult.mobile_phone==''||srult.mobile_phone==undefined||typeof(srult.mobile_phone)=="undefined") var mobile=''; else var mobile=srult.mobile_phone;
+        if(srult.phone==''||srult.phone==undefined||typeof(srult.phone)=="undefined") var fphone=''; else var fphone=srult.phone;
+        var faddress=srult.province+' '+srult.city+' '+srult.country+' '+srult.addr;
+        if(srult.country==undefined)faddress=srult.province+' '+srult.city+' '+srult.addr;
+      	var babylistx='';
+    	    for(index in babylistxs){
+    		    if(babylistxs[index]!=''){
+    		    	if(babylistx=='')babylistx=babylistxs[index];else babylistx=babylistx+'|,|'+babylistxs[index];
+    			    }
+    		    }
+		    if(titlevals=='')titlevals='如果你累了请告诉我';
+    	    var facecompany=$("#facecompany"+tid).val().split(',');
+    	    var shippingAddress=$("#"+facecompany[1]+'_addr').html();
+    		var tradeOrderInfoCols='[{"consignee_address": {"address_detail": "'+addrs[6]+'","area": "'+addrs[5]+'","city": "'+addrs[4]+'","province": "'+addrs[3]+'"},"consignee_name": "'+addrs[0]+'","consignee_phone": "'+addrs[1]+'","item_name": "'+titlevals+'","order_channels_type": "'+sellertype+'","trade_order_list": ["'+tid+'"]}]';
+			if(shippingAddress==undefined){
+				layer.msg('该物流公司没有面单数请先去服务平台充值或者更换物流公司！',2, 3);
+				return;
+			}
+    		QN.top.invoke({
+    			"cmd": "taobao.wlb.waybill.get",
+    			"param": {'trade_order_info_cols':tradeOrderInfoCols,
+    				'cp_code':facecompany[1],
+    				'shipping_address':shippingAddress},
+    				    "success": function(rsp){
+    				    	if(typeof  rsp=== 'string'){
+    		  					rsp = JSON.parse(rsp);
+    			            }
+    				    	//facecompany[1]='EMS';
+    			            //$.alert(JSON.stringify(rsp));return;
+    				    	var waybill_code=rsp.wlb_waybill_get_response.results.waybill_apply_new_info[0].waybill_code;
+   			   		     	var short_address=rsp.wlb_waybill_get_response.results.waybill_apply_new_info[0].short_address;
+   			   		    	$(".fname").html(srult.contact_name);
+   			   	    		$(".fmobile").html(mobile);
+   			   	    		$(".fmobiles").html(mobile);
+   			   	    		$(".fphones").html(fphone);
+   			   	    		$(".shopName").html(shopName);
+   			   	    		$(".faddress").html(faddress);
+   			   	    		$(".facetids").html(tid);
+   			   	    		$(".sname").html(addrs[0]);
+   			   	    		$(".smobile").html(addrs[1]+' '+addrs[2]);
+   			   	    		$(".saddress").html(addrs[3]+' '+addrs[4]+' '+addrs[5]+' '+addrs[6]);
+   			   	    		$(".facessq").html(addrs[3]+' '+addrs[4]+' '+addrs[5]);
+   			   	    		$(".facexxdz").html(addrs[6]);
+   			   	    		var babylistxs=babylistx.split('|,|');
+   			   	    		var babyvalx;
+   			   	    		var babyxval;
+   			   	    		var facenum=0;
+   			   	    		for(var index in babylistxs){
+   			   	    			babyxval=babylistxs[index].split('|:');
+   			   	    			facenum=Number(facenum)+Number(babyxval[4]);
+   			   	    			if(babyvalx!='')babyvalx=babyxval[0]+' '+babyxval[2];else babyvalx=babyvalx+';'+babyxval[0]+' '+babyxval[2];
+   			   	    		}
+   			   	    		babyvalx=babyvalx.substring(0,20);
+   			   	    		$(".facenum").html(facenum);
+   			   	    		$(".facemdd").html(addrs[4]);
+   			   	    		var nowtime = new Date();
+   			   	    		nowtime=nowtime.format("yyyy-MM-dd");
+   			   	    		$(".facedate").html(nowtime);
+   			   	    		$(".facebaby").html(babyvalx);
+   			   	    		iyface=facecompany[1];
+   			   				switch(facecompany[1]){
+   			   					case 'HTKY':{getfaceCode('3','30','face_HTKY',waybill_code,'14px');
+   			   								getfaceCode('3','30','faces_HTKY',waybill_code,'14px');
+   			   								$("#sfd_HTKY").html(srult.city);
+   			   								$("#HTKY_dtb").html(short_address);
+   			   								marginY=15;
+   			   								marginX=-5;
+   			   								sizew=113;
+   			   								sizeh=200;
+   			   								break;}
+   			   					case 'EMS':{getfaceCode('1','40','face_EMS',waybill_code,'14px');
+   			   								getfaceCode('1','20','facet_EMS',tid,'10px');
+   			   								getfaceCode('1','30','faces_EMS',waybill_code,'13px');
+   			   								marginY=5;
+   			   								marginX=15;
+   			   								sizew=96;
+   			   								sizeh=150;
+   			   								break;}
+   			   					case 'EYB':{getfaceCode('1','40','face_EYB',waybill_code,'14px');
+   			   								getfaceCode('1','20','facet_EYB',tid,'10px');
+   			   								getfaceCode('1','30','faces_EYB',waybill_code,'13px');
+   			   								marginY=5;
+   			   								marginX=15;
+   			   								sizew=96;
+   			   								sizeh=150;
+   			   								break;}
+   			   					case 'ZJS':{getfaceCode('2','50','face_ZJS',waybill_code,'15px');
+   			   								$("#ZJS_dtb").html(short_address);
+   			   								$("#codes_ZJS").html(waybill_code);
+   			   								marginY=15;
+   			   								marginX=25;
+   			   								sizew=100;
+   			   								sizeh=150;
+   			   								break;}
+   			   					case 'ZTO':{getfaceCode('3','40','face_ZTO',waybill_code,'18px');
+   			   								getfaceCode('2','45','faces_ZTO',waybill_code,'14px');
+   			   								$("#mdd_ZTO").html(addrs[3]+' '+addrs[4]);
+   			   								$(".code_number").html(waybill_code);
+   			   								$("#facet_ZTO").html(tid);
+   			   								$("#dbt_ZTO").html(short_address);
+   			   								marginY=22;
+   			   								marginX=15;
+   			   								sizew=100;
+   			   								sizeh=190;
+   			   								break;}
+   			   					case 'UC':{getfaceCode('2','60','face_UC',waybill_code,'13px');
+   			   								getfaceCode('1','25','faces_UC',tid,'11px');
+   			   								$("#mdd_UC").html(addrs[3]+' '+addrs[4]);
+   			   								$(".code_number").html(waybill_code);
+   			   								$("#dbt_UC").html(short_address);
+   			   								marginY=22;
+   			   								marginX=27;
+   			   								sizew=100;
+   			   								sizeh=150;
+   			   								break;}
+   			   					}
+		   					order_oid[tid]=waybill_code;
+   			   	    		var twocodes=facecompany[1]+'|Y|www.baidu.com|Y|'+waybill_code;//http://taobao.com/test/qrcode.htm? cpCode =SF&sellerID=0123456& waybillCode=88917679009
+   			   	    		window.localStorage.setItem('twocode',twocodes);
+   			   	    		printsendarry[tidval]=$("#"+facecompany[1]+"_facecontent").html();
+   			   	    		if(tidval==0){
+   				   	    		var sendmtext=printsendarry[tidval];
+   				   	    	    var srcs='<?php echo APP_WEB_INDEX_ROOT;?>/trade/faceMtext#babylist='+encodeURIComponent(sendmtext);
+   				   	    	    $("#iframes").append('<iframe src="'+srcs+'" id="print_iframe" name="iframe_a" onload="PreviewWithFrame()" style="border:0;" width="360px" height="710px"></iframe>');
+   				   	    	    $("#sendPreview").modal("show");
+   				   	    		}
+   	   			   	    	recursionid++;
+   	   			   	    	if(recursionid<printidarr.length)printsendarr(recursionid);
+    				    },
+    				    error: function(msp){
+    	                    if(typeof msp === 'string'){
+    	                        var msp = JSON.parse(msp);
+    	                    }else{
+    	                        var msp= msp;
+    	                    }
+    	                    if(msp.sub_code!='subuser.has-no-permission')geterrorinfo('taobao.trade.shippingaddress.update',msp);
+    	                }    		       	
+	   		});
+        }
+
+function PreviewWithFrame(){
+    workbench.platform.printer.translatePreviewDataWithFrame("iframe_a");
+}
+function onload(){
+	QN.initTheme();
+	$("li[name='colstate']").attr("id","");
+	$("li[colsta='color3']").attr("id","cd-dqzt");
+	readonload();
+	tjprint();
+	onload_viptime('printSend');
+    workbench.platform.printer.previewDataCallback = "dataTranslated";
+    workbench.platform.printer.previewDataStarted = "dataTranslatedStarted";
+    workbench.platform.printer.previewDataCompleted = "dataTranslatedCompleted";
+    workbench.platform.printer.printCallback = "printEvnet";
+    workbench.platform.printer.printStarted = "printStarted";
+    workbench.platform.printer.printCompleted = "printCompleted";
+    workbench.platform.printer.printError = "printError";
+    var printerName=workbench.platform.printer.printers;
+    var defaultPrinter = workbench.platform.printer.defaultPrinter;
+    var printerName=printerName.split(';');
+    if(printerName[0]!=''){
+       for(index in printerName){
+          if(printerName[index]==defaultPrinter){
+            	$("#printmn").append('<option selected="selected" value="'+printerName[index]+'" >'+printerName[index]+'</option>');
+            	$("#printmn2").append('<option selected="selected" value="'+printerName[index]+'" >'+printerName[index]+'</option>');
+            }else{
+            	$("#printmn").append('<option value="'+printerName[index]+'" >'+printerName[index]+'</option>');
+            	$("#printmn2").append('<option value="'+printerName[index]+'" >'+printerName[index]+'</option>');
+            	}
+            }
+         }else{
+            $("#printmn").append('<option  >本机没有连接打印设备</option>');
+            $("#printmn2").append('<option  >本机没有连接打印设备</option>');
+         }
+}
+function defaultprints(){
+	var printerName=$('#printmn2 option:selected').val();
+	workbench.platform.printer.defaultPrinter = printerName;
+	}
+function printError(errCode) {
+	if(errCode==1801){
+		layer.msg('无效打印机名！', 1, 3);
+        }else if(errCode==2){
+        	layer.msg('错误提示：请重新安装自己打印机对应的打印驱动！', 1, 3);
+                }else{
+                	layer.msg('错误编码：'+errCode, 1, 3);
+            }
+}
+function Printsend(){
+    var printerName=$('#printmn2 option:selected').val();
+    var printz=$('#printlx option:selected').val();
+    workbench.platform.printer.currentPrinter = printerName;
+    workbench.platform.printer.duplex = false;  //false/true  是否双面打印
+    workbench.platform.printer.layout = 1;// horizontal = 0/vertical = 1  横打或纵打
+    workbench.platform.printer.copys = 1;  //打印份数
+    workbench.platform.printer.marginY = marginY;
+    workbench.platform.printer.marginX = marginX;
+    var ssizzw=sizew;
+    var ssizzh=sizeh;
+	var printPageh = document.getElementById("print_iframe").contentDocument.getElementById("sendcontent").offsetHeight;
+	var printdpi = workbench.platform.printer.currentPrinterDPI;
+	if(printdpi==undefined||printdpi=="undefined")printdpi=180;
+	var printWidth = parseInt((sizew)/26.4*printdpi);
+	var printHeight=printPageh*2;
+	//$.alert(printWidth+'-'+printHeight+'-'+ssizzw+'-'+ssizzh);
+    workbench.platform.printer.printWidth = Number(printWidth);
+    workbench.platform.printer.printHeight = Number(printHeight);
+	workbench.platform.printer.useCustomPaperSize(ssizzw,ssizzh); 
+    workbench.platform.printer.printWithFrame("iframe_a");
+    gprintid=Number(gprintid)+1;
+    if(sentptimes==sentptime)printKstate();
+}
+function dataTranslatedStarted() {
+}
+function dataTranslatedCompleted() {
+}
+function printEvnet() {
+}
+function printStarted() {
+}
+function printCompleted(){
+    if(sentptimes<sentptime-1){
+        sentptimes++;
+        checks(sentptimes);
+    }
+}
+function checks(tptimes){
+    var sendmtext=printsendarry[tptimes];
+    var srcs='<?php echo APP_WEB_INDEX_ROOT;?>/trade/faceMtext#babylist='+encodeURIComponent(sendmtext);
+    $("#iframes").empty();
+    $("#iframes").append('<iframe src="'+srcs+'" id="print_iframe" style="border:0;" name="iframe_a" onload="Printsend()" width="350px" height="710px"></iframe>');
+}
+
+function dataTranslated(data) {
+    var srcData = "data:image/png;base64, " + data;
+    var previewDiv = document.getElementById("printPreviewboby");
+    var previewImg = document.createElement("img");
+    previewImg.setAttribute("src", srcData);
+    previewImg.setAttribute("width", "360px");
+    previewImg.setAttribute("height", "600px");
+    previewDiv.appendChild(previewImg);
+}
+
+function printKstate(){
+    var gkdtidarrs='';
+    for(index in gkdtidarr){
+        gkdtidarrs=gkdtidarrs+','+gkdtidarr[index];
+    }
+    var printss=0;
+    for(index in printidarr){
+    	printss=Number(printidarr[index]);
+        if(gkdtidarrs.indexOf(printidarr[index]) <0)gkdtidarr.push(printss);
+    }
+    var statetid=''
+    for(index in gkdtidarr){
+        if(statetid=='')statetid=gkdtidarr[index];else statetid=statetid+','+gkdtidarr[index];
+    }
+    var kdtid='';
+    var kdtids='';
+    var printstu=window.localStorage.getItem("tradestatus"+sellernick);
+    if(printstu=='WAIT_BUYER_CONFIRM_GOODS')kdtids=statetid;else kdtid=statetid;
+    $.ajax({
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/printState',
+	    type: 'POST',
+	    dataType:'html',
+	    data:{'nick':sellernick,'kdtid':kdtid,'kdtids':kdtids,'fhtid':'','fhtids':''},
+	    timeout:10000,
+        success: function(data){
+	       	 for(index in printidarr){
+	 	    	$("#kdflagp"+printidarr[index]).attr("style","color: #0C0;");
+	 	    	$("#kdflagp"+printidarr[index]).html('(已打)');
+	 	    }
+        	var printSetid = window.localStorage.getItem("printSetid"+sellernick);
+        	var datas=eval('('+printSetid+')');
+            if(kdtid!='')datas.logdata['kdtid']=kdtid+'';else datas.logdata['kdtids']=kdtids+'';
+            datas=JSON.stringify(datas);
+        	window.localStorage.setItem("printSetid"+sellernick,datas);
+        	printidarr.length=0;
+        }
+    });
+}
+
+function gettbtime(){
+    QN.top.invoke({
+        "cmd": "taobao.time.get",
+        "method": "get",
+        "success":function (rsp){
+            if(typeof rsp === 'string'){
+                var    rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            if(rsp.code!=null){
+                geterrorinfo('gettbtime--1',JSON.stringify(rsp));
+            }else{
+                printtime=rsp.time_get_response.time;
+                printtime=printtime.substr(0, 11);
+                if(printtime==''){
+                    var now = new Date();
+                    var year = now.getFullYear();
+                    var month = now.getMonth() + 1;
+                    var day = now.getDate();
+                    printtime=year+'-'+month+'-'+day;
+                }
+                var printiid=printtime.substr(0, 4)+printtime.substr(5, 2)+printtime.substr(8, 2);
+                printiid=Number(printiid);
+                gprintid=''+gprintid;
+                if(gprintid.substr(0, 8)!=printiid)gprintid=printiid*10000;
+            }
+        },
+        error: function(msp){
+            geterrorinfo('gettbtime',JSON.stringify(msp));
+        }
+    });
+}
+function getshop(){
+	QN.top.invoke({
+        "cmd": "taobao.shop.get",
+        "param": {
+            "fields":"title",
+            "nick":sellernick
+        },
+        "method": "get",
+        "success":function (rsp){
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            shopName=rsp.shop_get_response.shop.title;
+        },
+        error: function(msp){
+        	if(typeof msp === 'string'){
+                var msp = JSON.parse(msp);
+            }else{
+                var	msp= msp;
+            }
+        	layer.msg(JSON.stringify(msp), 1, 3);
+        }
+    });
+	}
+/***************************************************************/
+function plsgood(tid)
+{
+	$("#plsendlist").empty();
+    gcodeflag=true;
+    sendtql=[];
+    gsendlogs=[];
+    var fdatas={};
+    var apitext='';
+    if(gsendplan=='online'){
+        apitext=' taobao.logistics.online.send ';
+    }else{
+        apitext=' taobao.logistics.offline.send ';
+    }
+    $("#sendplan2").find("option[value='"+gsendplan+"']").attr("selected",true);
+    if(tid!=''){
+        var id=1
+        var datas={};
+        datas.id=id;
+        var addr=$("#adrrdata"+tid).text();
+        datas.addr=addr;
+        var nick = $("#itmesome"+tid).data('nick');
+        datas.nick=nick;
+        datas.companyno=order_oid[tid];
+        var tids= ''+$("#itmesome"+tid).data('tids');
+        tids=tids.split(',');
+        for(index in tids){
+           var vtid=tids[index];
+            var tql='{update '+apitext+' set out_sid= '+datas.companyno+',company_code='+gcompanycode+'  where tid='+vtid+'}';
+            sendtql.push(tql);
+            datas.tid=vtid;
+            gsendlogs.push(datas);
+        }
+        datas.vtid =tid;
+        datas.tid =tids.join("\n");
+        var source = $("#plsend-template").html();
+        var template=Handlebars.compile(source);
+        var htmlstr = template(datas);
+        $("#plsendlist").append(htmlstr);
+    }else{
+        var id=1
+        $("input[name='checkone']:checked").each(
+            function(){
+                var  ctid=$(this).val();
+                var datas={};
+                datas.id=id;
+                var addr=$("#adrrdata"+ctid).text();
+                datas.addr=addr;
+                var nick = $("#itmesome"+ctid).data('nick');
+                datas.nick=nick;
+                var tids= ''+$("#itmesome"+ctid).data('tids');
+                tids=tids.split(',');
+                for(index in tids){
+                    var vtid=tids[index];
+	                datas.companyno=order_oid[vtid];
+	                var tql='{update '+apitext+' set out_sid= '+datas.companyno+',company_code='+gcompanycode+'  where tid='+vtid+'}';
+	                    sendtql.push(tql);
+	                    datas.tid=vtid;
+	                    gsendlogs.push(datas);
+                }
+                datas.vtid =ctid;
+                datas.tid =tids.join("\n");
+                var source = $("#plsend-template").html();
+                var template=Handlebars.compile(source);
+                var htmlstr = template(datas);
+                $("#plsendlist").append(htmlstr);
+                ++id;
+        });
+    }
+    $('#plwuliusum').html('订单数：'+sendtql.length+'单（合并后'+(id-1)+'单)');
+    $('#plsendlist-table').modal('show');
+}
+
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-23
+ * Time: 18:20
+ * 批量发货top发货.
+ */
+var codeother='';
+function batchSend(codeos){
+	if(codeos!=1)codeother=gcompanycode;
+    if(codeother=='OTHER'){
+    	codeother='wsx';
+	    $("#twohints").html('<p>您确定要选择【其它】物流公司批量发货吗？</p>');
+		document.getElementById('hintok').setAttribute("onclick", "batchSend(1);");
+		$('#twohint').modal('show');
+	    return;
+    }
+    layer.msg('正在努力发货中...', 1, 1);
+    var sendtotal=0;
+    var sendno=0;
+    var sendok=0;
+    var senderror='';
+    var out_sid='';
+    var is_split=0;
+    var sub_tid='';
+    var tid='';
+    var tids=new Array();
+    var checked = document.getElementsByName("checkone");
+    var checklen=checked.length;
+    for (var i=0;i<checklen;i++ )if(checked[i].checked){
+    	tid=checked[i].value;
+    	var itmesomes=$("#itmesome"+tid).data('tids');
+    	itmesomes=''+itmesomes;
+        tids=itmesomes.split(',');
+        sendtotal=Number(sendtotal)+tids.length;
+    	}
+	if(gsendplan=='online')var sendcmd="taobao.logistics.online.send";else var sendcmd="taobao.logistics.offline.send";
+	var outids=0;
+	for (var i=0;i<checklen;i++ )if(checked[i].checked){
+    	tid=checked[i].value;
+    	out_sid=$('#plcompanyno'+tid).val();
+    	var itmesomes=$("#itmesome"+tid).data('tids');
+    	itmesomes=''+itmesomes;
+        tids=itmesomes.split(',');
+	    if(out_sid==''){
+		    layer.msg('运单编号不能为空！', 1, 3);
+		    return;
+	    }
+        for(var index in tids){
+		    if(!mail_no_isCorrect(gcompanycode,out_sid))outids++;
+			QN.top.invoke({
+		    		"cmd": sendcmd,
+		    		"param": {tid:tids[index],out_sid:out_sid,is_split:is_split,company_code:gcompanycode},
+		    		"method": "get",
+		    		"success": function (rsp){
+		    			 if(typeof  rsp=== 'string')rsp = JSON.parse(rsp);
+		                 if(rsp.code!=null){
+		                 	sendno++;
+		                  	if(rsp.sub_code=='isv.logistics-online-service-error:B79')rsp.msg='该物流公司揽收或派送范围不支持!';
+		                  	else if(rsp.sub_code=='isv.logistics-online-service-error:B02')rsp.msg='您的帐号没有发货的权限!';
+		                  	else if(rsp.sub_code=='isv.logistics-online-service-error:B04')rsp.msg='订单状态不对!';
+		                  	else if(rsp.sub_code=='isv.logistics-online-service-error:B101')rsp.msg='您还没设置默认的退发货地址!';
+		                  	else if(rsp.sub_code=='isv.logistics-online-service-error:B55')rsp.msg='该交易状态不正确，不能发货!';
+		                  	else if(rsp.msg=='Invalid arguments:sender_id')rsp.msg='发货地址异常，请检查您的发货地址!';
+		                  	else if(rsp.msg=='Missing required arguments:company_code')rsp.msg='运单号不符合规则或已被使用！';
+		                 	if(senderror=='')senderror=JSON.stringify(rsp);else senderror=senderror+';'+JSON.stringify(rsp);
+		                 }else{
+			                  sendok++;
+			                  delfroms(mydb,sellernick,tids[index]);
+			                  //$("#id"+tids[index]).attr("checked",false);
+		                 }
+		                 if(sendtotal-sendno==sendok){
+				                 if(sendtotal==sendok){
+				                	 layer.msg('批量发货完成，当前成功发货'+sendtotal+'个！', 1, 1);
+					          	     reshow();
+				                 }else{
+				                	if(outids>0)senderror='运单号不符合规则或已被使用！';
+				                	geterrorinfo(sendcmd,'成功：'+sendok+'个，失败：'+sendno+'个！错误：'+senderror);
+					  				showalltids(1);
+				                 }
+		      				}
+		         	    },
+		      			"error": function (msg){
+		      				if(typeof  msg=== 'string')msg = JSON.parse(msg);
+		      				sendno++;
+		      				if(msg.sub_code=='isv.logistics-online-service-error:B79')msg.msg='该物流公司揽收或派送范围不支持!';
+		                  	else if(msg.sub_code=='isv.logistics-online-service-error:B02')msg.msg='您的帐号没有发货的权限!';
+		                  	else if(msg.sub_code=='isv.logistics-online-service-error:B04')msg.msg='订单状态不对!';
+		                  	else if(msg.sub_code=='isv.logistics-online-service-error:B101')msg.msg='您还没设置默认的退发货地址!';
+		                  	else if(msg.sub_code=='isv.logistics-online-service-error:B55')msg.msg='该交易状态不正确，不能发货!';
+		                  	else if(msg.msg=='Invalid arguments:sender_id')msg.msg='发货地址异常，请检查您的发货地址!';
+		                  	else if(msg.msg=='Missing required arguments:company_code')msg.msg='运单号不符合规则或已被使用！';
+		      				if(senderror=='')senderror=JSON.stringify(msg);else senderror=senderror+';'+JSON.stringify(msg);
+		      				if(sendtotal-sendno==sendok){
+		      					if(outids>0)senderror='运单号不符合规则或已被使用！';
+		      					geterrorinfo(sendcmd,'成功：'+sendok+'个，失败：'+sendno+'个！错误：'+senderror);
+			  					showalltids(1);
+		          				}
+		     			}     	
+				 });
+        	}
+		}
+	}
+
+/***************************************************************/
+function mail_no_isCorrect(code,outid){
+    outid = outid.replace(/<\/?.+?>/g,"");
+    outid = outid.replace(/[\r\n]/g, "");
+    outid = outid.replace(/[ ]/g,"");
+    var myReg=null;
+    if(code=="QFKD"){/*全峰快递*/
+        myReg=/^[0-9]{12}$|^[0-9]{15}$/;
+    }else if(code=="SCKJ"){/*成都东骏快捷*/
+        myReg=/^[0-9]{13}$/;
+    }else if(code=="UAPEX"){/*全一快递*/
+        myReg=/^\\d{12}|\\d{11}$/;
+    }else if(code=="SCWL"){/*尚橙物流*/
+        myReg=/^[A-Za-z0-9]+$/;
+    }else if(code=="GDEMS"){/*广东EMS*/
+        myReg=/^[a-zA-Z]{2}[0-9]{9}[a-zA-Z]{2}$/;
+    }else if(code=="EYB"){/*EMS经济快递*/
+        myReg=/^(50|51)[0-9]{11}$/;
+    }else if(code=="HZABC"){/*杭州爱彼西*/
+        myReg=/^[0-9]{10,11}$|^LBX[0-9]{15}-[2-9AZ]{1}-[1-9A-Z]{1}$/;
+    }else if(code=="ZJS"){/*宅急送*/
+        myReg=/^[a-zA-Z0-9]{10}$/;
+    }else if(code=="FEDEX"){/*联邦快递*/
+        myReg=/^[0-9]{12}$/;
+    }else if(code=="SF"){/*顺丰速运*/
+        myReg=/^[0-9]{12}$/;
+    }else if(code=="LB"){/*龙邦速递*/
+        myReg=/^[0-9]{12}$|^LBX[0-9]{15}-[2-9AZ]{1}-[1-9A-Z]{1}$|^[0-9]{15}$|^[0-9]{15}-[1-9A-Z]{1}-[1-9A-Z]{1}$/;
+    }else if(code=="FAST"){/*快捷速递*/
+        myReg=/^[0-9]{11,13}$/;
+    }else if(code=="YCT"){/*黑猫宅急便*/
+        myReg=/^[0-9]{12}$/;
+    }else if(code=="NEDA"){/*港中能达*/
+        myReg=/^((88|)[0-9]{10})$|^((1|2|3|5|)[0-9]{9})$|^(900[0-9]{9})$/;
+    }else if(code=="UC"){/*优速物流*/
+        myReg=/^VIP[0-9]{9}|V[0-9]{11}|[0-9]{12}$|^LBX[0-9]{15}-[2-9AZ]{1}-[1-9A-Z]{1}/;
+    }else if(code=="LTS"){/*联昊通*/
+        myReg=/^[0-9]{9,12}$/;
+    }else if(code=="BJCS"){/*城市100*/
+        myReg=/^(CS[0-9]{13})$|^([0-9]{13})$|^([0-9]{9})$/;
+    }else if(code=="ZHQKD"){/*汇强快递*/
+        myReg=/^([0-9]{11})$|^([0-9]{12})$/;
+    }else if(code=="SURE"){/*速尔*/
+        myReg=/^[0-9]{11}[0-6]{1}$/;
+    }else if(code=="EMS"){/*EMS*/
+        myReg=/^[A-Z]{2}[0-9]{9}[A-Z]{2}$|^[0-9]{13}$/;
+    }else if(code=="YTO"){/*圆通速递*/
+        myReg=/^(0|1|2|3|5|6|7|8|9|E|D|F|G|V|W|e|d|f|g|v|w)[0-9]{9}$/;
+    }else if(code=="ZTO"){/*中通速递*/
+        myReg=/^((618|680|778|768|688|618|828|988|118|888|571|518|010|628|205|880|717|718|728|738|761|762|763|701|757)[0-9]{9})$|^((2008|2010|8050|7518)[0-9]{8})$/;
+    }else if(code=="YUNDA"){/*韵达快运*/
+        myReg=/^[\\s]*[1-9][0-9]{12}[\\s]*$/;
+    }else if(code=="TTKDEX"){/*天天快递*/
+        myReg=/^[0-9]{12,14}$/;
+    }else if(code=="BEST"){/*百世物流*/
+        myReg=/^[0-9]{10}$/;
+    }else if(code=="DBL"){/*德邦物流*/
+        myReg=/^[0-9]{8,10}$/;
+    }else if(code=="SHQ"){/*华强物流*/
+        myReg=/^[A-Za-z0-9]*[0|2|4|6|8]$/;
+    }else if(code=="HTKY"){/*汇通快运*/
+        myReg=/^(A|B|C|D|E|H|0)(D|X|[0-9])(A|[0-9])[0-9]{10}$|^(21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39)[0-9]{10}$/;
+    }else if(code=="CRE"){/*中铁快运*/
+        myReg=/^K[0-9]{13}$/;
+    }else if(code=="STO"){/*申通E物流*/
+        myReg=/^(268|888|588|688|368|468|568|668|768|868|968)[0-9]{9}$|^(268|888|588|688|368|468|568|668|768|868|968)[0-9]{10}$|^(STO)[0-9]{10}$/;
+    }else if(code=="POSTB"){/*邮政国内小包*/
+        myReg=/^[GA]{2}[0-9]{9}([2-5][0-9]|[1][1-9]|[6][0-5])$|^[99]{2}[0-9]{11}$/;
+    }else if(code=="XB"){/*新邦物流*/
+        myReg=/[0-9]{8}/;
+    }else if(code=="QRT"){/*全日通快递*/
+        myReg=/^[0-9]{12}$/;
+    }else if(code=="GTO"){/*国通快递*/
+        myReg=/^(2|3|8|5|6|7)[0-9]{9}$/;
+    }else if(code=="HOAU"){/*天地华宇*/
+        myReg=/^[0-9]{8}$/;
+    }else if(code=="FEDEXLY"){/*联邦快递陆运*/
+        myReg=/^[0-9]{12}$/;
+    }else if(code=="XNGX"){/*家装干线物流*/
+        myReg=/.*/;
+    }else if(code=="SZCWOL"){/*赤湾东方*/
+        myReg=/^[A-Za-z]{4}[0-9]{11}$/;
+    }else if(code=="CNEX"){/*佳吉快运 */
+        myReg=/^[0-9]{10}$/;
+    }else if(code=="GTO"){/*E速宝*/
+        if(outid!=""){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        return true;
+    }
+    if(myReg.test(outid)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function windowurl(){
+	var url='http://bangpai.taobao.com/group/thread/15074034-287848283.htm?spm=0.0.0.0.VXKsOV&qq-pf-to=pcqq.c2c';
+	QN.application.invoke({
+        "cmd": "translateUrl",
+        "param":{'url':url},
+        "success": function (e){
+            if(typeof  e=== 'string'){
+                e = JSON.parse(e);
+            }
+            window.open(e.url);
+        }
+    });
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-13
+ * Time: 11:30
+ * To get nick all num_iid\title\uptitle | ajax | mysql.
+ */
+function getBaby(varbaby){
+	if(varbaby==1){
+		tradePoint(sellernick,'打印发货之同步宝贝简称');
+		window.localStorage.removeItem("titleData"+sellernick);
+	}
+	var titleData = window.localStorage.getItem("titleData"+sellernick);
+	if(titleData=="null"||titleData==null){
+		$.ajax({
+		     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getTitle',
+		     type: 'POST',
+		     dataType:'html',
+		     data:{nick:sellernick},
+		     timeout:10000,
+		     success: function(data){
+		    	 var datatemp=eval('('+data+')');
+		    	 window.localStorage.setItem("titleData"+sellernick,data);
+		    	 if(datatemp!=''){
+			    	 num_iidG=datatemp[0]['num_iid'];
+			    	 titleG=datatemp[0]['title'];
+			    	 uptitleG=datatemp[0]['uptitle'];
+			    	 openStatus=datatemp[0]['status'];
+			    	 }
+		    	 if(varbaby==1){
+		    		 layer.msg('同步成功!',1, 1);
+			    	 }
+		     },
+		     error:function(e){
+		    	 layer.msg('获取数据失败！',1, 3);
+			     }
+		});
+	}else{
+		var datatemp=eval('('+titleData+')');
+		if(datatemp!=''){
+	    	 num_iidG=datatemp[0]['num_iid'];
+	    	 titleG=datatemp[0]['title'];
+	    	 uptitleG=datatemp[0]['uptitle'];
+	    	 openStatus=datatemp[0]['status'];
+	    	 }
+		}
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-13
+ * Time: 11:50
+ * To get titleSet value.
+ */
+function getTitle(titles,num_iid){
+	var localtitle= window.localStorage.getItem("localtitle"+sellernick);
+	if(localtitle=='on'){
+		var num_iidA=num_iidG.split('|Y|');
+	    var titleA=titleG.split('|Y|');
+	    var uptitleA=uptitleG.split('|Y|');
+	    for(var indexi in num_iidA){
+			if(num_iidA[indexi]==num_iid) {
+				titles=uptitleA[indexi];
+				break;
+				}
+			}
+	}
+	return titles;
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-03
+ * Time: 10:20
+ * 清除缓存数据.
+ */
+function clearData(){
+	QN.top.invoke({
+        "cmd": "taobao.user.seller.get",
+        "param":{
+            fields:'nick,type'
+        },
+        "method": "get",
+        "success" : function(rsp) {
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }
+            if(rsp.code!=null){
+            	layer.msg('获取用户名失败！',1, 3);
+            }else{
+                sellernick=rsp.user_seller_get_response.user.nick;
+            	window.localStorage.removeItem("ggdata");
+            	window.localStorage.removeItem("ggtime");
+            	window.localStorage.removeItem("printmo"+sellernick);
+            	window.localStorage.removeItem("localtitle"+sellernick);
+            	window.localStorage.removeItem("printSetid"+sellernick);
+            	window.localStorage.removeItem("sendMtext"+sellernick);
+            	window.localStorage.removeItem("titleData"+sellernick);
+            	window.localStorage.removeItem("fast_memo"+sellernick);
+            	window.localStorage.removeItem("fast_rate"+sellernick);
+            	window.localStorage.removeItem("fast_beiw"+sellernick);
+            	window.localStorage.removeItem("cuifucontent"+sellernick);
+            	window.localStorage.removeItem("compty"+sellernick);
+            	layer.msg('清除成功！',1, 1);
+	   		 	setTimeout('checkstu()',1000);
+            }
+        },
+        error: function(msp){
+        	layer.msg('清除失败！',1, 3);
+        }
+    });
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-14
+ * Time: 10:30
+ * 改变要打印数据的状态.
+ */
+function checkstu(){
+	var printstu=$('#tradestat input').val();
+	window.localStorage.setItem("tradestatus"+sellernick,printstu);
+	window.location.href = "<?php echo APP_WEB_INDEX_ROOT;?>/trade/facePrint?vers=<?php echo REAL_ROOT_VER;?>";
+}
+function tjprint(){
+	$.ajax({
+		  type: 'GET',
+		  url: "http://cdn.zzgdapp.com/iysta/trade/tradeprint",
+		  success:function(e){
+			  }
+		});
+	}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-18
+ * Time: 16:30
+ * 批量下载订单数据预览.
+ */
+	function batchDown(){
+		$("#batchdowns").empty();
+		$("#downtables").empty();
+		var checked = document.getElementsByName("checkone");
+		var checklen=checked.length;
+		var arrid='';
+		var downid=0;
+		 for (var i=0;i<checklen;i++ )
+		    {
+		        if(checked[i].checked){
+			        downid++;
+		        	arrid=checked[i].value;
+		        	var addr=$("#adrrdatae"+arrid).text();
+		    	    var addrs=addr.split('|:|');
+		    	    var items = $("#itmesome"+arrid).data('items');
+		    	    var memo = $("#itmesome"+arrid).data('memo');
+		    	    var sellermemo=memo.sellermemo;
+		    	    var buyermessage=memo.buyermessage;
+		    	    var btitle='';
+		    	    var bproperty='';
+		    	    var outer_iids='';
+		    	    var totalPrices=0;
+		    	    var buyerNick='';
+		    	    var lsoid='';
+		    	    var lspro='';
+		    	    var babyallsx='';
+		    	    var titlevals='';
+		    	    var paytime='';
+		    	    if(typeof items === 'string'){
+		    	        items=items.split('|:|');
+		    	        var ditems='';
+		    	        for(var index in items){
+		    	            ditems=JSON.parse(items[index]);
+		    	            paytime=ditems.pay_time;
+		    	            buyerNick=ditems.buyernick;
+		    	            totalPrices=Number(totalPrices)+Number(ditems.payment);
+		    	            var fastorder=ditems.orders.order;
+		    	            for(var index in fastorder){
+		    	                if((fastorder[index].refund_status=='NO_REFUND')&&(fastorder[index].status=='WAIT_SELLER_SEND_GOODS'||tradestatus=='WAIT_BUYER_CONFIRM_GOODS')){
+		    	                	lspro='';
+		    	                	titlevals=getTitle(fastorder[index].title,fastorder[index].num_iid);
+		    			            if(btitle=='') btitle=titlevals; else btitle=btitle+';'+titlevals;
+		    			            if(fastorder[index].sku_properties_name!=undefined||typeof(fastorder[index].sku_properties_name)!="undefined"){
+		    			            	lspro=fastorder[index].sku_properties_name;
+		    				        	if(bproperty=='')bproperty=fastorder[index].sku_properties_name+'*'+fastorder[index].num;else bproperty=bproperty+';'+fastorder[index].sku_properties_name+'*'+fastorder[index].num;
+		    				            }else{
+		    				            	if(bproperty=='')bproperty='数量：'+fastorder[index].num;else bproperty=bproperty+'数量：'+fastorder[index].num;
+		    				                }
+		    		
+		    				        if(fastorder[index].outer_sku_id!=undefined||typeof(fastorder[index].outer_sku_id)!="undefined"){
+		    				        	lsoid=fastorder[index].outer_sku_id;
+		    				        	if(outer_iids=='')outer_iids=fastorder[index].outer_sku_id;else outer_iids=outer_iids+';'+fastorder[index].outer_sku_id;
+		    				        }
+		    				        if(fastorder[index].outer_sku_id==undefined||typeof(fastorder[index].outer_sku_id)=="undefined"){
+		    				            if(fastorder[index].outer_iid!=undefined||typeof(fastorder[index].outer_iid)!="undefined"){
+		    				            	lsoid=fastorder[index].outer_iid;
+		    				            	if(outer_iids=='')outer_iids=fastorder[index].outer_iid;else outer_iids=outer_iids+';'+fastorder[index].outer_iid;
+		    				            }
+		    				        }
+		    				    	if(babyallsx=='') babyallsx=titlevals+'/'+lsoid+'/'+lspro+'/'+fastorder[index].num; else babyallsx=babyallsx+';'+titlevals+'/'+lsoid+'/'+lspro+'/'+fastorder[index].num;
+		    		            }
+		    	            }
+		    	        }
+		    	    }else{
+		    	    	paytime=items.pay_time;
+		    	    	buyerNick=items.buyernick;
+		    	    	totalPrices=items.payment;
+		    	    	var fastorder=items.orders.order;
+		    	    	for(var index in fastorder){
+		    	    		if((fastorder[index].refund_status=='NO_REFUND')&&(fastorder[index].status=='WAIT_SELLER_SEND_GOODS'||tradestatus=='WAIT_BUYER_CONFIRM_GOODS')){
+		    	    		lspro='';
+		    	    		titlevals=getTitle(fastorder[index].title,fastorder[index].num_iid);
+		    	    		if(btitle=='')btitle=titlevals;else btitle=btitle+';'+titlevals;
+		    		        if(fastorder[index].sku_properties_name!=undefined||typeof(fastorder[index].sku_properties_name)!="undefined"){
+		    		        	lspro=fastorder[index].sku_properties_name;
+		    		        	if(bproperty=='')bproperty=fastorder[index].sku_properties_name+'*'+fastorder[index].num;else bproperty=bproperty+';'+fastorder[index].sku_properties_name+'*'+fastorder[index].num;
+		    		            }else{
+		    		            	if(bproperty=='')bproperty='数量：'+fastorder[index].num;else bproperty=bproperty+'数量：'+fastorder[index].num;
+		    		                }
+
+
+		    		        if(fastorder[index].outer_sku_id!=undefined||typeof(fastorder[index].outer_sku_id)!="undefined"){
+		    		        	lsoid=fastorder[index].outer_sku_id;
+		    		        	if(outer_iids=='')outer_iids=fastorder[index].outer_sku_id;else outer_iids=outer_iids+';'+fastorder[index].outer_sku_id;
+		    		        }
+		    		        if(fastorder[index].outer_sku_id==undefined||typeof(fastorder[index].outer_sku_id)=="undefined"){
+		    		            if(fastorder[index].outer_iid!=undefined||typeof(fastorder[index].outer_iid)!="undefined"){
+		    		            	lsoid=fastorder[index].outer_iid;
+		    		            	if(outer_iids=='')outer_iids=fastorder[index].outer_iid;else outer_iids=outer_iids+';'+fastorder[index].outer_iid;
+		    		            }
+		    		        }
+		    		    	if(babyallsx=='') babyallsx=titlevals+'/'+lsoid+'/'+lspro+'/'+fastorder[index].num; else babyallsx=babyallsx+';'+titlevals+'/'+lsoid+'/'+lspro+'/'+fastorder[index].num;
+		    	        	}}
+		    	    }
+		    	    if(paytime=='')paytime='货到付款订单';
+					var datas={};
+		    	    datas.downid=downid;
+		    	    datas.tid=arrid;
+		    	    datas.buyname=addrs[0];
+		            datas.buynick=buyerNick;
+		            datas.tidqx=babyallsx.substring(0,6)+'..';
+		            datas.tidqxs=babyallsx;
+		            datas.price=totalPrices;
+		            datas.lxfun=addrs[2];
+		            datas.lxfune=addrs[1];
+		            datas.address=addrs[3]+'..';
+		            datas.addresss=addrs[3]+' '+addrs[4]+' '+addrs[5]+' '+addrs[6];
+		            datas.buytime=paytime;
+		            var source = $("#batchdown-template").html();
+		            var template=Handlebars.compile(source);
+		            var htmlstr = template(datas);
+		            $("#batchdowns").append(htmlstr);
+		            datas.tidqx=babyallsx;
+		            datas.address=addrs[3]+' '+addrs[4]+' '+addrs[5]+' '+addrs[6];
+		            htmlstr = template(datas);
+		            $("#downtables").append(htmlstr);
+		        }
+		    }
+		}
+		/**
+		 * Created with need.
+		 * User: wangsx
+		 * Date: 14-4-18
+		 * Time: 22:16
+		 * 批量下载订单开始【抄袭代码者走路跌倒，说的就是你还看谁】.
+		 */
+			 var againdown = (function () {
+			    var uri = 'data:application/vnd.ms-excel;base64,'
+			    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+			    , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+			    , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+			        return function (table, name) {
+			            if (!table.nodeType) table = document.getElementById(table);
+			            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML };
+			            window.location.href = uri + base64(format(template, ctx));
+			        }
+			    })()
+		/**
+		 * Created with need.
+		 * User: wangsx
+		 * Date: 14-4-21
+		 * Time: 21:20
+		 * 跳转到爱用商品首页.
+		 */
+		function changetosp(num_id){
+            QN.plugin.invoke({
+            	"cmd": "itemDetail",
+            	"param": {
+            	iid:num_id
+            	},
+            	"category": "shangpinguanli"
+            	});
+        }
+		function onceSend(tids){
+			$("input[name='checkone']").parent('label').checkbox('uncheck');
+	        $("input[name='checkall']").parent('label').checkbox('uncheck');
+	        $("#id"+tids).parent('label').checkbox('check');
+			printqiao(3);
+			}
+</script>
+<script type="text/javascript">  
+var uptradeOrderInfoCols;
+var cpCode;
+function getFaceId(){
+	/*QN.top.invoke({
+		"cmd": "taobao.logistics.address.reachable",
+		"param": {'partner_ids':'500','address':'浙江省杭州市文三路华星时代广场',
+			'service_type':'88'},
+			    "success": function(rsp){
+			    	if(typeof  rsp=== 'string'){
+	  					rsp = JSON.parse(rsp);
+		            }
+		            alert(JSON.stringify(rsp));
+			    },
+			    error: function(msp){
+                    if(typeof msp === 'string'){
+                        var msp = JSON.parse(msp);
+                    }else{
+                        var msp= msp;
+                    }
+                    if(msp.sub_code=='subuser.has-no-permission'){
+                    	$("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+			     	    showMsg('hint');
+                    }else{
+                        alert(JSON.stringify(msp));
+	                    }
+                }    		       	
+	 });
+	 return;*/
+	 
+	cpCode="HTKY";
+	var shippingAddress='{"province":"浙江省","city":"杭州市","area":"余杭区","division_id":"330110","address_detail":"文一西路969号"}';	
+	var shippingAddress='{"area":"长宁区","division_id":310105,"area_code":310105,"province_code":310000,"province":"上海","city_code":310100,"address_detail":"测试ISV","address_format":"province:上海;provinceCode:310000;city:上海市;cityCode:310100;area:长宁区;areaCode:310105;town:null;townCode:null;addressDetail:测试ISV","city":"上海市"}';	
+	var shippingAddress='{"area":"余杭区","division_id":330110,"area_code":330110,"province_code":330000,"province":"浙江省","city_code":330100,"address_detail":"测试ISV","address_format":"province:浙江省;provinceCode:330000;city:杭州市;cityCode:330100;area:余杭区;areaCode:330110;town:null;townCode:null;addressDetail:测试ISV","city":"杭州市"}';	
+	var tradeOrderInfoCols='[{"ali_order": true,"consignee_address": {"address_detail": "兵团一零一团","area": "五家渠","area_code": 0,"city": "五家渠市","city_code": 0,"division_id": 101011,"province": "新疆维吾尔自治区","province_code": 0,"town_code": 0},"consignee_name": "老鹰","consignee_phone": "12312312311","item_name": "沙箱测试:集市商品同步测试0001","order_channels_type": "TM","trade_order_list": ["ESW-20140403-00650"]}]';
+	var tradeOrderInfoCols='[{"consignee_address": {"address_detail": "城西罗华停车场39号（新锦副食品）","area": "东湖区","city": "南昌市","province": "江西省"},"consignee_name": "施雅清","consignee_phone": "13817598390","item_name": "雪纺","order_channels_type": "TB","trade_order_list": ["665211220057447"]}]';
+
+	/*
+	QN.top.invoke({
+		"cmd": "taobao.wlb.waybill.get",
+		"param": {'trade_order_info_cols':tradeOrderInfoCols,
+			'cp_code':cpCode,
+			'shipping_address':shippingAddress},
+			    "success": function(rsp){
+			    	if(typeof  rsp=== 'string'){
+	  					rsp = JSON.parse(rsp);
+		            }
+		            alert(JSON.stringify(rsp));
+			    },
+			    error: function(msp){
+                    if(typeof msp === 'string'){
+                        var msp = JSON.parse(msp);
+                    }else{
+                        var msp= msp;
+                    }
+                    if(msp.sub_code=='subuser.has-no-permission'){
+                    	$("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+			     	    showMsg('hint');
+                    }else{
+                        alert(JSON.stringify(msp));
+	                    }
+                }    		       	
+	 });
+return;*/
+	$.ajax({
+	     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getFaceId',
+	     type: 'POST',
+	     dataType:'html',
+	     data:{nick:sellernick,cpCode:cpCode,shippingAddress:shippingAddress,tradeOrderInfoCols:tradeOrderInfoCols},
+	     timeout:10000,
+	     success: function(data){
+	    	 var datatemp=eval('('+data+')');
+	    	 $.alert(JSON.stringify(datatemp));
+	    	 uptradeOrderInfoCols='{"consignee_address":{"address_detail":"朝阳路高井，财满街，财经中心9号楼21单元6013","area":"朝阳区","city":"北京市","division_id":0,"province":"北京"},"consignee_name":"老鹰好","consignee_phone":"1314520","item_name":"爱用交易","order_channels_type":"TM","waybill_code":"'+datatemp.results.waybill_apply_new_info[0].waybill_code+'","trade_order_list":["ESW-20140403-00656"]}';
+	     },
+	     error:function(e){
+	    	 layer.msg('获取面单失败！',1, 3);
+		     }
+	});
+}
+function upFaceId(){
+	var waybillCode='71230102000002';	
+	$.ajax({
+	     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/upFaceId',
+	     type: 'POST',
+	     dataType:'html',
+	     data:{nick:sellernick,cpCode:cpCode,tradeOrderInfoCols:uptradeOrderInfoCols},
+	     timeout:10000,
+	     success: function(data){
+	    	 var datatemp=eval('('+data+')');
+	    	 $.alert(JSON.stringify(datatemp));
+	     },
+	     error:function(e){
+	    	 layer.msg('更新面单失败！',1, 3);
+		     }
+	});
+}
+function getUserbuy(){
+	QN.top.invoke({
+		"cmd": "taobao.wlb.waybill.search",
+		"success": function(rsp){
+			   if(typeof  rsp=== 'string'){
+	  				rsp = JSON.parse(rsp);
+		        }
+				var faceresults=rsp.wlb_waybill_search_response.results.waybill_apply_subscription_info;
+		    	 if(faceresults!=undefined){
+		    	 $("#face_faddr").empty();
+		    	 var companiesparrs;
+		    	 var facelogis=window.localStorage.getItem("facelogis"+sellernick);
+		    	 for(var index in faceresults){
+				    	 for(var indesx in companiesparr){
+				    		 companiesparrs=companiesparr[indesx].split(',');
+				    		 if(companiesparrs[1]==faceresults[index].cp_code){
+							 	$("#face_faddr").append('<h5>物流公司：'+companiesparrs[0]+'</h5>');
+							 	if((facelogis!=null||facelogis!='null')&&facelogis==companiesparrs[1]){
+							 		$(".printmosel").append('<option value="'+companiesparr[indesx]+'" selected="selected">'+companiesparrs[0]+'</option>');
+							 		$(".wuliucompany").append('<option value="'+companiesparr[indesx]+'" selected="selected">'+companiesparrs[0]+'</option>');
+							 	}else{
+							 		$(".printmosel").append('<option value="'+companiesparr[indesx]+'">'+companiesparrs[0]+'</option>');
+							 		$(".wuliucompany").append('<option value="'+companiesparr[indesx]+'">'+companiesparrs[0]+'</option>');
+								 	}
+				    		 }
+				    	 }
+			    		 var inforesults=faceresults[index].branch_account_cols.waybill_branch_account;
+			    		 if(inforesults!=undefined){
+					    		for(var indee in inforesults){
+							    	 var accountresults=inforesults[indee].shipp_address_cols.waybill_address;
+							    	 if(accountresults!=undefined){
+						    		 for(var indexs in accountresults){
+						    			 $("#face_faddr").append('<span style="display:none;" id="'+inforesults[indee].cp_code+'_addr">'+JSON.stringify(accountresults[indexs])+'</span>');
+						    			 $("#face_faddr").append('<p>发件人地址：'+accountresults[indexs].province+' '+accountresults[indexs].city+' '+accountresults[indexs].area+' '+accountresults[indexs].address_detail+'<span style="float:right;"> 单数：<span style="color:green;">'+inforesults[indee].quantity+'</span></span></p>');
+							    		 }
+							    	 }
+					    		 }
+				    		 }
+				    	 }
+		    	 }else{openbuys
+		    		 $("#face_faddr").html('您目前还没有购买过任何物流公司的面单，请先到卖家服务中心订购后再来使用易单宝打印！');
+			    	 $("#openbuys").modal('show');
+			    	 }
+			    },
+		"error": function(msp){
+               if(typeof msp === 'string'){
+                        var msp = JSON.parse(msp);
+                    }else{
+                        var msp= msp;
+                    }
+               if(msp.sub_code!='subuser.has-no-permission')geterrorinfo('taobao.trade.shippingaddress.update',msp);
+                }    		       	
+	 });
+	 return;
+	$.ajax({
+	     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getUserbuy',
+	     type: 'POST',
+	     dataType:'html',
+	     data:{nick:sellernick},
+	     timeout:10000,
+	     success: function(data){
+	    	 var datatemp=eval('('+data+')');
+	    	 //alert(JSON.stringify(datatemp));
+	    	 var faceresults=datatemp.results.waybill_apply_subscription_info;
+	    	 if(faceresults!=undefined){
+	    	 $("#face_faddr").empty();
+	    	 var companiesparrs;
+	    	 var facelogis=window.localStorage.getItem("facelogis"+sellernick);
+	    	 for(var index in faceresults){
+			    	 for(var indesx in companiesparr){
+			    	 //alert(JSON.stringify(faceresults[index].branch_account_cols.waybill_branch_account));
+			    		 companiesparrs=companiesparr[indesx].split(',');
+			    		 if(companiesparrs[1]==faceresults[index].cp_code){
+						 	$("#face_faddr").append('<h5>物流公司：'+companiesparrs[0]+'</h5>');
+						 	if((facelogis!=null||facelogis!='null')&&facelogis==companiesparrs[1]){
+						 		$(".printmosel").append('<option value="'+companiesparr[indesx]+'" selected="selected">'+companiesparrs[0]+'</option>');
+						 		$(".wuliucompany").append('<option value="'+companiesparr[indesx]+'" selected="selected">'+companiesparrs[0]+'</option>');
+						 	}else{
+						 		$(".printmosel").append('<option value="'+companiesparr[indesx]+'">'+companiesparrs[0]+'</option>');
+						 		$(".wuliucompany").append('<option value="'+companiesparr[indesx]+'">'+companiesparrs[0]+'</option>');
+							 	}
+			    		 }
+			    	 }
+		    		 var inforesults=faceresults[index].branch_account_cols.waybill_branch_account;
+		    		 if(inforesults!=undefined){
+				    		for(var indee in inforesults){
+						    	 var accountresults=inforesults[indee].shipp_address_cols.waybill_address;
+						    	 if(accountresults!=undefined){
+					    		 for(var indexs in accountresults){
+					    			 $("#face_faddr").append('<span style="display:none;" id="'+inforesults[indee].cp_code+'_addr">'+JSON.stringify(accountresults[indexs])+'</span>');
+					    			 $("#face_faddr").append('<p>发件人地址：'+accountresults[indexs].province+' '+accountresults[indexs].city+' '+accountresults[indexs].area+' '+accountresults[indexs].address_detail+'<span style="float:right;"> 单数：<span style="color:green;">'+inforesults[indee].quantity+'</span></span></p>');
+						    		 }
+						    	 }
+				    		 }
+			    		 }
+			    	 }
+	    	 }else{
+	    		 layer.msg('您目前还没有购买过任何物流公司的面单，请先到卖家服务中心订购后再来使用易单宝打印！',2, 3);
+		    	 }
+	     },
+	     error:function(e){
+	    	 layer.msg('获取用户订购信息失败！',1, 3);
+		     }
+	});
+}
+function getLogis(){
+	QN.top.invoke({
+		 "cmd": "taobao.logistics.companies.get",
+		 "param": {'fields':"id,code,name",'order_mode':'online'},
+		 "method": "get",
+		 "success": function(rsp){
+	  		 if(typeof  rsp=== 'string'){
+						rsp = JSON.parse(rsp);
+		            }
+		    		if(rsp.error_response){
+		    			layer.msg('调取物流公司失败！',1, 3);
+			    	}else if(rsp.logistics_companies_get_response){
+		    			 for(var index in rsp.logistics_companies_get_response.logistics_companies.logistics_company){
+			    			 var order=rsp.logistics_companies_get_response.logistics_companies.logistics_company[index];
+			    			 companiesparr[index]=order.name+','+order.code+','+order.id;
+		    			 }
+		    		}
+		    		getUserbuy();
+				},
+			 error: function(msp){
+                  if(typeof msp === 'string'){
+                      var msp = JSON.parse(msp);
+                  }else{
+                      var msp= msp;
+                  }
+                  layer.msg(JSON.stringify(msp),1, 3);
+              }  
+	});
+}
+      /**
+       * Created with need.
+       * User: wangsx
+       * Date: 14-5-8
+       * Time: 22:45
+       * 生成条形码.
+       */
+      function getfaceCode(barWidth,barHeight,facecode,codeval,fontSize){
+          var btype = "code128";  
+          var settings = {  
+            output:"css",//用css输出图片  
+            bgColor: '#FFF',  
+            color: '#000',  
+            barWidth: barWidth,//间隔宽度  
+            barHeight: barHeight,//图片高度  
+            fontSize:fontSize//,marginHRI:'0'
+            };  
+           $("#"+facecode).html("").show().barcode(codeval, btype, settings);  
+        }
+      /**
+    	 * Created with need.
+    	 * User: wangsx
+    	 * Date: 14-5-16
+    	 * Time: 10:40
+    	 * 生成二维码.
+    	 */
+      function getFacetwo(){  
+           $(".facetwo").qrcode({
+        		render    : "canvas",
+        		text    : "http://www.baidu.com",
+        		width:"60",
+        		height:"60"
+        		});
+        } 
+    </script>  
+<script id="printlist_template" type="text/x-handlebars-template" >
+        <table  class="sui-table table-striped table-bordered">
+            <thead >
+            <tr ><th colspan='5'>
+				<label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" name="checkone" value="{{tid}}" id="id{{tid}}" ><span></span></label>
+					<div id="itmesome{{tid}}" data-items="{{items}}" data-tids="{{tid_ids}}" data-nick="{{buyer_nick}}" data-memo="" style="display:none;"></div>
+						<span title="购物车订单">
+							{{#if showcar}}
+								<img id ="car" src="http://cdn.zzgdapp.com/trade/web/images/gwc.png" />
+							{{/if}}
+						</span>
+						<span class="lbl" style="margin-right: 10px">编号:{{tid}}
+							 <span style="margin-left: 10px">成交:{{created}}</span>
+						</span>
+                    <img src="http://cdn.zzgdapp.com/trade/web/images/op_memo_{{seller_flag}}.png" width="12" title=""/>&nbsp;&nbsp;<span title="" id="sellerbz{{tid}}" ></span>
+					<span id="closed{{tid}}" style="display:none;">{{tidclosed}}</span>
+                </th>
+            </tr>
+            </thead>
+		<tbody>
+            <tr ><td width="50%" >
+			{{#each orderse}}
+          		<div class="sui-row-fluid" style="margin:5px 0;{{hengxian}}">
+            		<div class="span3" style="text-align:center;">
+                		<a href="javascript:changetosp('{{num_iid}}');" ><img alt="商品图片" src="{{pic_path}}_80x80.jpg" width="60" height="60" align="middle" /></a>
+            		</div>
+            		<div class="span9">
+                		<p style="font-size:14px; margin:0;padding:0;"><a href="javascript:void(0);" onclick="changetosp('{{num_iid}}');">{{title}}</a><span style="color:red;font-size:12px;">({{status}})</span></p>
+                		<p style="margin:0;padding:0;color:gray;" >{{sku_properties_name}}</p>
+							{{#if outer_sku_id}}
+								<p style="margin:0;padding:0;color:gray;" >商家编码:{{outer_sku_id}}<b class="pull-right">{{price}}元 x {{num}}</b></p>
+							{{else}}
+								{{#if outer_iid}}
+									<p style="margin:0;padding:0;color:gray;" >商家编码:{{outer_iid}}<b class="pull-right">{{price}}元 x {{num}}</b></p>
+								{{else}}
+								<p style="margin:0;padding:0;color:gray;" ><b class="pull-right">{{price}}元 x {{num}}</b></p>
+							{{/if}}
+							{{/if}}
+            		</div>
+        		</div>
+			{{/each}}
+				<span style="display:none;" id="baby_type{{tid}}">订单数({{tid_num}}){{baby_type}}</span>
+                </td>
+
+                <td width="24%" >
+                    <p style=" margin:0;padding:0;"><a onclick="wangwangP('{{buyer_nick}}');"  href="javascript:void(0);"><img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid={{buyer_nick}}&site=cntaobao&s=2&charset=utf-8"/>{{buyer_nick}}</a></p>
+					{{#if pay_time}}
+            			<span title="付款时间：{{pay_time}}" id="nopay{{tid}}">已付款{{pay_times}}小时</span>
+            		{{else}}
+            			<span title="货到付款" id="nopay{{tid}}">没有付款时间</span>
+						<img src="http://cdn.zzgdapp.com/trade/web/img/cod-icon.png" class="" title="货到付款">
+            		{{/if}}
+                    <p id="buyerly{{tid}}" style="color:#F00; margin:0;padding:0;"></p>
+                </td>
+
+                <td width="26%">
+					<select style="width:100px;height:25px;margin:0 5px 0 0;" id="facecompany{{tid}}" class="wuliucompany">
+    				</select>
+            		<span title="物流公司" class="wuliucompany" style="width:88px;margin-bottom:0;display:{{addredit}};" id="wuliuareacode{{tid}}" data-ddoinfo="" data-ddtinfo="" data-info="">{{dcompanyname}}</span>
+            		<!--<span style="display:{{addredit}};" title="当前物流可到达" id="wuliuarea{{tid}}" data-info="">
+                  	<i class="icon-ok"></i>
+              		</span> --><br/>
+					<a style="background:#45b97c;margin-top:3px;" href="javascript:void(0);" title="先预览，后打印" onclick="printfh('{{tid}}');" class="sui-btn btn-mini"><font color="#FFF">打印面单</font></a>
+					{{#if kdtrue}}
+             			<span id="fhflagp{{tid}}" style="color: #0C0;">(已打)</span>
+            		{{else}}
+            			<span id="fhflagp{{tid}}" style="color:#f00;">(待打)</span>
+            		{{/if}}<br/>
+					<a style="background:#006BCC;margin-top:3px;" href="javascript:void(0);" onclick="onceSend('{{tid}}');" class="sui-btn " title="先打印后发货可自动填充运单号工作效率提高10倍"><font color="#FFF">发　　货</font></a>
+                </td>
+            </tr>
+	</tbody>
+	<tfoot>
+            <tr>
+                <td colspan="4">
+					<span id="adrrdata{{tid}}">{{receiver_datas}}</span><span id="adrrdatae{{tid}}" style="display:none;">{{receiver_datase}}</span><span style="display:{{addredit}};"><a href="javascript:void(0);" style="{{showhides}}" onclick="editadrr('{{tid}}','{{tid_ids}}','{{tid_num}}');">&nbsp;编辑地址</a></span>
+				</td>
+            </tr>
+	</tfoot>
+        </table>
+</script>
+<script id="plsend-template" type="text/x-handlebars-template">
+    <tr>
+        <td >
+           {{id}}
+        </td>
+        <td width="15%" name="pltids" data-tids="{{vtid}}">
+            {{tid}}
+        </td>
+        <td width="50%">
+            {{addr}}
+        </td>
+        <td >
+            <a  href="javascript:void(0);" onclick="wangwangP('{{nick}}');">
+            <img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid={{nick}}&site=cntaobao&s=2&charset=utf-8"/>{{nick}}
+            </a>
+        </td>
+        <td >
+            <input type="text"  style="width:88px; margin-bottom:0;" id="plcompanyno{{vtid}}" value="{{companyno}}">
+        </td>
+    </tr>
+</script>
+
+<script id="batchdown-template" type="text/x-handlebars-template">
+<tr><td width="20px;">{{downid}}</td><td width="110px;">{{tid}}</td>
+	                <td width="55px;">{{buyname}}</td>
+	                <td width="95px;">{{buynick}}</td>
+	                <td width="80px;" title="{{tidqxs}}">{{tidqx}}</td>
+					<td width="60px;">{{price}}</td>
+	                <td width="95px;">{{lxfun}}<br/>{{lxfune}}</td>
+	                <td width="55px;" title="{{addresss}}">{{address}}</td>
+	                <td width="100px;">{{buytime}}</td>
+	                </tr>
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

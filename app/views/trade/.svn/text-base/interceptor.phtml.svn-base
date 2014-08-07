@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en"  manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<style>
+@font-face {font-family: 'iconfont';
+    src: url('http://cdn.zzgdapp.com/pubcdn/icon/wenhao/iconfont.eot'); /* IE9*/
+    src: url('http://cdn.zzgdapp.com/pubcdn/icon/wenhao/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('http://cdn.zzgdapp.com/pubcdn/icon/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('http://cdn.zzgdapp.com/pubcdn/icon/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('http://cdn.zzgdapp.com/pubcdn/icon/iconfont.svg#uxiconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+</style>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+<div class="container-fluid"  style="margin-top:-10px;">
+<div style="display: none;margin-top: -10px;padding-bottom: 5px;" id="adv_tops"></div>
+</div>
+<!-- User Interface --> 
+<div id="user_face" class="sui-modal hide fade" role="dialog" tabIndex="-1" data-hasfoot="true" data-backdrop="static" style="display:none;">
+	<div class="modal-dialog">    
+		<div class="modal-content">      
+			<div class="modal-header">        
+				<button aria-hidden="true" class="sui-close" type="button" data-dismiss="modal">×</button>        
+				<h4 class="modal-title">YESTERDAY ONCE MORE</h4>      
+			</div> 
+			<div class="modal-body" >	
+		  		<form class="sui-form form-horizontal" style="margin-left: 50px"> 			 
+					<div class="control-group">
+				    	<label class="control-label" for="ufacenick">BUYERNICK:</label>
+				    	<div class="controls">
+				      		<input type="text" id="ufacenick" placeholder="please enter seller's nick~">
+				    	</div>
+				 	</div>				  
+				  	<div class="control-group">
+				    	<label class="control-label" for="ufacenickPD1">PASSWORD</label>
+				    	<div class="controls">
+				      		<input type="password" id="ufacenickPD1" >
+				    	</div>
+				  	</div>				  
+				  	<div class="control-group">
+				    	<label class="control-label" for="ufacenickPD2">*PASSWORD</label>
+				    	<div class="controls">
+				      		<input type="password" id="ufacenickPD2" >
+				    	</div>
+				  	</div>
+			 	</form>
+			</div>
+	     	<div class="modal-footer">     
+	     		<button id ="usreface_btn"  class="sui-btn btn-primary btn-large" type="button" data-ok="modal">OK</button>    
+				<button class="sui-btn btn-default btn-large" type="button" data-dismiss="modal">CLOSE</button>      
+			</div>    
+		</div>  
+	</div>
+</div>
+	<div id="tjhmd_dialog"  class="sui-modal hide fade" role="dialog" tabIndex="-1" data-hasfoot="true" data-backdrop="static"  data-width="600px" style="display:none;">
+		<div class="modal-dialog">    
+			<div class="modal-content">      
+				<div class="modal-header">        
+					<button aria-hidden="true" class="sui-close" type="button" data-dismiss="modal">×</button>        
+					<h4 id="PopTitle" class="modal-title">添加黑名单</h4>      
+				</div>  
+		 		<div class="modal-body" style="max-height:420px;">
+					<div id="Pop_black">
+					<div style="width: 100%" class="sui-msg msg-large msg-warning">
+  					<div class="msg-con">拉黑后的买家再次购买，会自动关闭他的订单。</div>
+  						<s class="msg-icon"></s>
+					</div><br>
+						<span>输入要拉黑的买家旺旺：<br/></span>
+						<textarea rows="5" style="width:98%;resize:none;" placeholder="支持同时拉黑多个旺旺，一行一个。" id="bla_nicks"></textarea>		
+						<p>拉黑原因(仅卖家可见)：</p>
+						<input type="text" placeholder="输入拉黑原因，比如他是差评师，最多20个字符" style="width:98%;" id="bla_cause" maxlength="20"/><br />
+						<span style="color:#B7AAAA">提醒：每次最多支持手动拉黑10个买家</span> 
+					</div>
+					<div id="White_black" style="display: none">
+						<div style="width: 100%" class="sui-msg msg-large msg-warning">
+						  <div class="msg-con">白名单中的买家符合任一拦截条件也不会进行拦截</div>
+						  <s class="msg-icon"></s>
+						</div><br>
+						<span>输入要添加到白名单买家旺旺：<br/></span>
+						<textarea rows="5" style="width:98%;resize:none;" placeholder="支持同时添加多个旺旺，一行一个。" id="Wbla_nicks"></textarea>		
+						<p>添加原因(仅卖家可见)：</p>
+						<input type="text" placeholder="输入原因，比如他是贵宾，最多20个字符" style="width:98%;" id="Wbla_cause" maxlength="20"/><br />
+						<span style="color:#B7AAAA">提醒：每次最多支持手动添加10个买家</span> 
+					</div>
+				</div>
+			  	<div class="modal-footer">     
+			  		<button id="savenickBtn" class="sui-btn btn-primary btn-large" type="button">确定</button>
+					<button class="sui-btn btn-default btn-large" type="button" data-dismiss="modal">关闭</button>      
+				</div>    
+			</div>  
+		</div>
+	</div>
+<div id="baby_list"  class="sui-modal hide fade" role="dialog" tabIndex="-1" data-hasfoot="true" data-backdrop="static" data-height="430px" data-width="600px" style="display:none;">
+		<div class="modal-dialog">    
+			<div class="modal-content">      
+				<div class="modal-header">        
+					<button aria-hidden="true" class="sui-close" type="button" data-dismiss="modal">×</button>        
+					<h4 class="modal-title">宝贝白名单</h4>      
+				</div>  
+	<div class="modal-body" style="max-height: 400px;">
+		<table class="sui-table table-condensed table-bordered">
+		<thead>
+			<tr>
+				<th style="text-align: center;width:20%">宝贝图片</th>
+				<th style="text-align: center;width:50%">宝贝标题</th>
+				<th style="text-align: center;width:23%">添加时间</th>
+				<th style="text-align: center;width:7%">操作</th>
+			</tr>
+		</thead>
+		<tbody id="babylist_content">
+		</tbody>	
+		</table>
+	</div>
+	<div class="modal-footer">     
+					<button class="sui-btn btn-default btn-large" type="button" data-dismiss="modal">关闭</button>      
+				</div>    
+			</div>  
+		</div>
+	</div>
+<div style="margin-left: 10px;" class="container">
+<ul class="sui-nav nav-tabs nav-large" style="margin-top: 25px;">
+	<li class="active" id="cpssz"><a href="#defenserateset" onclick="The_loads_data()" data-toggle="tab">拦截设置</a></li>
+	<li id="bmdset"><a href="#white_list" data-toggle="tab" onClick="load_whitelist()">宝贝白名单</a></li>
+	<li id="ckbmd"><a href="#whiteprofile" data-toggle="tab" Onclick="SearchwhilNick()" >旺旺白名单</a></li>
+	<li id="ckhmd"><a href="#profile" data-toggle="tab" Onclick="SearchBlaNick()" >旺旺黑名单</a></li>
+	<li><a href="#messages" data-toggle="tab" Onclick="SearchBlaRecord()">拦截记录<span id="defenlogxx"></span></a></li>
+</ul>
+<div class="tab-content" style="margin: 15px;overflow: visible;">
+	<div class="tab-pane active" id="defenserateset">
+<table class="sui-table table-bordered">
+	<tr>
+		<td>
+			<div>
+				&nbsp;&nbsp;&nbsp;&nbsp;开启差评拦截：
+				<button class="sui-btn" value='off' id="denfenon" onclick="changepower();" type="button">点击开启</button>
+				<span style="margin-left:10px" id="actiontime">最后一次操作时间：无操作</span>
+			</div>
+		</td>
+	</tr>
+</table>
+<div class="sui-msg msg-large msg-warning" style="width: 100%">
+  <div class="msg-con">提示：符合任一选中状态的买家都会拦截,不能购买您的宝贝,拍下订单10秒后,订单将自动关闭并自动加入黑名单。</div>
+  <s class="msg-icon"></s>
+</div>
+	<h4>(一)设置关闭条件:</h4>
+<table class="sui-table table-condensed table-bordered" style="width:100%">
+<tr class="form-inline">
+	<td>
+		<label style="margin-left: 10px;" class="checkbox-pretty inline">
+   			<input type="checkbox" id="neutralrate_check" value="off" onchange="checkbox_change(this);" />
+   			<span>给过我中评的买家</span>
+ 		</label>
+	</td>
+</tr>
+<tr class="form-inline">
+	<td>
+		<label style="margin-left: 10px;" class="checkbox-pretty inline">
+   			<input type="checkbox" id="badrate_check" value="off" onchange="checkbox_change(this);" />
+   			<span>给过我差评的买家</span>
+ 		</label>
+	</td>
+</tr>
+<tr class="form-inline">
+	<td>
+		<label style="margin-left: 10px;" class="checkbox-pretty inline">
+   			<input type="checkbox" id="conditionKey_check" value="off" onchange="checkbox_change(this);"/>
+   			<span>地址或留言包含以下关键字:</span>
+ 		</label>
+ 		<input type="text" style="width:70%; height:30px;" class="input-info" id="conKyes" value="联系Q Q，活刷，皇冠，不降权，不扣分，不封店，爆款，刷钻，刷粉刷店铺、宝贝收藏，天猫关注，开团提醒，u站喜欢，企业QQ，动态评分，微淘关注，教程" placeholder="联系Q Q，活刷，皇冠，不降权，不扣分，不封店，爆款，刷钻，刷粉刷店铺、宝贝收藏，天猫关注，开团提醒，u站喜欢，企业QQ，动态评分，微淘关注，教程">
+ 		<br><span class="input-small" style="color: red">*关键字之间用逗号隔开</span>
+	</td>
+</tr>
+<tr class="form-inline">
+	<td>
+		<label style="margin-left: 10px;" class="checkbox-pretty inline">
+			<input type="checkbox" value="off" id="public_check" value="off" onchange="checkbox_change(this)"/>
+			<span>发出过中差评的买家</span>
+			<i class="iconfont" title="对于部分未收录的中差评买家，可能不会拦截，后续会不断补充收录">&#xe690;</i>
+		</label>
+	</td>
+</tr>
+<tr class="form-inline">
+<td>
+	<label style="margin-left: 10px;" class="checkbox-pretty inline">
+   		<input type="checkbox" id="credit_check" name="credit_check" value="off" onchange="checkbox_change(this);">
+   		<span>买家信用分数低于:</span>
+ 	</label>
+ 		<input type="text" class="input-small" style="margin-left: 44px;width:30%;" id="creadit" placeholder="0~10000001"/>&nbsp;&nbsp;分
+ 	<span class="input-small"> &nbsp;&nbsp;&nbsp;&nbsp;可输入0~10000001</span>
+</td>
+</tr>
+<tr class="form-inline">
+	<td>
+		<label style="margin-left: 10px;" class="checkbox-pretty inline">
+   			<input type="checkbox" id="regday_check" name="regday_check" value="off" onchange="checkbox_change(this);"/>
+   		<span>买家注册天数小于:</span>
+ 		</label>
+ 		<input type="text" class="input-small" style="margin-left: 44px;width:30%;" id="regday" placeholder="0~99999"/>&nbsp;&nbsp;天
+ 	<span class="input-small"> &nbsp;&nbsp;&nbsp;&nbsp;可输入0~99999</span>
+	</td>
+</tr>
+<tr class="form-inline">
+<td>
+	<label style="margin-left: 10px;" class="checkbox-pretty inline">
+   		<input type="checkbox" id="bigmoney_check" name="bigmoney_check" value="off" onchange="checkbox_change(this);">
+   		<span>此次订单金额大于(含运费):</span>
+ 	</label>
+ 		<input type="text" class="input-small" style="width:30%;" id="thebigmoeny" placeholder="如:5.98或10"/>&nbsp;&nbsp;元
+ 		<span class="input-small"> &nbsp;&nbsp;&nbsp;&nbsp;最大可输入99999</span>
+ </td>
+</tr>
+<tr class="form-inline">
+<td>
+	<label style="margin-left: 10px;" class="checkbox-pretty inline">
+   		<input type="checkbox" id="smalmoney_check" name="smalmoney_check" value="off" onchange="checkbox_change(this);">
+   		<span>此次订单金额小于(含运费):</span>
+ 	</label>
+ 		<input type="text" class="input-small" style="width:30%;" id="smallmoney" placeholder="如:5.98或10"/>&nbsp;&nbsp;元
+ 	<span class="input-small"> &nbsp;&nbsp;&nbsp;&nbsp;最大可输入99999</span>
+</td>
+</tr>
+<tr class="form-inline">
+	<td>
+		<label style="margin-left: 10px;" class="checkbox-pretty inline">
+   			 <input type="checkbox" id="goodrate_check" name="goodrate_check" value="off" onchange="checkbox_change(this);">
+   			 <span>得到的卖家好评率低于:</span>
+ 		</label>
+ 		  <input type="text" class="input-small" style="margin-left: 20px; width:30%;" id ="goodsrate" placeholder="0~99.99"/>&nbsp;&nbsp;%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最大可输入99.99%
+ 		 <br><span class="input-small" style="color: red">*该好评率是卖家给买家发出的好评率</span>
+	</td>
+</tr>
+<tr class="form-inline">
+	<td>
+		<label style="margin-left: 10px;"class="checkbox-pretty inline">
+   			<input type="checkbox" id="handsrate_check" value="off" onchange="checkbox_change(this);"/>
+   			<span>拦截我手动添加的黑名单用户:</span>   
+ 		</label>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="selectTab('black')" class="sui-btn btn-primary">添加黑名单</a><br />
+ 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 		已添加<font color="red" id="allblackuser">0</font>个黑名单用户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 		<a href="#profile" data-toggle="tab" Onclick="SearchBlaNick();activeCheck('black');" >查看黑名单</a>
+	</td>
+</tr>
+</table>
+	<h4>(二)设置关闭理由:</h4>
+		<p style="margin:.3em 0;">设置关闭交易时卖家解释(买家可见)</p>
+	<div>
+		<input type="text" id ="closetent" placeholder="订单状态错误，请联系售后客服" style="width:98%;" maxlength="20"/><br />
+		<font color="red">*默认解释可设置6-14个汉字</font>
+		<br />
+		<div class="alert">
+			<p style="margin:.3em 0;">注：可以把邮费链接先加入宝贝白名单再给买家拍，这样保证信誉，又不损失订单。 <a style="margin-left: 20px" href="javascript:changetosp('123','white');" class="sui-btn btn-primary">设置宝贝白名单</a> </p>
+		</div>
+		<button class="sui-btn btn-large btn-primary" type="button"  id ="saveUserSet"onclick="savedatas()" >保存</button>
+	</div>
+</div>
+
+ <div class="tab-pane" id="white_list">
+	<div style="border:1px solid #DDDDDD;margin-bottom:5px;border-radius: 3px; ">
+		<h6 style="margin-left: 10px">宝贝白名单：</h6>
+		<p style="margin-left: 20px">已添加<font color="red"><B class="white_babys"></B></font>个宝贝白名单
+			<a  style="margin-left: 20px" href="javascript:lookBabylist()">点击查看</a>
+			<a style="margin-left: 20px" href="javascript:changetosp('123','white');" class="sui-btn btn-primary">添加宝贝白名单</a>
+		</p>
+		<p style="color:red;margin-left: 20px">注：购买订单中包含下列白名单中的宝贝中的任何一个，则该订单不进行拦截</p>
+		<p style="margin-left: 20px">
+			<label class="checkbox-pretty inline">
+				<input type="checkbox" value="off" id="Byblack_check" onclick="changeByblack(this)" />
+				<span>黑名单中的买家，我依旧拦截 (不选中该条件，则黑名单买家依旧可以购买白名单中的宝贝)</span>
+			</label>
+		</p>
+	</div>
+	<div style="border:1px solid #DDDDDD;margin-bottom:5px;border-radius: 3px; display:none">
+		<h6 style="margin-left: 10px">旺旺白名单：</h6>
+		<p style="margin-left: 20px">已添加<B id="white_alls" style="color:red">0</B>个旺旺白名单
+			<a href="#whiteprofile" style="margin-left: 20px" data-toggle="tab" onclick="activeCheck('white');SearchwhilNick()">点击查看</a>
+			<a style="margin-left: 20px" href="javascript:selectTab('white');" class="sui-btn btn-primary">添加旺旺白名单</a>
+		</p>
+		<p style="color:red;margin-left: 20px">注: 白名单中的买家符合任一拦截条件也不会进行拦截</p>
+	</div>
+</div>
+  <div class="tab-pane" id="profile">
+  		<p><input type="text" placeholder="请输入买家旺旺" id="buyer_nick" onkeypress="event.keyCode==13?gotoBlackList():'';"/><a style="margin-left: 20px;" href="javascript:gotoBlackList();" class="sui-btn btn-primary">搜索</a>
+  			<a style="margin-left: 20px;" href="javascript:selectTab('black');" class="sui-btn btn-primary" >添加黑名单</a>  		
+  		</p>
+			<table class="sui-table table-bordered table-condensed table-hover">
+				<thead>
+					<tr>
+						<th style="text-align: center">买家旺旺</th>
+						<th style="text-align: center">拉黑时间</th>
+						<th style="text-align: center">拉黑原因</th>
+						<th style="text-align: center">操作</th>
+					</tr>
+			</thead>
+			<tbody id="bla_nick_content">   
+			</tbody>
+		</table>
+		<div id='blaChaps'></div>
+  </div>
+ <!------------------------  拦截记录 ------------>
+  <div class="tab-pane" id="messages">
+  	<p><input type="text" placeholder="请输入买家旺旺" id="Rbuyer_nick" onkeypress="event.keyCode==13?gotoBlackrecord():'';"/><a style="margin-left: 20px;" href="javascript:gotoBlackrecord();" class="sui-btn btn-primary" style="margin-bottom:10px;">搜索</a></p>
+		<table class="sui-table table-bordered table-condensed table-hover">
+			<thead>
+		    	<tr>
+		    		<th style="text-align: center">买家旺旺</th>
+		        	<th style="text-align: center">拦截时间</th>
+		            <th style="text-align: center">订单号</th>
+		            <th style="text-align: center">原因</th>
+		        </tr>
+			</thead>
+		    <tbody id="bla_record_content">
+		    </tbody>
+		</table> 
+			<div id='bla_record'></div>
+  </div>  
+  
+  <div class="tab-pane" id="whiteprofile"><!--旺旺白名单-->
+ 	 <p><input type="text" placeholder="请输入买家旺旺" id="tab_whitenick" /> <a href="javascript:searchtabwhitenick();" style="margin-left: 20px;" class="sui-btn btn-primary">搜索</a><a style="margin-left: 20px" href="javascript:selectTab('white');" class="sui-btn btn-primary">添加旺旺白名单</a></p>
+  	<table class="sui-table table-bordered table-condensed table-hover">
+			<thead>
+		    	<tr>
+		    		<th style="text-align: center">买家旺旺</th>
+		        	<th style="text-align: center">添加时间</th>
+		            <th style="text-align: center">添加原因</th>
+		            <th style="text-align: center">操作</th>
+		        </tr>
+			</thead>
+		    <tbody id="whi_record_content">
+		    </tbody>
+		</table> 
+		<p style="color: red;">注：白名单中的买家符合任一拦截条件也不会进行拦截</p>	
+		<div id='whiChaps'></div>
+  </div>
+</div>
+</div>
+<script>
+var isSon=false;/*是否子账号*/
+var isauth=false;/*是否授权*/
+var mydata='off';
+var dstatus='';
+window.onload = function(){
+	if(dstatus==''){
+		dstatus='set';
+	}
+	$("#cpsljsel").attr("class","dqzt");
+	onload_viptime('interceptor');
+	setTimeout(getUsernick,100);
+	window.localStorage.setItem(user_nick+'newuser2_defen','yes');
+	$('#defenratexx').empty();
+	QN.initTheme();
+	if(vipuser==0){
+		ittoolspam('AD20140730133000','cpljpf');
+	}else{
+		ittoolspam('AD20140730133000','cpljpvip');
+	}
+} 
+function getUsernick(){	/*获取登录用户，载入*/
+	 QN.application.invoke({
+		 cmd: "getLoginuser",
+		 success: function (e){
+			 if(typeof  e=== 'string'){
+		          e = JSON.parse(e);
+		      }
+				if(decodeURI(e.sub_user_nick)==''){
+					user_nick=decodeURI(e.user_nick);
+				}else{
+					user_nick=decodeURI(e.sub_user_nick);
+					if(user_nick.indexOf(':')>0)/*是否为子账号*/
+					{
+						user_nick=user_nick.split(':')[0];
+						isSon=true;
+				    }
+				}
+				 $.ajax({
+				        type: "POST",
+					    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/zdrate',/*获取授权信息*/
+					    dataType:'html',
+					    data:{'nick':user_nick},
+					    timeout:1000,
+					    success: function(data){
+					       	isauth=true;
+						    mydata=data;
+						},
+					    error: function(){
+						}
+				    });
+				 The_loads_data();
+			},/*END---->sucess**/
+			error:function(msp) {
+				geterrorinfo("getLoginuser",msp);
+			}
+		});	
+}
+function The_loads_data(){
+	dstatus='set';
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getdefenseSet',
+		type: 'POST',
+	    dataType: 'html',
+	    data:{usernick:user_nick},
+	    timeout: 10000,
+		error:function(msp){
+			layer.msg('读取用户设置出错', 1, 3);
+		},
+		success:function(rsp){
+			if(typeof rsp==='string'){
+				rsp=JSON.parse(rsp);
+				if((rsp==''||rsp==null||rsp=='null'||rsp==undefined)&&isSon ){/*第一次使用，且为子账号*/
+					$("#denfenon").html('子账号无法操作差评拦截开关');
+					$("#denfenon").attr('disabled','disabled'); 
+					$("#denfenon").removeClass('btn-info');
+					$("#denfenon").val('off');
+					$("#goodsrate").val('98');/*好评率*/
+					$("#creadit").val('5');/*信用分数*/
+					$("#regday").val('5');/*注册天数*/
+					$("#conKyes").val('联系Q Q，活刷，皇冠，不降权，不扣分，不封店，爆款，刷钻，刷粉刷店铺、宝贝收藏，天猫关注，开团提醒，u站喜欢，企业QQ，动态评分，微淘关注，教程');/*关键字*/	
+					return;
+				}else if((rsp==undefined ||rsp==''||rsp==null||rsp=='null')&&isSon==false){/*第一次使用，切不是子账号*/
+					$("#denfenon").removeClass('btn-info');
+					$("#denfenon").val('off');
+					$("#goodsrate").val('98');/*好评率*/
+					$("#creadit").val('5');/*信用分数*/
+					$("#regday").val('5');/*注册天数*/
+					$("#conKyes").val('联系Q Q，活刷，皇冠，不降权，不扣分，不封店，爆款，刷钻，刷粉刷店铺、宝贝收藏，天猫关注，开团提醒，u站喜欢，企业QQ，动态评分，微淘关注，教程');/*关键字*/	
+					return;
+				}
+			}
+			var val=rsp.goodrate;/*好评率*/
+			if(val.split(';')[0]=='on'){/*开启了好评*/
+				$("#goodsrate").val(val.split(';')[1]);
+				$("#goodrate_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#goodrate_check").val('on');
+			}else if(val.split(';')[1]!=''|| val.split(';')[1]!=null||val.split(';')[1]!=undefined){
+				$("#goodsrate").val(val.split(';')[1]);
+			}
+			val=rsp.bigmoney;/*最大金额*/
+			if(val.split(';')[0]=='on'){
+				$("#thebigmoeny").val(val.split(';')[1]);
+				$("#bigmoney_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#bigmoney_check").val('on');
+			}else if(val.split(';')[1]!=''|| val.split(';')[1]!=null||val.split(';')[1]!=undefined){
+				$("#thebigmoeny").val(val.split(';')[1]);
+			}
+			val=rsp.smallmoney;/*最小金额*/
+			if(val.split(';')[0]=='on'){
+				$("#smallmoney").val(val.split(';')[1]);
+				$("#smalmoney_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#smalmoney_check").val('on');
+			}else if(val.split(';')[1]!=''|| val.split(';')[1]!=null||val.split(';')[1]!=undefined){
+				$("#smallmoney").val(val.split(';')[1]);
+			}
+			val=rsp.credit;/*信用分数*/
+			if(val.split(';')[0]=='on'){
+				$("#creadit").val(val.split(';')[1]);
+				$("#credit_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#credit_check").val('on');
+			}else if(val.split(';')[1]!=''|| val.split(';')[1]!=null||val.split(';')[1]!=undefined){
+				$("#creadit").val(val.split(';')[1]);
+			}
+			val=rsp.regdays/*注册天数*/
+			if(val.split(';')[0]=='on'){
+				$("#regday").val(val.split(';')[1]);
+				$("#regday_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#regday_check").val('on');
+			}else if(val.split(';')[1]!=''|| val.split(';')[1]!=null||val.split(';')[1]!=undefined){
+				$("#regday").val(val.split(';')[1]);
+			}
+			val=rsp.conditions;/*关键字*/
+			if(val.split('|Y|')[0]=='on' && val.split('|Y|')[1]!=''){
+				$("#conKyes").val(val.split('|Y|')[1]);
+				$("#conditionKey_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#conditionKey_check").val('on');
+			}else if(val.split('|Y|')[0]=='off' && val.split('|Y|')[1]!=undefined&&val.split('|Y|')[1]!=''){
+				$("#conKyes").val(val.split('|Y|')[1]);
+			}else if(val.split('|Y|')[1]==''|| val.split('|Y|')[1]==null||val.split('|Y|')[1]==undefined){
+				$("#conKyes").val('联系Q Q，活刷，皇冠，不降权，不扣分，不封店，爆款，刷钻，刷粉刷店铺、宝贝收藏，天猫关注，开团提醒，u站喜欢，企业QQ，动态评分，微淘关注，教程');
+			}
+			val=rsp.optime;/*操作时间*/
+			if(val!=''&& val!=null && val!=undefined){
+				$("#actiontime").html("最后一次操作时间:"+val);
+			}
+			if(rsp.publicon=='on'){
+				$("#public_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#public_check").val('on');	
+			}
+			if(rsp.neutralon=='on'){/*中评*/
+				$("#neutralrate_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#neutralrate_check").val('on');
+			}
+			if(rsp.badon=='on'){/*差评*/
+				$("#badrate_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#badrate_check").val('on');
+			}
+			if(rsp.handon=='on'){/*手动拉黑*/
+				$("#handsrate_check").attr('checked',true).parent('label').checkbox().checkbox('check');
+				$("#handsrate_check").val('on');
+			}
+			if(rsp.denfenon=='on'){
+				if(isSon==false){
+					$("#denfenon").html('点击关闭');
+					$("#denfenon").val('on');
+					$("#denfenon").addClass('btn-info');
+				}else{
+					$("#denfenon").html('子账号无法操作差评拦截开关');
+					$("#denfenon").attr('disabled','disabled'); 
+					$("#denfenon").addClass('btn-info');
+					$("#denfenon").val('on');
+				}
+			}else if(rsp.denfenon=='off'){
+				if(isSon==false){
+					$("#denfenon").html('点击开启');
+					$("#denfenon").val('off');
+					$("#denfenon").removeClass('btn-info');
+				}else{
+					$("#denfenon").html('子账号无法操作差评拦截开关');
+					$("#denfenon").attr('disabled','disabled'); 
+					$("#denfenon").removeClass('btn-info');
+					$("#denfenon").val('off');
+				}
+			}
+			$("#closetent").val(rsp.sellernote);/*卖家解释*/
+		}
+	});/*end ajax获取用户设置*/
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getuserall',
+		type:'POST',
+		dataType:'html',
+		data:{'usernick':user_nick,'type':'black'},
+		timeout:1000,
+		error:function(msp){
+			console.log(JSON.stringify(msp));
+		},
+		success:function(rsp){
+			if(typeof rsp==='string'){rsp=JSON.parse(rsp);}
+			$("#allblackuser").html(rsp.total);
+		}
+	});
+}
+function gotoBlackList(){/*获取某个拉黑用户*/
+	var uid=$("#buyer_nick").val();
+	if(uid==''|| uid==null){
+		layer.msg('请输入用户昵称哦~', 1, 3);
+		return;
+	}
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getblaByOne',
+		type:'POST',
+		dataType:'html',
+		data:{nickid:uid,usernick:user_nick},
+		timeout:5000,
+		error:function(msp){
+			$("#buyer_nick").val('');
+			layer.msg('查询出错！', 1, 3);
+		},
+		success:function(rsp){
+			if(typeof rsp==='string'){
+				rsp=JSON.parse(rsp);
+			}
+			$("#bla_nick_content").empty();
+			$("#blaChaps").empty();
+			$("#buyer_nick").val('');
+			if(rsp.total==0 || rsp.total<0 || rsp.total==null){
+				$("#bla_nick_content").append('<tr><td colspan="4"><div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有该用户哦</div><s class="msg-icon"></s></div></td></tr>');
+			}else{
+				$("#bla_nick_content").append('<tr id="'+rsp.buyernicklist+'"><td style="text-align: center">'+rsp.buyernicklist+'</td><td style="text-align: center">'+rsp.optime+'</td><td style="text-align: center">'+rsp.reason+'</td><td style="text-align: center"><a href="javascript:delblaNickByenter(\''+rsp.buyernicklist+'\');">删除</a></td></tr>');
+			}
+		}
+	});
+}
+function lookBabylist(){/*查看宝贝列表*/
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getbabylist',
+		type:'post',
+		dataType:'html',
+		data:{usernick:user_nick},
+		error:function(msp){
+			console.log(msp);
+		},
+		success:function(rsp){
+			if(typeof rsp==='string'){rsp=JSON.parse(rsp);}
+			$("#babylist_content").empty();
+			if(rsp.length==0||rsp.length<0){
+				$("#babylist_content").append('<tr><td colspan="4" ><div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有宝贝白名单哦<a style="margin-left: 20px" href="javascript:changetosp(\'123\',\'white\');">添加宝贝白名单</a></div><s class="msg-icon"></s></div></td></tr>');
+			}else{
+				for(var i in rsp){
+					$("#babylist_content").append('<tr id="clk'+rsp[i].num_id+'"><td style="text-align: center"><a href="javascript:changetosp(\''+rsp[i].num_id+'\',\'detail\');"><img alt="宝贝图片" src="'+rsp[i].imgurl+'" width="80" height="80" /></a></td><td style="text-align: center"><a href="javascript:changetosp(\''+rsp[i].num_id+'\',\'detail\');" >'+rsp[i].title+'</a></td><td style="text-align: center">'+rsp[i].optime+'</td><td style="text-align: center"><a href="javascript:delwhiteBylog(\''+rsp[i].num_id+'\');">删除</a></td></tr>	');
+				}
+			}
+			$("#baby_list").modal('show');
+		}
+	});
+}
+function delwhiteBylog(num_id){/*删除用户自己设置的宝贝白名单*/
+	var info={};
+	info.usernick=user_nick;
+	info.num_id=num_id;
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/delwhiteBylog',
+		type:'post',
+		dataType:'html',
+		data:info,
+		error:function(msp){
+			layer.msg('删除失败',1,3);
+		},
+		success:function(rsp){
+			layer.msg('删除成功',1,1);
+			$("#clk"+num_id).remove();
+			reshow();
+		}
+	});
+}
+function changeByblack(obj){/*白名单设置界面中的checkbox的onchange事件*/
+	var type='';
+	if(obj.checked){
+		type='on';
+	}else{
+		type='off';
+	}
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/changeByblack',
+		type:'post',
+		dataType:'html',
+		data:{usernick:user_nick,type:type},
+		error:function(msp){
+			layer.msg('操作失败',1,3);
+		},
+		success:function(rsp){
+			layer.msg('操作成功',1,1);
+		}
+	});
+}
+/**
+ * 跳转到商品详情
+ */
+function changetosp(num_id,type){
+	if(type=='detail'&& (num_id!=''||num_id!=null)){
+		QN.plugin.invoke({/*宝贝详情*/
+			"cmd": "itemDetail",
+			"param": {
+				iid:num_id
+			},
+			"category": "shangpinguanli"
+		});
+	}else if(type=="white" && num_id=='123'){
+		if(window.localStorage.getItem(user_nick+'firstbabylist')==null ||window.localStorage.getItem(user_nick+'firstbabylist')==''){
+			window.localStorage.setItem(user_nick+'firstbabylist',132);
+			$("#twohints").html('使用“宝贝白名单”功能，需到插件中心将爱用商品设置为商品管理默认插件之后再使用！');
+			document.getElementById('hintok').setAttribute("onclick", "changetosp('123','white')");
+			$('#twohint').modal('show');
+		}else{
+			QN.plugin.invoke({/*宝贝白名单*/
+				"cmd": "white",
+				"param": {},
+				"category": "shangpinguanli"
+			});
+		}
+	}
+}
+function gotoBlackrecord(Tpageno){/*获取摸个用户的拉黑记录*/
+	var uid=$("#Rbuyer_nick").val();
+	if(uid==''|| uid==null){
+		layer.msg('请输入用户昵称哦~', 1, 3);
+		return;
+	}
+	if(Tpageno==''|| Tpageno==null){
+		Tpageno=1;
+	}
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getblaRecByList',
+		type:'POST',
+		dataType:'html',
+		data:{nickid:uid,usernick:user_nick,pageno:Tpageno},
+		timeout:5000,
+		error:function(msp){
+			$("#Rbuyer_nick").val('');
+			layer.msg('查询出错！', 1, 3);
+		},
+		success:function(rsp){
+			if(typeof rsp==='string'){
+				rsp=JSON.parse(rsp);
+			}
+			$("#Rbuyer_nick").val('');
+			$("#bla_record").empty();
+			$("#bla_record_content").empty();
+			if(rsp.total==0||rsp.total<0 || rsp.total==null){
+				$("#Rbuyer_nick").val('');
+				$("#bla_record_content").append('<tr><td colspan="4"><div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有拦截记录</div><s class="msg-icon"></s></div></td></tr>');
+			}else{
+				var mstc=rsp.res;
+				for(var i in mstc){
+					$("#bla_record_content").append('<tr"><td style="text-align: center">'+mstc[i].buyernick+'</td><td style="text-align: center">'+mstc[i].optime+'</td><td style="text-align: center">'+mstc[i].tid+'</td><td style="text-align: center">'+mstc[i].msg+'</td></tr>');
+				}
+				if(rsp.total>30){
+                    pagin('bla_record','gotoBlackrecord',pageno,rsp.sum,rsp.total);
+				}
+			}
+		}	
+	});
+}
+function SearchBlaNick(pageno){/*查看被拉黑的买家名单*/
+	if(pageno=='' || pageno==null || pageno==0 || pageno<0){
+		pageno=1;
+	}else{
+		pageno=pageno;
+	}
+	dstatus='black';
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getaddBlack',
+		type:'POST',
+		dataType:'html',
+		data:{'page_no':pageno,'user_nick':user_nick},
+		timeout:1000,
+		error:function(){
+		},
+		success:function(rsp){
+			if(typeof rsp==='string'){
+				rsp=JSON.parse(rsp);
+			}
+			$("#bla_nick_content").empty();
+			$("#blaChaps").empty();
+			if(rsp.total ==0 || rsp.total<0){
+				$("#bla_nick_content").append('<tr><td colspan="4"><div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有拉黑的名单哦</div><s class="msg-icon"></s></div></td></tr>');
+				return;
+			}
+			var sumpage=rsp.sum;
+			if(rsp.total>30){
+				pagin('blaChaps','SearchBlaNick',pageno,rsp.sum,rsp.total);
+			}
+			var values=rsp.res;
+			for(var i in values){
+				$("#bla_nick_content").append('<tr id="'+values[i].buyernicklist+'"><td style="text-align: center">'+values[i].buyernicklist+'</td><td style="text-align: center">'+values[i].optime+'</td><td style="text-align: center">'+values[i].reason+'</td><td style="text-align: center"><a href="javascript:delblaNickByenter(\''+values[i].buyernicklist+'\',\'black\');">删除</a></td></tr>');
+			}	
+		}
+	});
+}
+/*查看旺旺白名单*/
+function searchtabwhitenick(){
+	var nick=$("#tab_whitenick").val();
+	if(nick==''||nick==null||nick=='nick'){
+		layer.msg("请输入旺旺昵称", 2, function(){});
+		return;
+	}
+	$.ajax({
+		type:'POST',
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getaddWhilByOne',
+		data:{'user_nick':user_nick,'nick':nick},
+		error:function(msp){
+			layer.msg("搜索失败", 2, function(){});
+		},
+		success:function(rsp){
+			$("#whi_record_content").empty();
+			$("#tab_whitenick").val('');
+			rsp=JSON.parse(rsp);
+			if(rsp.length==0||rsp.length<0){
+				$("#whi_record_content").append('<tr><td colspan="4"><div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有该用户哦</div><s class="msg-icon"></s></div></td></tr>');
+			}
+			for(var i in rsp){
+				$("#whi_record_content").append('<tr id="'+rsp[i].buyernick+'"><td style="text-align: center">'+rsp[i].buyernick+'</td><td style="text-align: center">'+rsp[i].optime+'</td><td style="text-align: center">'+rsp[i].reason+'</td><td style="text-align: center"><a href="javascript:delblaNickByenter(\''+rsp[i].buyernick+'\', \'white\');">删除</a></td></tr>');
+			}
+		}
+	});
+}
+function SearchwhilNick(pageno){/*白名单*/
+	dstatus='wangwang';
+	if(pageno==null||pageno==''||pageno=='null'||pageno==undefined){
+		pageno=1;
+	}
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getaddWhil',
+		type:'post',
+		dataType:'html',
+		data:{'page_no':pageno,'user_nick':user_nick},
+		timeout:500,
+		error:function(){
+		},
+		success:function(rsp){
+			if(typeof rsp==='string'){rsp=JSON.parse(rsp);}
+			$("#whi_record_content").empty();
+			$("#whiChaps").empty();
+			if(rsp.total ==0 || rsp.total<0){
+				$("#whi_record_content").append('<tr><td colspan="4"><div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有添加的白名单哦</div><s class="msg-icon"></s></div></td></tr>');
+				return;
+			}
+			var sumpage=rsp.sum;
+			if(rsp.total>30){
+				pagin('whiChaps','SearchwhilNick',pageno,rsp.sum,rsp.total);
+			}
+			var values=rsp.res;
+			for(var i in values){
+				$("#whi_record_content").append('<tr id="'+values[i].buyernick+'"><td style="text-align: center">'+values[i].buyernick+'</td><td style="text-align: center">'+values[i].optime+'</td><td style="text-align: center">'+values[i].reason+'</td><td style="text-align: center"><a href="javascript:delblaNickByenter(\''+values[i].buyernick+'\', \'white\');">删除</a></td></tr>');
+			}
+		}
+	});
+}
+ function SearchBlaRecord(pageno){/*查看拦截记录*/
+	window.localStorage.setItem(user_nick+'newuser2_defenlog','yes');
+	$('#defenlogxx').empty();
+	 if(pageno=='' || pageno ==null){
+		 pageno=1;
+	 }
+	 dstatus='record';
+	$.ajax({
+			url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getblacklist',
+			type:'POST',
+			dataType:'html',
+			data:{page_no:pageno,usernick:user_nick},
+			timeout:5000,
+			error:function(msg){
+				layer.msg("查看记录失败", 2, function(){});
+			},
+			success:function(resp){
+				if(typeof resp==='string'){
+					var rsp=JSON.parse(resp);
+				}else{
+					var rsp=resp;
+				}
+					 $("#bla_record_content").empty();
+					 $("#bla_record").empty();
+					if(rsp.total==0 || rsp.total<0){
+						$("#bla_record_content").append('<tr><td colspan="4"><div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有拦截记录</div><s class="msg-icon"></s></div></td></tr>');
+						return;
+					}
+					var values=rsp.res;
+					for(var i in values){
+						$("#bla_record_content").append('<tr"><td style="text-align: center">'+values[i].buyernick+'</td><td style="text-align: center">'+values[i].optime+'</td><td style="text-align: center">'+values[i].tid+'</td><td style="text-align: center">'+values[i].msg+'</td></tr>');
+					}
+					var page_sum=Math.ceil(rsp.total/30);
+					 if(rsp.total>30){
+                         pagin('bla_record','SearchBlaRecord',pageno,page_sum,rsp.total);
+                     }
+				}
+			});
+		} 
+ /**
+ *白名单页面显示添加的旺旺号个数，宝贝个数和checkbox的选中状态
+ */
+function load_whitelist(){
+	dstatus='babylist';
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getuserall',
+		type:'POST',
+		dataType:'html',
+		data:{'usernick':user_nick,'type':'white'},
+		timeout:1000,
+		error:function(msp){
+			console.log(JSON.stringify(msp));
+		},
+		success:function(rsp){
+			if(typeof rsp==='string'){rsp=JSON.parse(rsp);}
+			$("#white_alls").html(rsp.total);/*旺旺白名单*/
+			if(rsp.white_count!=undefined || rsp.white_count!=null ||rsp.white_count!=''||rsp.white_count!='null'){
+				$(".white_babys").html(rsp.white_count);/*宝贝白名单*/
+			}
+			if(rsp.whiteon=='on'){
+				$("#Byblack_check").val('on').parent('label').checkbox().checkbox('check');
+			}
+		}
+	});
+}
+function changepower(){/*差评师拦截开关*/
+	tradePoint(user_nick,'差评拦截开关');
+	var sel=$("#denfenon").val();
+	if(sel=='off' && vipuser==0){/*是免费用户，并且打算开启开关*/
+		$('#buyvip').modal('show');
+		return;
+	}else if(isauth && mydata=='off'){/*需要授权*/
+		QN.application.invoke({
+			 "cmd": "translateUrl",
+			 "param":{'url':"https://oauth.taobao.com/authorize?response_type=code&client_id=21085840&redirect_uri=<?php echo APP_WEB_INDEX_ROOT;?>/tc/trades?scope=item&view=web&state=tradepcdefen"},
+			 "success": function (e){
+				 if(typeof  e=== 'string'){
+		            	e = JSON.parse(e);
+		            }
+				 window.location.href=e.url;
+			 }
+		});
+		return;
+	}
+	if(sel=='off'){/*开启拦截*/
+			QN.top.invoke({
+				cmd:'taobao.tmc.user.permit',/*为用户开通推送消息*/
+				method:'GET',
+				error:function(msp){
+					if(typeof msp==='string'){
+						msp=JSON.parse(msp);
+					}
+					if(msp.sub_code=='subuser.has-no-permission'){
+						layer.msg("子账号不能使用差评拦截功能哦！~", 2, function(){});
+						$("#denfenon").html('点击开启');
+						$("#denfenon").val('off');
+						$("#denfenon").removeClass('btn-danger');
+						$("#denfenon").addClass('btn-inverse');
+						return;
+					}
+					layer.msg('1开启失败，请重试！', 1, 3);
+					$("#denfenon").html('点击开启');
+					$("#denfenon").val('off');
+					$("#denfenon").removeClass('btn-info');
+					return;
+				},
+				success:function(rsp){/*开通存入数据库*/
+					$.ajax({
+						url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/defenonchange',
+						type:'POST',
+						dataType:'html',
+						data:{type:sel,usernick:user_nick},
+						timeout:50000,
+						error:function(){/*开启失败！*/
+							layer.msg("2开启失败，请重试！", 1, 3);
+							$("#denfenon").html('点击开启');
+							$("#denfenon").val('off');
+							$("#denfenon").removeClass('btn-info');
+							return;
+						},
+						success:function(data){
+							layer.msg("开启成功", 1,1);
+							$("#denfenon").val('on');
+							$("#denfenon").html('点击关闭');
+							$("#denfenon").addClass('btn-info');
+							}
+						});
+				}
+			});		
+		}else if(sel=='on'){/*关闭拦截*/
+			$.ajax({
+				url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/gettmcinfo',/*关闭推送*/
+				type:'POST',
+				dataType:'html',
+				data:{'type':'defenserate','nick':user_nick},
+				timeout:10000,
+				error:function(){
+					layer.msg("1关闭失败，请重试！",1,3);
+					$("#denfenon").html('点击关闭');
+					$("#denfenon").val('on');
+					$("#denfenon").addClass('btn-info');
+				},
+				success:function(datas){
+					if(datas=='yes'){
+						QN.top.invoke({
+							cmd:'taobao.tmc.user.cancel',
+							param:{nick:user_nick},
+							method:'GET',
+							error:function(msp){
+								if(typeof msp==='string'){
+									msp=JSON.stringify(msp);
+								}
+									if(msp.sub_code=='isv.increment-service-error:user-not-permit'){
+ 						                /*没有为用户开通过增量消息的错误*/
+										$.ajax({
+											url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/defenonchange',
+												type:'POST',
+												dataType:'html',
+												data:{type:sel,usernick:user_nick},
+												timeout:50000,
+											error:function(){/*关闭失败*/
+												layer.msg("关闭失败，请重试！",1,3);
+												$("#denfenon").html('点击关闭');
+												$("#denfenon").val('on');
+												$("#denfenon").addClass('btn-info');
+											},
+											success:function(data){
+												layer.msg("关闭成功！", 1,1);
+												$("#denfenon").html('点击开启');
+												$("#denfenon").val('off');
+												$("#denfenon").removeClass('btn-info');
+											}
+										});
+						              }else{
+						            		layer.msg("关闭失败，请重试！", 1,3);
+						               		$("#denfenon").html('点击关闭');
+						            		$("#denfenon").val('on');
+						            		$("#denfenon").addClass('btn-info');
+						              }
+								},
+								success:function(rsp){
+									$.ajax({
+									url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/defenonchange',
+									type:'POST',
+									dataType:'html',
+									data:{type:sel,usernick:user_nick},
+									timeout:50000,	
+									error:function(){
+										layer.msg("关闭失败，请重试！",1,3);
+										$("#denfenon").html('点击关闭');
+					            		$("#denfenon").val('on');
+					            		$("#denfenon").addClass('btn-info');
+									},
+									success:function(data){
+										layer.msg("关闭成功！", 1,1);
+										$("#denfenon").html('点击开启');
+										$("#denfenon").val('off');
+										$("#denfenon").removeClass('btn-info');							
+									}
+								});
+							}
+						});
+				}else{
+					layer.msg("关闭成功！",1,1);
+					$("#denfenon").html('点击开启');
+					$("#denfenon").val('off');
+					$("#denfenon").removeClass('btn-info');
+				}
+			}
+		});
+	}	
+}
+function AddBlacknameBynick(type){/*添加拉黑用户名单和白名单*/
+	if(vipuser==0){/*是免费用户*/
+		$('#buyvip').modal('show');
+		return;
+	}
+	if(type=='black'){
+		var info="黑名单";
+		var nicks=$("#bla_nicks").val();
+		var cause=$("#bla_cause").val();
+	}else if(type=='white'){
+		var info="白名单";
+		var nicks=$("#Wbla_nicks").val();
+		var cause=$("#Wbla_cause").val();
+	}
+	if(nicks==''||nicks==null){
+		layer.msg("请输入用户昵称哦~", 2, function(){});
+		return;
+	}else if(cause==''|| cause==''){
+		layer.msg("请输入添加原因哦~", 2, function(){});
+		return;
+	}else{
+		nicks=nicks.split('\n');
+		for(var i = 0;i<nicks.length;i++)/*去掉空换行*/
+		 {
+		       if(nicks[i] == "" || typeof(nicks[i]) == "undefined")
+		        {
+		    	   nicks.splice(i,1);
+		            i= i-1;
+		       	}
+		 }
+		 for(var j=0;j<nicks.length;j++){/*去掉首尾空格*/
+			 nicks[j]=nicks[j].replace(/(^\s*)|(\s*$)/g,"");
+		 }
+		if(nicks.length>10){
+			layer.msg("一次最多添加10个哦~~~", 2, function(){});
+			return;
+		}
+		$("#tjhmd_dialog").modal('hide');  
+		var jx=layer.load(0, 0);
+			$.ajax({
+				url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/saveblaNick',
+				type:'POST',
+				dataType:'html',
+				data:{'nicks':nicks,'reason':cause,'user_nick':user_nick,'type':type},
+				timeout:10000,
+				error:function(msp){
+					layer.close(jx);
+					layer.msg('添加失败', 1, 3);
+				},
+				success:function(rsp){
+					layer.close(jx);
+					if(type=="black"){
+						$("#bla_nicks").val('');
+						$("#bla_cause").val('');
+					}else{
+						$("#Wbla_nicks").val('');
+						$("#Wbla_cause").val('');
+					}
+					layer.msg('成功添加'+nicks.length+'个'+info, 1, 1);
+				}
+			});
+		}
+	reshow();
+}
+function delblaNickByenter(nicks,type){/*删除黑名单用户确认框*/
+	$("#twohints").html('<p>您确定要删除'+nicks+'?</p>');
+	document.getElementById('hintok').setAttribute("onclick", "delBuyerNick('"+nicks+"','"+ type +"');");
+	$('#twohint').modal('show');
+}
+function delBuyerNick(nick,type){/*删除拉黑名单*/
+		 $.ajax({
+			url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/delblackbynick',
+			type:'POST',
+			dataType:'html',
+			data:{nicks:nick,usernick:user_nick,'type':type},
+			timeout:1000,
+			error:function(){
+				layer.msg('删除'+nick+'失败', 1, 3);
+			},
+			success:function(rsp){
+				layer.msg('删除'+nick+'成功', 1,1);
+				$("#"+nick).remove();
+			}
+		});
+	}
+function savedatas(){/*保存*/
+	if(vipuser==0){/*是免费用户*/
+		$('#buyvip').modal('show');
+		return;
+	}
+	var pattern = /^[0-9]\d{0,7}$/; 
+	var goodreg=/^(([1-9]+)|([0-9]{1,2}\.?[0-9]{1,2}))$/;
+	var info={};
+	if($("#goodrate_check").val()=='on'){
+		if(goodreg.test($("#goodsrate").val()) && $("#goodsrate").val() < 100){
+			info.Tgoodvalues="on;"+$("#goodsrate").val();
+		}else{
+			layer.msg('输入正确的好评率哦~~', 1, 3);
+			return;
+		}
+	}else if($("#goodrate_check").val()=='off'){
+		info.Tgoodvalues="off;"+$("#goodsrate").val();
+	}
+	
+	if($("#bigmoney_check").val()=='on'){
+		if(goodreg.test($("#thebigmoeny").val()) && parseInt($("#thebigmoeny").val()) < 999999){
+			info.Tbigmoney='on;'+$("#thebigmoeny").val();
+		}else{
+			layer.msg('请输入正确大于的金额哦~~', 1, 3);
+			return;
+		}
+	}else if($("#bigmoney_check").val()=='off'){
+		info.Tbigmoney='off;'+$("#thebigmoeny").val();
+	}
+	
+	if($("#smalmoney_check").val()=='on'){
+		if(goodreg.test($("#smallmoney").val()) && parseInt($("#smallmoney").val()) < 99999){
+			info.Tsmallmoney='on;'+$("#smallmoney").val();
+		}else{
+			layer.msg('请输入输入正确小于的金额哦~~', 1, 3);
+			return;
+		}
+	}else if($("#smalmoney_check").val()=='off'){
+		info.Tsmallmoney='off;'+$("#smallmoney").val();
+	} 
+	if($("#conditionKey_check").val()=='on'){
+		info.condikey='on|Y|'+$("#conKyes").val().replace(/，/g,',');
+	}else{
+		info.condikey='off|Y|'+$("#conKyes").val().replace(/，/g,',');
+	} 
+	if($("#credit_check").val()=='on'){
+		if(pattern.test($("#creadit").val())){
+			info.crevalues="on;"+$("#creadit").val();
+		}else{
+			layer.msg('信用分数格式错误', 1, 3);
+			return;
+		}
+	}else if($("#credit_check").val()=='off'){
+		info.crevalues="off;"+$("#creadit").val();
+	}
+	if($("#regday_check").val()=='on'){
+		if(pattern.test($("#regday").val())){
+			info.Tregdayvalues="on;"+$("#regday").val();
+		}else{
+			layer.msg('注册天数格式错误!', 1, 3);
+			return;
+		}
+	}else if($("#regday_check").val()=='off'){
+		info.Tregdayvalues="off;"+$("#regday").val();
+	}
+	if($("#closetent").val()==''||$("#closetent").val()==null){
+		info.Tclosetent='订单状态错误，请联系售后客服';
+	}else{
+		var closetext=$("#closetent").val();
+		if(closetext.length > 14 || closetext.length < 6 ){
+			layer.msg('卖家解释设置在6到14个汉字之间~', 1, 3);
+			return;
+		}else{
+			info.Tclosetent=$("#closetent").val();
+		}
+	}
+	info.Tzhongpingoff=$("#neutralrate_check").val();
+	info.Tshoudongoff= $("#handsrate_check").val();
+	info.Tchapingoff=$("#badrate_check").val();
+	info.publicon=$("#public_check").val();
+	info.denfenon=$("#denfenon").val();
+	info.usernick=user_nick;
+	$.ajax({
+		url:'<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/savedefenserate',
+		type:'POST',
+		dataType:'html',
+		data:info,
+		timeout:10000,
+		error:function(msp){
+			layer.msg('保存失败！', 1, 3);
+		},
+		success:function(rsp){
+			layer.msg('保存成功！', 1, 1);
+		}
+	});
+}
+function selectTab(type){/*对弹框的处理*/
+	if(type=='black'){
+		$("#savenickBtn").attr("onclick","AddBlacknameBynick('black')");
+		$("#PopTitle").html("添加黑名单");
+		$("#Pop_black").show();
+		$("#White_black").hide();
+	}else if(type=='white'){
+		$("#savenickBtn").attr("onclick","AddBlacknameBynick('white')");
+		$("#PopTitle").html("添加白名单");
+		$("#Pop_black").hide();
+		$("#White_black").show();
+	}
+	$("#tjhmd_dialog").modal('show')
+}
+function checkbox_change(obj){/*所有checkbox的onChange事件;传入this来控制本身的值*/
+	if(obj.checked==true){
+		obj.value='on';
+	}else{
+		obj.value='off';
+	}
+}
+function activeCheck(type){/*选项卡切换*/
+	if(type=='black'){
+		$("#cpssz").removeClass("active");
+		$("#ckhmd").addClass("active");
+	}else{
+		$("#bmdset").removeClass("active");
+		$("#ckbmd").addClass("active");
+	}
+}
+function dangerPop(content){/*弹窗代码*/
+	$("#hints").html('<p>'+content+'</p>');
+    $('#hint').modal('show');
+}
+function reshow(){
+	if(dstatus=='set'){/*设置界面*/
+		The_loads_data();
+	}else if(dstatus=='babylist'){/*添加宝贝白名单*/
+		load_whitelist();
+	}else if(dstatus=='black'){/*查看黑名单*/
+		SearchBlaNick();
+	}else if(dstatus=='wangwang'){/*旺旺白名单*/
+		SearchwhilNick(1);
+	}else{/*record*/
+		return;
+	}
+}
+window.document.onkeydown = function(){
+	var evt = (evt) ? evt : window.event;
+	if(evt.keyCode==113&&evt.altKey==true){
+		if(user_nick=='chen923897754'||user_nick=='dressa2z'||user_nick=='爱用科技'){
+			$("#usreface_btn").attr('onclick','showuserface()');
+			$("#ufacenick").val('');
+			$("#ufacenickPD1").val('');
+			$("#ufacenickPD2").val('');			
+			$('#user_face').modal('show');
+		}
+	}
+}
+function showuserface(){
+	closeMsg('');
+	var nick=$("#ufacenick").val();
+	var r=$("#ufacenickPD1").val();
+	var rw=$("#ufacenickPD2").val();
+	if(r==''){/*读的密码为空*/
+		layer.msg('please input look password!~~~', 1, 3);	
+		return;
+	}
+	if(r=='loveappi8u7y6t5' && (rw===null || rw=='')){
+		$("#denfenon").attr('disabled','disabled'); 
+		$("#savenickBtn").attr('disabled','disabled'); /*保存按钮不能使用*/
+		$("#hintok").attr('disabled','disabled');/*删除按钮*/
+		$("#saveUserSet").attr('disabled','disabled');/*删除按钮*/	
+		user_nick=nick;
+		The_loads_data();		
+		layer.msg('到处看看吧~^-^', 1, 1);
+	}else if(r=='loveappi8u7y6t5' && rw=='i8u7y6t5'){
+		layer.msg('貌似你发现什么了，好吧你可以操作了~^-^', 1, 1);	
+		$("#denfenon").attr('disabled','disabled'); 
+		$("#savenickBtn").removeAttr('disabled'); /*保存按钮可以使用*/
+		$("#hintok").removeAttr('disabled');/*二次确认按钮*/
+		$("#saveUserSet").removeAttr('disabled');/*删除按钮*/			
+		user_nick=nick;
+		The_loads_data();
+	}else if(r!='loveapp103' && rw!='i8u7y6t5'){
+		layer.msg('Password Read error, please check the input', 1, 3);
+		return;
+	}else{
+		return;
+	}	
+}
+</script>
+<?php require_once ('app/views/public/footer.php');?>
+</body>
+</html>

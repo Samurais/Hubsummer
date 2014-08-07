@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<head>
+    <meta charset="utf-8">
+    <title>爱用交易管理</title>
+    <script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery/dist/jquery.min.js" ></script>
+    <link href="http://g.alicdn.com/sj/qnui/1.1.6/css/sui.min.css" rel="stylesheet"/>
+	<script type="text/javascript" src="http://g.alicdn.com/sj/qnui/1.1.6/js/sui.min.js" ></script>
+	<script src="http://cdn.zzgdapp.com/pubcdn/handlebars-1.0.1.js"></script>
+    <link rel="stylesheet/less" href="http://cdn.zzgdapp.com/trade/web/js/theme.less">
+    <script type="text/javascript" src="http://g.tbcdn.cn/sj/qn/lib/js/less.js"></script>
+    <script src="http://g.tbcdn.cn/sj/qn/jssdk.js"></script>
+    <script src="http://cdn.zzgdapp.com/pubcdn/layer/layer.min.js"></script>
+    <script src="http://cdn.zzgdapp.com/trade/web/js/superslide.js"></script>
+</head>
+<style type="text/css">
+	.pay { float: none;margin: 0.0px;width: 700.0px; }
+	.pay img { padding-left: 15px ;  }
+	.info { border-width: 1px 0px 0px 0px; border-color: #cccccc ; border-style: solid ; background: #eeeeee ; margin: 10px 0px ; padding: 10px ; }
+	.info_left { float: left ;  }
+	.info_left span { color: #333333 ; }
+	.info_right { float: right ; }
+	.clear{ clear:both; overflow:hidden;}
+	.clearfix:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+	
+	#daoh {
+		position: fixed;
+		top: 0px;
+		width: 100%;
+		font: normal 12px/22px 宋体;
+		border: 0;
+		z-index: 2;
+		/*background-color: #6fb0e4;*/
+		margin: auto;
+		padding: 0;
+		height: 26px;
+		line-height: 26px;
+		border-width: 0px 0px 1px 0px;
+		border-color: #d7d7d7;
+		border-style: solid;
+	}
+	
+	.left_logo {
+		float: left;
+		padding-left: 10px;
+		/*padding-top: 5px;*/
+		margin-top: -2px;
+	}
+	
+	.navBar {
+		float: right;
+		padding-right: 10px;
+		position: relative;
+
+		height: 26px;
+		line-height: 26px;
+		list-style: none;
+		margin: 0 auto;
+		font-family: "Microsoft YaHei", SimSun, SimHei;
+	}
+	
+	.nav {
+		list-style: none;
+	}
+	
+	.nav .m {
+		float: left;
+		position: relative;
+	}
+	
+	.nav h3 {
+		margin: 0;
+		padding: 0;
+		float: left;
+		font-size: 100%;
+		font-weight: normal;
+		font-size: 12px;
+		height: 26px;
+		overflow: hidden;
+	}
+	
+	.nav h3 a {
+		height: 32px;
+		margin-top: -2px;
+		text-decoration: none;
+		color: #333;
+		display: block;
+		padding: 0 10px;
+		vertical-align: top;
+	}
+	
+	.nav .on {
+		border: 0;
+	}
+	
+
+	
+	.nav .sub {
+		margin: 0;
+		padding: 0;
+		display: none;
+		color: #666666;
+		width: 260px;
+		position: absolute;
+		left: 0;
+		top: 26px;
+		background: #fff;
+		border: 1px solid #d7d7d7;
+		border-top: 0;
+	}
+	
+	.nav .sub ul {
+		margin: 0;
+		padding: 0;
+	}
+	
+	.nav .sub li {
+		list-style: none;
+		line-height: 20px;
+		padding: 10px;
+		float: left;
+		border-width: 0px 0px 1px 0px;
+		border-color: #f1f1f1;
+		border-style: solid;
+	}
+	
+	.nav .sub li a {
+		text-decoration: none;
+		display: block;
+		color: #999;
+	}
+	
+
+	
+	.nav .sub div a {
+		text-decoration: none;
+		color: #333;
+	}
+	
+
+	
+	.nav .sub div {
+		color: #333;
+	}
+	
+	.nav #m2 .sub {
+		width: 100%;
+		left: -1px;
+		right: auto;
+	}
+	
+	.nav #m3 .sub {
+		width: 620px;
+		left: auto;
+		right: -1px;
+	}
+	
+	.cjhd {
+		float: left;
+		width: 150px;
+		border-width: 0px 1px 0px 0px;
+		border-color: #f1f1f1;
+		border-style: solid;
+	}
+	
+	.dxyx {
+		float: left;
+		width: 100px;
+		border-width: 0px 1px 0px 0px;
+		border-color: #f1f1f1;
+		border-style: solid;
+		height: 150px;
+	}
+	
+	.ayjz {
+		float: left;
+		width: 100px;
+		border-width: 0px 1px 0px 0px;
+		border-color: #f1f1f1;
+		border-style: solid;
+	}
+	
+	.gzdt {
+		float: left;
+		width: 100px;
+	}
+	.topNav {
+		position: fixed;
+		top: 26px;
+		z-index: 1;
+		font-size: 14px;
+		height: 36px;
+		line-height: 36px;
+		border-bottom: 1px solid #d7d7d7;
+		background-color: #eee;
+		font-family: "Microsoft YaHei", SimSun;
+		width: 100%;
+	}
+	
+	.topNav-width {
+		margin: 0 auto;
+		padding: 0;
+		height: 36px;
+	}
+	
+	.topNav h3 {
+		font-weight: normal;
+		font-size: 100%;
+	}
+	
+	.topNav dl {
+		zoom: 1;
+	}
+	
+	.topNav .tnLeft {
+		float: left;
+		margin-top: -10px;
+		height: 36px;
+	}
+	
+	.topNav .tnRight {
+		float: right;
+	}
+	.topNav dd {
+		float: left;
+		padding: 0;
+		margin: 0;
+		height: 36px;
+		position: relative;
+	}
+	
+	.topNav dd h3 {
+		float: left;
+		line-height: 36px;
+	}
+	
+	.topNav dd h3 a {
+		text-decoration: none;
+		color: #333;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		height: 36px;
+		line-height: 36px;
+		padding: 0px 7px;
+	}
+	
+	
+	
+	.topNav dd ul {
+		list-style: none;
+		display: none;
+		position: absolute;
+		width: 110px;
+		top: 45px;
+		margin-left: 0;
+		/*left: 0;*/
+		border: 1px solid #d7d7d7;
+		border-top: 0;
+		background: #fff;
+		-moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+		-webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+		box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+	}
+	
+	.topNav dd ul li {
+		line-height: 31px;
+	}
+	
+	.topNav dd ul li a {
+		text-decoration: none;
+		display: block;
+		color: #333;
+		padding: 0 15px;
+	}
+	
+	
+	
+	.mfb {
+		float: left;
+		position: relative;
+		text-align: center;
+		background: url(http://cdn.zzgdapp.com/trade/web/images/mfb_bg.png)
+			no-repeat;
+		width: 92px;
+		padding-bottom: 6px;
+		color: #FFFFFF;
+		font-size: 12px;
+		line-height: 22px;
+		height: 26px;
+	}
+	
+	.mfbzk {
+		float: left;
+		position: relative;
+		text-align: center;
+		display: none;
+	}
+	
+	.mfbzk_top {
+		background: url(http://cdn.zzgdapp.com/trade/web/images/zk_top.png)
+			no-repeat;
+		color: #FFFFFF;
+		line-height: 22px;
+		height: 26px;
+		font-size: 12px;
+	}
+	
+	.mfbzk_mid {
+		background: url(http://cdn.zzgdapp.com/trade/web/images/zk_mid.png) repeat-y;
+		padding: 10px 2px 10px 3px;
+	}
+	
+	.ljsj {
+		background: url(http://cdn.zzgdapp.com/trade/web/images/an.png) no-repeat;
+		text-align: center;
+		border: none;
+		font-size: 12px;
+		color: #FFFFFF;
+		width: 76px;
+		line-height: 24px;
+		height: 24px;
+	}
+	
+	.mfbzk_foot {
+		background: url(http://cdn.zzgdapp.com/trade/web/images/zk_foot.png)
+			no-repeat;
+		width: 92px;
+		height: 14px;
+	}
+body {
+  overflow: hidden;
+}
+.container {
+  overflow: auto;
+}
+.Floating_layer{display:block;position:fixed;right:2px;bottom:20px;z-index:999999}.Floating_layer a{display:block;padding:6px 10px;background:rgba(0,0,0,0.2);-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;margin-bottom:2px}.Floating_layer a:hover{background:rgba(0,0,0,0.5)}
+</style>
+<body>
+<div class="container" style="margin-left: 10px;" id="fast_content">
+     <div id="wmodalbody" style="position: relative;">
+     	<div class="sui-form" style="margin-top: 10px;">
+				选择打印机：<span class="sui-dropdown dropdown-bordered select"> 
+					<span class="dropdown-inner">
+					<a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+						<input value="" name="category" type="hidden" onchange="defaultprint();"><i class="caret"></i><span id="printerName"></span></a>
+							<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu category" name="category" id="categoryz" style="max-height: 200px; overflow-y: auto;">
+							</ul>
+					</span>
+				</span>
+			</div>
+	            <div >发件人：<span id="faddrmessage"> </span>
+	            <span style="display: none;" id="selectcumoids"></span>
+	            </div>
+	            
+	            <div class="sui-form" style="margin-top: 10px;">
+				运单模版：<span class="sui-dropdown dropdown-bordered select"> 
+					<span class="dropdown-inner">
+					 <a id="selects" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+						<input value="" name="categorys" type="hidden" onchange="selectcumo();">
+						<i class="caret"></i>
+						<span id="selectcumoid"></span>
+						</a>
+							<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu category" id="categorys" style="max-height: 200px; overflow-y: auto;">
+							</ul>
+					</span>
+				</span>
+			</div>
+	            <p>共<span id="allprintn" style="font-size:14;color:blue;font-weight:bold;"></span>笔待打印   当前第<span id="oneprintn" style="font-size:14;color:blue;font-weight:bold;"></span>笔
+	                <a href="javascript:arraytext('down');" title="上一笔">上一笔</a>
+	                <a href="javascript:arraytext('up');" title="下一笔">下一笔</a>&nbsp;&nbsp;<font color="red">（* 小心预览订单数据避免重打^_^）</font>
+	                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="sui-btn btn-small btn-primary" onclick="printfast();" >开始打印</a>
+	            </p>
+        <div id="mainPreviewboby" style="background-size: 100% 100%;">
+        </div>
+       </div>
+</div>
+<script type="text/javascript">
+	var user_nick='';
+	var fastmould='';
+	var fastsize='';
+	var fastpic='';
+	var text=new Array();
+	var printingarr=new Array();
+	var offsetx=0;
+	var offsety=0;
+	window.onload = function(){
+		user_nick=window.localStorage.getItem("loginnick");
+		var printerName=workbench.platform.printer.printers;
+	    var defaultPrinter = workbench.platform.printer.defaultPrinter;
+	    var printerName=printerName.split(';');
+	    if(printerName[0]!=''){
+	         for(var index in printerName){
+	            if(printerName[index]==defaultPrinter){
+	            	$("#printerName").html(defaultPrinter);
+	            	$("#categoryz").prepend('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+printerName[index]+'">'+printerName[index]+'</a></li>');
+	                	}else{
+	                		$("#categoryz").prepend('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+printerName[index]+'">'+printerName[index]+'</a></li>');
+	                		}
+	                	}
+	              	if($("#printerName").html()=='')$("#printerName").html(printerName[0]);
+	              }else $("#printerName").html('暂无打印机');
+		if(user_nick==''|| user_nick==null||user_nick.length<2||user_nick=='null'){
+			 QN.application.invoke({
+          		 "cmd": "getLoginuser",
+          		 "success": function (e){
+          			 if(typeof  e=== 'string'){
+          	            	e = JSON.parse(e);
+          	            }
+           			 user_nick=decodeURI(e.user_nick);
+            		 window.localStorage.setItem("loginnick",user_nick);
+            		 loadingMo();
+          		 }
+          		 });
+			}else loadingMo();
+		$("#faddrmessage").html(window.localStorage.getItem("faddrmessage"));
+		}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-7-17
+	 * Time: 14:00 
+	 * 默认打印机.【更新】
+	 */	 
+	function defaultprint(){
+		var printerName=$("#select input").val();
+		workbench.platform.printer.defaultPrinter = printerName;
+		}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-7-17
+	 * Time: 14:00 
+	 * 加载快递单模版信息.【更新】
+	 */
+	function loadingMo(){
+		 var printmo=window.localStorage.getItem("printmo"+user_nick);
+	     if(printmo==null||printmo=='null'){
+	    	 $.ajax({
+			     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getPrintmo',
+			     type: 'POST',
+			     dataType:'html',
+			     data:{nick:user_nick},
+			     timeout:10000,
+			     error: function(e){
+			    	 layer.msg('获取数据失败！',1, 3);
+			     },		     
+			     success: function(printdata){
+			    	window.localStorage.setItem("printmo"+user_nick,printdata);
+			    	printmo=eval('('+printdata+')');
+			    	var publicmo=printmo['publicmo'];
+			    	var privatemo=printmo['privatemo'];
+			    	$("#categorys").append('<li role="presentation" ><span style="color:red;">个人模版</span></li>');
+			    	for(var index in privatemo){
+				    	if(privatemo[index]['sign']!=1){
+				    		$("#categorys").append('<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+privatemo[index]['mouldname']+'wsx">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+privatemo[index]['mouldname']+'</a></li>');
+				    	}else{
+				    		$("#selectcumoid").html(privatemo[index]['mouldname']);
+				    		$("#selectcumoids").html(privatemo[index]['mouldname']+'wsx');
+				    		$("#categorys").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+privatemo[index]['mouldname']+'wsx">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+privatemo[index]['mouldname']+'</a></li>');
+				    	}
+				    }
+				    $("#categorys").append('<li role="presentation" ><span style="color:red;">公共模版</span></li>');
+			        for(var index in publicmo){
+			        	if($("#selectcumoid").html()==''){
+			        		$("#selectcumoids").html(publicmo[index]['mouldname']);
+			        		$("#selectcumoid").html(publicmo[index]['mouldname']);
+			        		$("#categorys").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+publicmo[index]['mouldname']+'">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+publicmo[index]['mouldname']+'</a></li>');
+				        	}else $("#categorys").append('<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+publicmo[index]['mouldname']+'">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+publicmo[index]['mouldname']+'</a></li>');
+		        	}
+			        selectcumo();
+			     }
+		     });
+	     }else{
+	    	 	printmo=eval('('+printmo+')');
+		    	var publicmo=printmo['publicmo'];
+		    	var privatemo=printmo['privatemo'];
+            	$("#categorys").append('<li role="presentation" ><span style="color:red;">个人模版</span></li>');
+			    for(var index in privatemo){
+				    	if(privatemo[index]['sign']!=1){
+				    		$("#categorys").append('<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+privatemo[index]['mouldname']+'wsx">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+privatemo[index]['mouldname']+'</a></li>');
+				    	}else{
+				    		$("#selectcumoid").html(privatemo[index]['mouldname']);
+				    		$("#selectcumoids").html(privatemo[index]['mouldname']+'wsx');
+				    		$("#categorys").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+privatemo[index]['mouldname']+'wsx">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+privatemo[index]['mouldname']+'</a></li>');
+				    	}
+				    }
+			    $("#categorys").append('<li role="presentation" ><span style="color:red;">公共模版</span></li>');
+		        for(var index in publicmo){
+		        	if($("#selectcumoid").html()==''){
+		        		$("#selectcumoids").html(publicmo[index]['mouldname']);
+		        		$("#selectcumoid").html(publicmo[index]['mouldname']);
+		        		$("#categorys").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+publicmo[index]['mouldname']+'">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+publicmo[index]['mouldname']+'</a></li>');
+			        	}else $("#categorys").append('<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+publicmo[index]['mouldname']+'">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+publicmo[index]['mouldname']+'</a></li>');
+	        	}
+		        selectcumo();
+		  }
+	     $('.dropdown-toggle').dropdown();
+	}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-7-17
+	 * Time: 14:00  
+	 * 显示选中的模板名称.【更新】
+	 */	  
+	function selectcumo(){
+		var mouldnamec=$("#selects input").val();
+		if(mouldnamec=='')mouldnamec=$("#selectcumoids").html();
+		var printmo=window.localStorage.getItem("printmo"+user_nick);
+		var printmo=eval('('+printmo+')');
+		if(mouldnamec.indexOf('wsx') > 0){
+				mouldnamec=mouldnamec.replace("wsx","") ;
+    			var printmo=printmo['privatemo'];
+			}else var printmo=printmo['publicmo'];
+    	for(var index in printmo){
+        	if(printmo[index]['mouldname']==mouldnamec){
+       		 fastmould=printmo[index]['mould'];
+		     fastsize=printmo[index]['size'];
+		     fastpic=printmo[index]['moprice'];
+		     var tl=printmo[index]['offset'];
+		    	tl=tl.replace("'","");
+		    	tl=tl.split('X');
+		    	offsety=tl[0];
+		    	offsetx=tl[1];
+		     	printDatas();
+		     	break;
+            	}
+        	}
+		}
+	function printDatas(){
+		printingarr.length=0;
+		var fastDatas=window.localStorage.getItem("fastData");
+		fastDatas=fastDatas.split('|-X-|');
+		for(var index in fastDatas){
+		    fastData=fastDatas[index].split('|Y|');
+		    var textarray=fastmould.split(';');
+			text.length=0;
+			var textsplit='';
+			for(var index in textarray){
+				textsplit=textarray[index].split(',');
+				text[index]=textsplit;
+					switch(text[index][0]){
+						 case 'names':{text[index][0]=fastData[0];break;}
+						 case 'date':{text[index][0]=fastData[1];break;}
+						 case 'btitle':{text[index][0]=fastData[2];break;}
+						 case 'bproperty':{text[index][0]=fastData[3];break;}
+						 case 'bpropertys':{text[index][0]=fastData[4];break;}
+						 case 'destination':{text[index][0]=fastData[5];break;}
+						 case 'shopName':{text[index][0]=fastData[6];break;}
+						 case 'totalPrices':{text[index][0]=fastData[7];break;}
+						 case 'bbabynum':{text[index][0]=fastData[8];break;}
+						 case 'ballnum':{text[index][0]=fastData[9];break;}
+						 case 'bsxnums':{text[index][0]=fastData[10];break;}
+						 case 'sellerNick':{text[index][0]=fastData[11];break;}
+						 case 'CODING':{text[index][0]=fastData[12];break;}
+						 case 'buyerNick':{text[index][0]=fastData[13];break;}
+						 case 'orderNumber':{text[index][0]=fastData[14];break;}
+						 case 'SpostCode':{text[index][0]=fastData[15];break;}
+						 case 'FpostCode':{text[index][0]=fastData[16];break;}
+						 case 'buyerMessage':{text[index][0]=fastData[17];break;}
+						 case 'sellerRemark':{text[index][0]=fastData[18];break;}
+						 case 'fname':{text[index][0]=fastData[19];break;}
+						 case 'faddress':{text[index][0]=fastData[20];break;}
+						 case 'fsaddr':{text[index][0]=fastData[21];break;}
+						 case 'fcompany':{text[index][0]=fastData[22];break;}
+						 case 'fphone':{text[index][0]=fastData[23];break;}
+						 case 'fmobile':{text[index][0]=fastData[24];break;}
+						 case 'sname':{text[index][0]=fastData[25];break;}
+						 case 'saddress':{text[index][0]=fastData[26];break;}
+						 case 'scompany':{text[index][0]=fastData[27];break;}
+						 case 'sphone':{text[index][0]=fastData[28];break;}
+						 case 'smobile':{text[index][0]=fastData[29];break;}
+						 case 'f_shen':{text[index][0]=fastData[30];break;}
+						 case 'f_shi':{text[index][0]=fastData[31];break;}
+						 case 'f_qu':{text[index][0]=fastData[32];break;}
+						 case 'f_deil':{text[index][0]=fastData[33];break;}
+						 case 's_shen':{text[index][0]=fastData[34];break;}
+						 case 's_shi':{text[index][0]=fastData[35];break;}
+						 case 's_qu':{text[index][0]=fastData[36];break;}
+						 case 's_deil':{text[index][0]=fastData[37];break;}
+						 case 'babyall':{text[index][0]=fastData[38];break;}
+						 default :{text[index][0]=text[index][9];break;}
+					 }
+				}
+				var textInfos='';
+				for(var index in text){
+			    	for(var reindex in text[index]){
+			    		if(text[index][reindex]!=undefined&&text[index][reindex]!='undefined')text[index][reindex]=text[index][reindex].replace(/\"/g,"”");
+			        	}
+			        if(text[index][7]=='normal') var bold=false;else var bold=true;
+			        if(textInfos==''){
+			            textInfos='{"left":'+text[index][2]+',"top":'+text[index][1]+',"width":'+text[index][4]+',"height":'+text[index][5]+',"text":"'+text[index][0]+'","fontName":"'+text[index][6]+'","fontHeight":'+text[index][3]+',"multiLine":'+text[index][8]+',"bold":'+bold+'}';
+			        }else{
+			            textInfos+=','+'{"left":'+text[index][2]+',"top":'+text[index][1]+',"width":'+text[index][4]+',"height":'+text[index][5]+',"text":"'+text[index][0]+'","fontName":"'+text[index][6]+'","fontHeight":'+text[index][3]+',"multiLine":'+text[index][8]+',"bold":'+bold+'}';
+			        }
+			    }
+			    textInfos=textInfos.replace(/[\r\n\t]/g,"");
+			    textInfos=textInfos.replace(/\\/g,"");
+			    var textInfo = '{"textInfo":['+textInfos+']}';
+			    printingarr.push(textInfo);
+			}
+			arraytext(1);
+		}
+	function arraytext(arrayval){
+		var fastData=window.localStorage.getItem("fastData");
+		fastData=fastData.split('|-X-|');
+	    if(arrayval=='down')arrayval=Number($("#oneprintn").html())-1;
+		else if(arrayval=='up')arrayval=Number($("#oneprintn").html())+1;
+		else arrayval=1;
+		if(arrayval<1)arrayval=1;else if(arrayval>fastData.length)arrayval=fastData.length;
+		$("#allprintn").html(fastData.length);
+		$("#oneprintn").html(arrayval);
+		fastData=fastData[arrayval-1].split('|Y|');
+		$("#mainPreviewboby").empty();
+	    var viewpicture='http://itradeprint.oss.aliyuncs.com/'+fastpic;
+	    var textarray=fastmould.split(';');
+		var wh=fastsize.split('X');
+		var textsplit='';
+		var width=wh[0]+"mm";
+		var height=wh[1]+"mm";
+		$("#mainPreviewboby").css({"background-image":"url('"+viewpicture+"')","width":width,"height":height});
+		var x=0;
+		var y=0;
+		text.length=0;
+		for(var index in textarray){
+			textsplit=textarray[index].split(',');
+			text[index]=textsplit;
+				switch(text[index][0]){
+					 case 'names':{text[index][0]=fastData[0];break;}
+					 case 'date':{text[index][0]=fastData[1];break;}
+					 case 'btitle':{text[index][0]=fastData[2];break;}
+					 case 'bproperty':{text[index][0]=fastData[3];break;}
+					 case 'bpropertys':{text[index][0]=fastData[4];break;}
+					 case 'destination':{text[index][0]=fastData[5];break;}
+					 case 'shopName':{text[index][0]=fastData[6];break;}
+					 case 'totalPrices':{text[index][0]=fastData[7];break;}
+					 case 'bbabynum':{text[index][0]=fastData[8];break;}
+					 case 'ballnum':{text[index][0]=fastData[9];break;}
+					 case 'bsxnums':{text[index][0]=fastData[10];break;}
+					 case 'sellerNick':{text[index][0]=fastData[11];break;}
+					 case 'CODING':{text[index][0]=fastData[12];break;}
+					 case 'buyerNick':{text[index][0]=fastData[13];break;}
+					 case 'orderNumber':{text[index][0]=fastData[14];break;}
+					 case 'SpostCode':{text[index][0]=fastData[15];break;}
+					 case 'FpostCode':{text[index][0]=fastData[16];break;}
+					 case 'buyerMessage':{text[index][0]=fastData[17];break;}
+					 case 'sellerRemark':{text[index][0]=fastData[18];break;}
+					 case 'fname':{text[index][0]=fastData[19];break;}
+					 case 'faddress':{text[index][0]=fastData[20];break;}
+					 case 'fsaddr':{text[index][0]=fastData[21];break;}
+					 case 'fcompany':{text[index][0]=fastData[22];break;}
+					 case 'fphone':{text[index][0]=fastData[23];break;}
+					 case 'fmobile':{text[index][0]=fastData[24];break;}
+					 case 'sname':{text[index][0]=fastData[25];break;}
+					 case 'saddress':{text[index][0]=fastData[26];break;}
+					 case 'scompany':{text[index][0]=fastData[27];break;}
+					 case 'sphone':{text[index][0]=fastData[28];break;}
+					 case 'smobile':{text[index][0]=fastData[29];break;}
+					 case 'f_shen':{text[index][0]=fastData[30];break;}
+					 case 'f_shi':{text[index][0]=fastData[31];break;}
+					 case 'f_qu':{text[index][0]=fastData[32];break;}
+					 case 'f_deil':{text[index][0]=fastData[33];break;}
+					 case 's_shen':{text[index][0]=fastData[34];break;}
+					 case 's_shi':{text[index][0]=fastData[35];break;}
+					 case 's_qu':{text[index][0]=fastData[36];break;}
+					 case 's_deil':{text[index][0]=fastData[37];break;}
+					 case 'babyall':{text[index][0]=fastData[38];break;}
+					 default :{text[index][0]=text[index][9];break;}
+				 }
+				x=Number(text[index][2])+15;
+				y=Number(text[index][1])+155;
+				$("#mainPreviewboby").append('<div style="position:absolute;left:'+x+'px;top:'+y+'px;width:'+text[index][4]+'px;height:'+text[index][5]+'px;"><span style="font-size:'+text[index][3]+'px;font-family:'+text[index][6]+';font-weight:'+text[index][7]+';">'+text[index][0]+'</span></div>');
+			}
+	}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-7-18
+	 * Time: 14:00  
+	 * 打印快递单.【更新】
+	 */	
+	function printfast() {
+		 var printerName=$("#select input").val();
+		 var initJson = {"uuid":"yooz","printerName":printerName};
+		 var wh=fastsize.split('X');
+		 var cwidth=wh[0];
+		 var cheight=wh[1];
+		 QN.plugin.invoke({
+		     category: 'expressprinter',
+		     cmd: 'InitPrint',
+		     param: initJson,
+		     success: function () {
+		     },
+		     error: function (msg) {
+		     }
+		 });
+		 
+		  for(var index in printingarr){
+		        var reqJson = { "uuid": 'yooz', "printJob":printingarr[index]};
+		        QN.plugin.invoke({
+		            category: 'expressprinter',
+		            cmd: 'AddPrintPage',
+		            param: reqJson,
+		            success: function () {
+		            },
+		            error: function (msg) {
+		            }
+		        });
+		    }
+			 
+		 var pageSizeJson = {"uuid":"yooz","pageOrient":1,"pageWidth":Number(cwidth),"pageHeight":Number(cheight),"offsetx":Number(offsetx),"offsety":Number(offsety),"pageName":""};
+		 QN.plugin.invoke({
+		     category: 'expressprinter',
+		     cmd: 'SetPageSize',
+		     param: pageSizeJson,
+		     success: function () {
+		     },
+		     error: function (msg) {
+		     }
+		 });
+			 
+		 var printJson = {"uuid":"yooz"};
+		 QN.plugin.invoke({
+		     category: 'expressprinter',
+		     cmd: 'Print',
+		     param: printJson,
+		     success: function () {
+		    	 var printRole=window.localStorage.getItem("printRole");
+		    	 switch(printRole){
+					 case 'customPrintfast':{window.localStorage.setItem("printRole",'customPrintfasts');break;}
+					 case 'customPrintsend':{window.localStorage.setItem("printRole",'customPrintsends');break;}
+					 case 'printSendfast':{window.localStorage.setItem("printRole",'printSendfasts');break;}
+					 case 'printSendsend':{window.localStorage.setItem("printRole",'printSendsends');break;}
+					 default :{window.localStorage.setItem("printRole",'other');break;}
+				 }
+		    	 QN.application.invoke({
+			    	    cmd : 'closePlugin',
+			    	    param : {},
+			    	    success : function(rsp) {
+			    	    },
+			    	    error : function(msg) {
+			    	    }
+			    	});
+		     },
+		     error: function (msg) {
+		     }
+		 });
+		
+		 QN.plugin.invoke({
+		     category: 'expressprinter',
+		     cmd: 'UninitPrint',
+		     param: printJson,
+		     success: function () {
+		     },
+		     error: function (msg) {
+		     }
+		 });
+		
+		 QN.plugin.invoke({
+		     category: 'expressprinter',
+		     cmd: 'Destory',
+		     param: printJson,
+		     success: function () {
+		     },
+		     error: function (msg) {
+		     }
+		 });
+	}
+	    
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

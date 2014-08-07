@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<head>
+    <meta charset="utf-8">
+    <title>爱用交易管理</title>
+    <script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery/dist/jquery.min.js" ></script>
+    <link href="http://g.alicdn.com/sj/qnui/1.1.6/css/sui.min.css" rel="stylesheet"/>
+	<script type="text/javascript" src="http://g.alicdn.com/sj/qnui/1.1.6/js/sui.min.js" ></script>
+	<script src="http://cdn.zzgdapp.com/pubcdn/handlebars-1.0.1.js"></script>
+    <link rel="stylesheet/less" href="http://cdn.zzgdapp.com/trade/web/js/theme.less">
+    <script type="text/javascript" src="http://g.tbcdn.cn/sj/qn/lib/js/less.js"></script>
+    <script src="http://g.tbcdn.cn/sj/qn/jssdk.js"></script>
+    <script src="http://cdn.zzgdapp.com/pubcdn/layer/layer.min.js"></script>
+    <script src="http://cdn.zzgdapp.com/trade/web/js/superslide.js"></script>
+</head>
+<style type="text/css">
+	.pay { float: none;margin: 0.0px;width: 700.0px; }
+	.pay img { padding-left: 15px ;  }
+	.info { border-width: 1px 0px 0px 0px; border-color: #cccccc ; border-style: solid ; background: #eeeeee ; margin: 10px 0px ; padding: 10px ; }
+	.info_left { float: left ;  }
+	.info_left span { color: #333333 ; }
+	.info_right { float: right ; }
+	.clear{ clear:both; overflow:hidden;}
+	.clearfix:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+	
+	#daoh {
+		position: fixed;
+		top: 0px;
+		width: 100%;
+		font: normal 12px/22px 宋体;
+		border: 0;
+		z-index: 2;
+		/*background-color: #6fb0e4;*/
+		margin: auto;
+		padding: 0;
+		height: 26px;
+		line-height: 26px;
+		border-width: 0px 0px 1px 0px;
+		border-color: #d7d7d7;
+		border-style: solid;
+	}
+	
+	.left_logo {
+		float: left;
+		padding-left: 10px;
+		/*padding-top: 5px;*/
+		margin-top: -2px;
+	}
+	
+	.navBar {
+		float: right;
+		padding-right: 10px;
+		position: relative;
+
+		height: 26px;
+		line-height: 26px;
+		list-style: none;
+		margin: 0 auto;
+		font-family: "Microsoft YaHei", SimSun, SimHei;
+	}
+	
+	.nav {
+		list-style: none;
+	}
+	
+	.nav .m {
+		float: left;
+		position: relative;
+	}
+	
+	.nav h3 {
+		margin: 0;
+		padding: 0;
+		float: left;
+		font-size: 100%;
+		font-weight: normal;
+		font-size: 12px;
+		height: 26px;
+		overflow: hidden;
+	}
+	
+	.nav h3 a {
+		height: 32px;
+		margin-top: -2px;
+		text-decoration: none;
+		color: #333;
+		display: block;
+		padding: 0 10px;
+		vertical-align: top;
+	}
+	
+	.nav .on {
+		border: 0;
+	}
+	
+
+	
+	.nav .sub {
+		margin: 0;
+		padding: 0;
+		display: none;
+		color: #666666;
+		width: 260px;
+		position: absolute;
+		left: 0;
+		top: 26px;
+		background: #fff;
+		border: 1px solid #d7d7d7;
+		border-top: 0;
+	}
+	
+	.nav .sub ul {
+		margin: 0;
+		padding: 0;
+	}
+	
+	.nav .sub li {
+		list-style: none;
+		line-height: 20px;
+		padding: 10px;
+		float: left;
+		border-width: 0px 0px 1px 0px;
+		border-color: #f1f1f1;
+		border-style: solid;
+	}
+	
+	.nav .sub li a {
+		text-decoration: none;
+		display: block;
+		color: #999;
+	}
+	
+
+	
+	.nav .sub div a {
+		text-decoration: none;
+		color: #333;
+	}
+	
+
+	
+	.nav .sub div {
+		color: #333;
+	}
+	
+	.nav #m2 .sub {
+		width: 100%;
+		left: -1px;
+		right: auto;
+	}
+	
+	.nav #m3 .sub {
+		width: 620px;
+		left: auto;
+		right: -1px;
+	}
+	
+	.cjhd {
+		float: left;
+		width: 150px;
+		border-width: 0px 1px 0px 0px;
+		border-color: #f1f1f1;
+		border-style: solid;
+	}
+	
+	.dxyx {
+		float: left;
+		width: 100px;
+		border-width: 0px 1px 0px 0px;
+		border-color: #f1f1f1;
+		border-style: solid;
+		height: 150px;
+	}
+	
+	.ayjz {
+		float: left;
+		width: 100px;
+		border-width: 0px 1px 0px 0px;
+		border-color: #f1f1f1;
+		border-style: solid;
+	}
+	
+	.gzdt {
+		float: left;
+		width: 100px;
+	}
+	.topNav {
+		position: fixed;
+		top: 26px;
+		z-index: 1;
+		font-size: 14px;
+		height: 36px;
+		line-height: 36px;
+		border-bottom: 1px solid #d7d7d7;
+		background-color: #eee;
+		font-family: "Microsoft YaHei", SimSun;
+		width: 100%;
+	}
+	
+	.topNav-width {
+		margin: 0 auto;
+		padding: 0;
+		height: 36px;
+	}
+	
+	.topNav h3 {
+		font-weight: normal;
+		font-size: 100%;
+	}
+	
+	.topNav dl {
+		zoom: 1;
+	}
+	
+	.topNav .tnLeft {
+		float: left;
+		margin-top: -10px;
+		height: 36px;
+	}
+	
+	.topNav .tnRight {
+		float: right;
+	}
+	.topNav dd {
+		float: left;
+		padding: 0;
+		margin: 0;
+		height: 36px;
+		position: relative;
+	}
+	
+	.topNav dd h3 {
+		float: left;
+		line-height: 36px;
+	}
+	
+	.topNav dd h3 a {
+		text-decoration: none;
+		color: #333;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		height: 36px;
+		line-height: 36px;
+		padding: 0px 7px;
+	}
+	
+	
+	
+	.topNav dd ul {
+		list-style: none;
+		display: none;
+		position: absolute;
+		width: 110px;
+		top: 45px;
+		margin-left: 0;
+		/*left: 0;*/
+		border: 1px solid #d7d7d7;
+		border-top: 0;
+		background: #fff;
+		-moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+		-webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+		box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+	}
+	
+	.topNav dd ul li {
+		line-height: 31px;
+	}
+	
+	.topNav dd ul li a {
+		text-decoration: none;
+		display: block;
+		color: #333;
+		padding: 0 15px;
+	}
+	
+	
+	
+	.mfb {
+		float: left;
+		position: relative;
+		text-align: center;
+		background: url(http://cdn.zzgdapp.com/trade/web/images/mfb_bg.png)
+			no-repeat;
+		width: 92px;
+		padding-bottom: 6px;
+		color: #FFFFFF;
+		font-size: 12px;
+		line-height: 22px;
+		height: 26px;
+	}
+	
+	.mfbzk {
+		float: left;
+		position: relative;
+		text-align: center;
+		display: none;
+	}
+	
+	.mfbzk_top {
+		background: url(http://cdn.zzgdapp.com/trade/web/images/zk_top.png)
+			no-repeat;
+		color: #FFFFFF;
+		line-height: 22px;
+		height: 26px;
+		font-size: 12px;
+	}
+	
+	.mfbzk_mid {
+		background: url(http://cdn.zzgdapp.com/trade/web/images/zk_mid.png) repeat-y;
+		padding: 10px 2px 10px 3px;
+	}
+	
+	.ljsj {
+		background: url(http://cdn.zzgdapp.com/trade/web/images/an.png) no-repeat;
+		text-align: center;
+		border: none;
+		font-size: 12px;
+		color: #FFFFFF;
+		width: 76px;
+		line-height: 24px;
+		height: 24px;
+	}
+	
+	.mfbzk_foot {
+		background: url(http://cdn.zzgdapp.com/trade/web/images/zk_foot.png)
+			no-repeat;
+		width: 92px;
+		height: 14px;
+	}
+body {
+  overflow: hidden;
+}
+.container {
+  overflow: auto;
+}
+.Floating_layer{display:block;position:fixed;right:2px;bottom:20px;z-index:999999}.Floating_layer a{display:block;padding:6px 10px;background:rgba(0,0,0,0.2);-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;margin-bottom:2px}.Floating_layer a:hover{background:rgba(0,0,0,0.5)}
+</style>
+<body style="padding:0;" >
+<div class="container" style="margin-left: 10px;" id="fast_content">
+            <div class="sui-form" style="margin-top: 10px;">
+				选择打印机：<span class="sui-dropdown dropdown-bordered select"> 
+					<span class="dropdown-inner"> <a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+						<input value="" name="category" type="hidden" onchange="defaultprint();"><i class="caret"></i><span id="printerName"></span></a>
+							<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu category" name="category" id="categoryz" style="max-height: 200px; overflow-y: auto;">
+							</ul>
+					</span>
+				</span>
+			</span>
+			选择纸张类型：<span class="sui-dropdown dropdown-bordered select"> 
+					<span class="dropdown-inner"> <a id="selects" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+						<input value="" name="categorys" type="hidden" ><i class="caret"></i><span id="printlx"></span></a>
+							<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu category" name="categorys" id="categorys" style="max-height: 200px; overflow-y: auto;">
+							</ul>
+					</span>
+				</span>
+				 &nbsp;&nbsp; 共<span id="allprintn" style="font-size:14;color:blue;font-weight:bold;"></span>笔待打印   当前第<span id="oneprintn" style="font-size:14;color:blue;font-weight:bold;"></span>笔
+		                <a href="javascript:arraytext('down');" title="上一笔">上一笔</a>
+		                <a href="javascript:arraytext('up');" title="下一笔">下一笔</a>
+			</span>
+			</div>
+            <form class="sui-form" >
+	            <p style="margin-bottom:0px;">
+	                	打印机DPI：
+		                <input type="text" class="input-fat" id="printdpi" style="width: 60px;">
+		                &nbsp;&nbsp; 默认每页最大宝贝数：
+		                <input type="text" class="input-fat" id="printnum" value="15" style="width: 60px;">
+		                <!-- <label class="" style="display: inline;"><input style="margin-left: 20px"  type="radio"    name="layout" value="0"  checked/><span   class="lbl">横向打印</span></label>
+						<label class="" style="display: inline;"><input  style="margin-left: 20px" type="radio"    name="layout" value="1"  /><span   class="lbl">纵向打印</span></label> -->
+		                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="sui-btn btn-small btn-primary" onclick="printsend();" >开始打印</a>
+	            </p>
+            </form>
+            <div class="sui-msg msg-large msg-tips" style="margin-top:-5px;width: 93%;">
+			  <div class="msg-con" >正常情况下DPI值无需手动设置；当某个订单宝贝较多时，可设置每张打印多少个宝贝后分页，不填写则不分页；默认打印方式为横向打印。</div>
+			  <s class="msg-icon"></s>
+			</div>
+		 <div id="iframes" ></div>
+</div>
+<script type="text/javascript">
+var user_nick='';
+var num_iidG='';
+var titleG='';
+var uptitleG='';
+var openStatus='';
+var buyerop=new Array();
+var sellerop=new Array();
+var babyop=new Array();
+var sizeu=0;
+var sizel=0;
+var sizew=0;
+var sizeh=0;
+var fontstyle='';
+var babystutas=true;
+var times=0;
+var alltimes=0;
+var printnums=1;
+var babylength=1;
+var indexlength=0;
+var babyaddstu=false;
+var printnext =false;
+window.onload = function(){
+	workbench.platform.printer.previewDataCallback = "dataTranslated";
+    workbench.platform.printer.previewDataStarted = "dataTranslatedStarted";
+    workbench.platform.printer.previewDataCompleted = "dataTranslatedCompleted";
+    workbench.platform.printer.printCallback = "printEvnet";
+    workbench.platform.printer.printStarted = "printStarted";
+    workbench.platform.printer.printCompleted = "printCompleted";
+    workbench.platform.printer.printError = "printError";
+    workbench.platform.printer.duplex = false;  //false/true  是否双面打印
+    workbench.platform.printer.layout = 1;      // horizontal = 0/vertical = 1  横打或纵打
+    var printdpi = workbench.platform.printer.currentPrinterDPI;
+    $("#printdpi").val(printdpi);
+    var printnum=window.localStorage.getItem("printnum");
+    if(printnum=="null"||printnum==null);else $("#printnum").val(printnum);
+	var printerName=workbench.platform.printer.printers;
+    var defaultPrinter = workbench.platform.printer.defaultPrinter;
+    var printerName=printerName.split(';');
+    if(printerName[0]!=''){
+        for(var index in printerName){
+           if(printerName[index]==defaultPrinter){
+           	$("#printerName").html(defaultPrinter);
+           	$("#categoryz").prepend('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+printerName[index]+'">'+printerName[index]+'</a></li>');
+               	}else{
+               		$("#categoryz").prepend('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+printerName[index]+'">'+printerName[index]+'</a></li>');
+               		}
+               	}
+             	if($("#printerName").html()=='')$("#printerName").html(printerName[0]);
+             }else $("#printerName").html('暂无打印机');
+	user_nick=window.localStorage.getItem("loginnick");
+	if(user_nick==''|| user_nick==null||user_nick.length<2||user_nick=='null'){
+		 QN.application.invoke({
+      		 "cmd": "getLoginuser",
+      		 "success": function (e){
+      			 if(typeof  e=== 'string'){
+      	            	e = JSON.parse(e);
+      	            }
+       			 user_nick=decodeURI(e.user_nick);
+        		 window.localStorage.setItem("loginnick",user_nick);
+        		 loadingMo();
+      		 }
+      		 });
+		}else loadingMo();
+	}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-7-21
+ * Time: 11:00 
+ * 加载发货单模版信息.【更新】
+ */
+function loadingMo(){
+	var sendMtext = window.localStorage.getItem("sendMtext"+user_nick);
+	if(sendMtext=="null"||sendMtext==null){
+		$.ajax({
+		     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/sendModel',
+		     type: 'POST',
+		     dataType:'html',
+		     data:{nick:user_nick},
+		     timeout:10000,
+		     success: function(data){
+		    	 var datatemp=eval('('+data+')');
+		    	 window.localStorage.setItem("sendMtext"+user_nick,data);
+		    	 buyerop=datatemp[0]['buyerop'].split('|,|');
+		    	 sellerop=datatemp[0]['sellerop'].split('|,|');
+		    	 babyop=datatemp[0]['babyop'].split(',');
+		    	 var tl=datatemp[0].size;
+			    	tl=tl.replace("'","");
+			    	tl=tl.split('X');
+			    	sizeu=tl[0];
+			    	sizel=tl[1];
+			     var wh=datatemp[0].sizewh;
+				    wh=wh.replace("'","");
+				    wh=wh.split('X');
+			    	sizew=wh[0];
+			    	sizeh=wh[1];
+			    	fontstyle=wh[2]+';'+wh[3];
+			    $("#printlx").html('多联（'+sizew+'X'+sizeh+'）');
+			    $("#categorys").prepend('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+sizew+'X'+sizeh+'">多联（'+sizew+'X'+sizeh+'）</a></li>');
+			    $("#categorys").prepend('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="A4">A4</a></li>');
+			    arraytext(1);
+		     }
+		});
+	}else{
+		var datatemp=eval('('+sendMtext+')');
+		 buyerop=datatemp[0]['buyerop'].split('|,|');
+    	 sellerop=datatemp[0]['sellerop'].split('|,|');
+    	 babyop=datatemp[0]['babyop'].split(',');
+    	 var tl=datatemp[0].size;
+	    	tl=tl.replace("'","");
+	    	tl=tl.split('X');
+	    	sizeu=tl[0];
+	    	sizel=tl[1];
+	     var wh=datatemp[0].sizewh;
+		    wh=wh.replace("'","");
+		    wh=wh.split('X');
+	    	sizew=wh[0];
+	    	sizeh=wh[1];
+	    	fontstyle=wh[2]+';'+wh[3];
+	    	$("#printlx").html('多联（'+sizew+'X'+sizeh+'）');
+		    $("#categorys").prepend('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+sizew+'X'+sizeh+'">多联（'+sizew+'X'+sizeh+'）</a></li>');
+		    $("#categorys").prepend('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="A4">A4</a></li>');
+	    arraytext(1);
+		}
+	$('.dropdown-toggle').dropdown();
+	}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-7-21
+ * Time: 11:00 
+ * 加载发货单模版信息.【更新】
+ */
+function arraytext(arrayval){
+		$("#iframes").empty();
+		var sendDataa=window.localStorage.getItem("sendDataa");
+		var sendDatab=window.localStorage.getItem("sendDatab");
+		sendDataa=sendDataa.split('|-X-|');
+		sendDatab=sendDatab.split('|-X-|');
+		alltimes=sendDatab.length;
+		if(arrayval=='down')arrayval=Number($("#oneprintn").html())-1;
+		else if(arrayval=='up')arrayval=Number($("#oneprintn").html())+1;
+		else arrayval=1;
+		if(arrayval<1)arrayval=1;else if(arrayval>alltimes)arrayval=alltimes;
+		$("#allprintn").html(alltimes);
+		$("#oneprintn").html(arrayval);
+		sendDataa=sendDataa[arrayval-1].split('|Y|');
+		var babylist=sendDatab[arrayval-1].split('|Y|');
+		var ssmessages='';
+		var fsmessages='';
+		var babylists='';
+		var babylistx='';
+		var buyerval='';
+		for(var index in buyerop){
+			 buyerval=buyerop[index].split('|:|');
+			 switch (buyerval[0]){
+			 	case '买家-姓名':{if(ssmessages=='')ssmessages='买家姓名|,|'+sendDataa[0]; else ssmessages+='|:|买家姓名|,|'+sendDataa[0];break;}
+			 	case '买家-旺旺':{if(ssmessages=='')ssmessages='买家旺旺|,|'+sendDataa[1]; else ssmessages+='|:|买家旺旺|,|'+sendDataa[1];break;}
+			 	case '买家-电话':{if(ssmessages=='')ssmessages='买家电话|,|'+sendDataa[2]; else ssmessages+='|:|买家电话|,|'+sendDataa[2];break;}
+			 	case '买家-手机':{if(ssmessages=='')ssmessages='买家手机|,|'+sendDataa[3]; else ssmessages+='|:|买家手机|,|'+sendDataa[3];break;}
+			 	case '买家-地址':{if(ssmessages=='')ssmessages='买家地址|,|'+sendDataa[4]; else ssmessages+='|:|买家地址|,|'+sendDataa[4];break;}
+			 	case '买家-邮编':{if(ssmessages=='')ssmessages='买家邮编|,|'+sendDataa[5]; else ssmessages+='|:|买家邮编|,|'+sendDataa[5];break;}
+			 	case '买家-留言':{if(ssmessages=='')ssmessages='买家留言|,|'+sendDataa[6]; else ssmessages+='|:|买家留言|,|'+sendDataa[6];break;}
+			 	case '发货时间':{if(ssmessages=='')ssmessages='发货时间|,|'+sendDataa[16]; else ssmessages+='|:|发货时间|,|'+sendDataa[16];break;}
+			 	case '购买时间':{if(ssmessages=='')ssmessages='购买时间|,|'+sendDataa[17]; else ssmessages+='|:|'+'购买时间|,|'+sendDataa[17];break;}
+			 	case '模版标题':{if(ssmessages=='')ssmessages='模版标题|,|'+buyerval[1]; else ssmessages+='|:|'+'模版标题|,|'+buyerval[1];break;}
+			 }
+	  	 }
+		var sellerval='';
+		for(var index in sellerop){
+			 sellerval=sellerop[index].split('|:|');
+			 switch (sellerval[0]){
+			 	case '店铺名称':{if(fsmessages=='')fsmessages='店铺名称|,|'+sendDataa[7]; else fsmessages+='|:|店铺名称|,|'+sendDataa[7];break;}
+			 	case '卖家-备注':{if(fsmessages=='')fsmessages='卖家备注|,|'+sendDataa[9]; else fsmessages+='|:|卖家备注|,|'+sendDataa[9];break;}
+			 	case '卖家-旺旺':{if(fsmessages=='')fsmessages='卖家旺旺|,|'+sendDataa[10]; else fsmessages+='|:|卖家旺旺|,|'+sendDataa[10];break;}
+			 	case '卖家-电话':{if(fsmessages=='')fsmessages='卖家电话|,|'+sendDataa[11]; else fsmessages+='|:|卖家电话|,|'+sendDataa[11];break;}
+			 	case '卖家-手机':{if(fsmessages=='')fsmessages='卖家手机|,|'+sendDataa[12]; else fsmessages+='|:|卖家手机|,|'+sendDataa[12];break;}
+			 	case '卖家-地址':{if(fsmessages=='')fsmessages='卖家地址|,|'+sendDataa[13]; else fsmessages+='|:|卖家地址|,|'+sendDataa[13];break;}
+			 	case '卖家-网址':{if(fsmessages=='')fsmessages='卖家网址|,|'+sellerval[1]; else fsmessages+='|:|卖家网址|,|'+sellerval[1];break;}
+			 	case '给买家的留言':{if(fsmessages=='')fsmessages='给买家的留言|,|'+sellerval[1]; else fsmessages+='|:|给买家的留言|,|'+sellerval[1];break;}
+			 }
+	  	 }
+		 for(var index in babyop){
+			 switch (babyop[index]){
+			 	case '订单编号':{if(fsmessages=='')fsmessages='订单编号|,|'+sendDataa[8]; else fsmessages+='|:|订单编号|,|'+sendDataa[8];break;}
+			 	case '商品名称':{if(babylists=='')babylists='商品名称'; else babylists+='|,|商品名称';break;}
+			 	case '商品编号':{if(babylists=='')babylists='商家编码'; else babylists+='|,|商家编码';break;}
+			 	case '属性':{if(babylists=='')babylists='商品属性'; else babylists+='|,|商品属性';break;}
+			 	case '单价':{if(babylists=='')babylists='单价'; else babylists+='|,|单价';break;}
+			 	case '数量':{if(babylists=='')babylists='数量'; else babylists+='|,|数量';break;}
+			 	case '优惠':{if(babylists=='')babylists='优惠'; else babylists+='|,|优惠';break;}
+			 	case '金额':{if(babylists=='')babylists='金额'; else babylists+='|,|金额';break;}
+			 	case '合计':{if(babylists=='')babylists='合计'; else babylists+='|,|合计';break;}
+			 	case '发货单编号':{if(fsmessages=='')fsmessages='发货单编号|,|'+sendDataa[15]; else fsmessages+='|:|发货单编号|,|'+sendDataa[15];break;}
+			 }
+	  	 }
+	    for(var index in babylist){
+		    if(babylist[index]!=''){
+		    	if(babylistx=='')babylistx=babylist[index];else babylistx=babylistx+'|,|'+babylist[index];
+			    }
+		    }
+	    $("#iframes").append('<iframe src="<?php echo APP_WEB_INDEX_ROOT;?>/trade/sendMtext?vers=<?php echo REAL_ROOT_VER;?>#fsmessage='+encodeURIComponent(fsmessages)+'&ssmessage='+encodeURIComponent(ssmessages)+'&babylist='+encodeURIComponent(babylistx)+'&babylists='+encodeURIComponent(babylists)+'&babyfee='+encodeURIComponent(sendDataa[14])+'&fontstyle='+encodeURIComponent(fontstyle)+'" id="print_iframe" frameborder="no" border="0" name="iframe_a" width="820px" height="540px" onload="PreviewWithFrame()" ></iframe>');
+	}
+	    
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-7-21
+ * Time: 10:30 
+ * 默认打印机.【更新】
+ */	 
+function defaultprint(){
+	var printerName=$("#select input").val();
+	workbench.platform.printer.defaultPrinter = printerName;
+	}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-7-21
+ * Time: 11:30 
+ * 打印机制.【更新】
+ */	
+function dataTranslated(data) {
+	/*var srcData = "data:image/png;base64, " + data;
+    var previewDiv = document.getElementById("printPreviewboby");
+    var previewImg = document.createElement("img");
+    previewImg.setAttribute("src", srcData);
+    previewImg.setAttribute("width", "740px");
+    previewImg.setAttribute("height", "380px");
+    previewDiv.appendChild(previewImg);*/
+}
+function printError(errCode) {
+	if(errCode==1801){
+		layer.msg('无效打印机名！', 1, 3);
+        }else if(errCode==2){
+        	layer.msg('错误提示：请重新安装自己打印机对应的打印驱动！', 1, 3);
+                }else{
+                	layer.msg('错误编码：'+errCode, 1, 3);
+            }
+}
+function PreviewWithFrame(){
+	workbench.platform.printer.translatePreviewDataWithFrame("iframe_a");
+}
+function dataTranslatedStarted() { }
+function dataTranslatedCompleted() { }
+function printEvnet() { }
+function printStarted() { }
+function printCompleted() { 
+	babystutas=true;
+	if(babyaddstu)times--;
+	if(alltimes>times+1){
+			times++;
+			printnums--;
+			babylength++;
+			if(printnext){
+				babylength=1;
+				indexlength=0;
+				printnext=false;
+			}
+			printsend();
+		}else{
+			times=0;
+			babylength=1;
+			indexlength=0;
+			printnext=false;
+			var printRole=window.localStorage.getItem("printRole");
+	    	switch(printRole){
+				 case 'customPrintfast':{window.localStorage.setItem("printRole",'customPrintfasts');break;}
+				 case 'customPrintsend':{window.localStorage.setItem("printRole",'customPrintsends');break;}
+				 case 'printSendfast':{window.localStorage.setItem("printRole",'printSendfasts');break;}
+				 case 'printSendsend':{window.localStorage.setItem("printRole",'printSendsends');break;}
+				 default :{window.localStorage.setItem("printRole",'other');break;}
+			 }
+	    	window.localStorage.setItem("printnum",$("#printnum").val());
+	    	QN.application.invoke({
+	    	    cmd : 'closePlugin',
+	    	    param : {},
+	    	    success : function(rsp) {
+	    	    },
+	    	    error : function(msg) {
+	    	    }
+	    	});
+			}
+	}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-7-21
+ * Time: 17:40  
+ * 打印发货单.【更新】
+ */	
+function printsend(){
+	var printnum = $("#printnum").val();
+	var sendDatab=window.localStorage.getItem("sendDatab");
+	sendDatab=sendDatab.split('|-X-|');
+	var babylist=sendDatab[times].split('|Y|');
+	//if(printnums<0)indexlength=0;$.alert(printnums+'=='+indexlength);
+	if(indexlength==0&&babystutas)printnums=Math.ceil(babylist.length/printnum);
+	if(alltimes>1&&babystutas||babylist.length>printnum&&printnums>0&&babystutas){
+		$("#iframes").empty();
+		babystutas=false;
+		babyaddstu=false;
+		var sendDataa=window.localStorage.getItem("sendDataa");
+		sendDataa=sendDataa.split('|-X-|');
+		sendDataa=sendDataa[times].split('|Y|');
+		var ssmessages='';
+		var fsmessages='';
+		var babylists='';
+		var babylistx='';
+		var buyerval='';
+		for(var index in buyerop){
+			 buyerval=buyerop[index].split('|:|');
+			 switch (buyerval[0]){
+			 	case '买家-姓名':{if(ssmessages=='')ssmessages='买家姓名|,|'+sendDataa[0]; else ssmessages+='|:|买家姓名|,|'+sendDataa[0];break;}
+			 	case '买家-旺旺':{if(ssmessages=='')ssmessages='买家旺旺|,|'+sendDataa[1]; else ssmessages+='|:|买家旺旺|,|'+sendDataa[1];break;}
+			 	case '买家-电话':{if(ssmessages=='')ssmessages='买家电话|,|'+sendDataa[2]; else ssmessages+='|:|买家电话|,|'+sendDataa[2];break;}
+			 	case '买家-手机':{if(ssmessages=='')ssmessages='买家手机|,|'+sendDataa[3]; else ssmessages+='|:|买家手机|,|'+sendDataa[3];break;}
+			 	case '买家-地址':{if(ssmessages=='')ssmessages='买家地址|,|'+sendDataa[4]; else ssmessages+='|:|买家地址|,|'+sendDataa[4];break;}
+			 	case '买家-邮编':{if(ssmessages=='')ssmessages='买家邮编|,|'+sendDataa[5]; else ssmessages+='|:|买家邮编|,|'+sendDataa[5];break;}
+			 	case '买家-留言':{if(ssmessages=='')ssmessages='买家留言|,|'+sendDataa[6]; else ssmessages+='|:|买家留言|,|'+sendDataa[6];break;}
+			 	case '发货时间':{if(ssmessages=='')ssmessages='发货时间|,|'+sendDataa[16]; else ssmessages+='|:|发货时间|,|'+sendDataa[16];break;}
+    		 	case '购买时间':{if(ssmessages=='')ssmessages='购买时间|,|'+sendDataa[17]; else ssmessages+='|:|'+'购买时间|,|'+sendDataa[17];break;}
+			 	case '模版标题':{if(ssmessages=='')ssmessages='模版标题|,|'+buyerval[1]; else ssmessages+='|:|'+'模版标题|,|'+buyerval[1];break;}
+			 }
+	  	 }
+		var sellerval='';
+		for(var index in sellerop){
+			 sellerval=sellerop[index].split('|:|');
+			 switch (sellerval[0]){
+			 	case '店铺名称':{if(fsmessages=='')fsmessages='店铺名称|,|'+sendDataa[7]; else fsmessages+='|:|店铺名称|,|'+sendDataa[7];break;}
+			 	case '卖家-备注':{if(fsmessages=='')fsmessages='卖家备注|,|'+sendDataa[9]; else fsmessages+='|:|卖家备注|,|'+sendDataa[9];break;}
+			 	case '卖家-旺旺':{if(fsmessages=='')fsmessages='卖家旺旺|,|'+sendDataa[10]; else fsmessages+='|:|卖家旺旺|,|'+sendDataa[10];break;}
+			 	case '卖家-电话':{if(fsmessages=='')fsmessages='卖家电话|,|'+sendDataa[11]; else fsmessages+='|:|卖家电话|,|'+sendDataa[11];break;}
+			 	case '卖家-手机':{if(fsmessages=='')fsmessages='卖家手机|,|'+sendDataa[12]; else fsmessages+='|:|卖家手机|,|'+sendDataa[12];break;}
+			 	case '卖家-地址':{if(fsmessages=='')fsmessages='卖家地址|,|'+sendDataa[13]; else fsmessages+='|:|卖家地址|,|'+sendDataa[13];break;}
+			 	case '卖家-网址':{if(fsmessages=='')fsmessages='卖家网址|,|'+sellerval[1]; else fsmessages+='|:|卖家网址|,|'+sellerval[1];break;}
+			 	case '给买家的留言':{if(fsmessages=='')fsmessages='给买家的留言|,|'+sellerval[1]; else fsmessages+='|:|给买家的留言|,|'+sellerval[1];break;}
+			 }
+	  	 }
+		 for(var index in babyop){
+			 switch (babyop[index]){
+			 	case '订单编号':{if(fsmessages=='')fsmessages='订单编号|,|'+sendDataa[8]; else fsmessages+='|:|订单编号|,|'+sendDataa[8];break;}
+			 	case '商品名称':{if(babylists=='')babylists='商品名称'; else babylists+='|,|商品名称';break;}
+			 	case '商品编号':{if(babylists=='')babylists='商家编码'; else babylists+='|,|商家编码';break;}
+			 	case '属性':{if(babylists=='')babylists='商品属性'; else babylists+='|,|商品属性';break;}
+			 	case '单价':{if(babylists=='')babylists='单价'; else babylists+='|,|单价';break;}
+			 	case '数量':{if(babylists=='')babylists='数量'; else babylists+='|,|数量';break;}
+			 	case '优惠':{if(babylists=='')babylists='优惠'; else babylists+='|,|优惠';break;}
+			 	case '金额':{if(babylists=='')babylists='金额'; else babylists+='|,|金额';break;}
+			 	case '合计':{if(babylists=='')babylists='合计'; else babylists+='|,|合计';break;}
+			 	case '发货单编号':{if(fsmessages=='')fsmessages='发货单编号|,|'+sendDataa[15]; else fsmessages+='|:|发货单编号|,|'+sendDataa[15];break;}
+			 }
+	  	 }
+	    
+		if(babylist.length>printnum&&printnums>0){
+			babyaddstu=true;
+			for(;indexlength<babylist.length&&indexlength<babylength*printnum;indexlength++){
+			    if(babylist[indexlength]!=''){
+			    	if(babylistx=='')babylistx=babylist[indexlength];else babylistx=babylistx+'|,|'+babylist[indexlength];
+				    }
+			    }
+			if(indexlength==babylist.length){
+					printnext=true;
+					babyaddstu=false;
+					}
+			}else{
+			    for(var index in babylist){
+				    if(babylist[index]!=''){
+				    	if(babylistx=='')babylistx=babylist[index];else babylistx=babylistx+'|,|'+babylist[index];
+					    }
+				    }
+				}
+	    	$("#iframes").append('<iframe src="<?php echo APP_WEB_INDEX_ROOT;?>/trade/sendMtext?vers=<?php echo REAL_ROOT_VER;?>#fsmessage='+encodeURIComponent(fsmessages)+'&ssmessage='+encodeURIComponent(ssmessages)+'&babylist='+encodeURIComponent(babylistx)+'&babylists='+encodeURIComponent(babylists)+'&babyfee='+encodeURIComponent(sendDataa[14])+'&fontstyle='+encodeURIComponent(fontstyle)+'" id="print_iframe" frameborder="no" border="0" name="iframe_a" width="820px" height="540px" onload="printsend();" ></iframe>');
+	return;}
+
+	var printlx=$("#selects input").val();
+	var printerName=$('#printerName option:selected').val();
+    workbench.platform.printer.duplex = false;  //false/true  是否双面打印
+    workbench.platform.printer.layout = 1;// horizontal = 0/vertical = 1  横打或纵打
+    workbench.platform.printer.copys = 1;       //打印份数
+    workbench.platform.printer.currentPrinter = printerName;
+    workbench.platform.printer.marginY = Number(sizeu);
+    workbench.platform.printer.marginX = 30+Number(sizel);
+    var ssizzw=Number(sizew)*10;
+    var ssizzh=Number(sizeh)*10;
+    var printPageh = document.getElementById("print_iframe").contentDocument.getElementById("sendcontent").offsetHeight;
+    var printdpi = $("#printdpi").val();
+    var printsize=fontstyle.split(';')[0];
+    if(printsize==null||printsize=='')printsize=12;
+    if(printdpi==undefined||printdpi=="undefined")printdpi=180;
+    var printWidth = 1350;
+	    if(printlx!='A4'){
+	    	printWidth = parseInt((sizew-30)/27.5*printdpi);
+	    	printHeight=printPageh*parseInt(printWidth/600)+Number(printsize);
+			if(Number(printdpi)==-3){
+				printWidth = 4350;
+				printHeight = 2000;
+				}
+	    		workbench.platform.printer.printWidth = Number(printWidth);
+	    		workbench.platform.printer.printHeight = Number(printHeight);
+		        workbench.platform.printer.useCustomPaperSize(ssizzw,ssizzh); 
+	         }else{
+	        	 printWidth = parseInt((sizew-34)/28*printdpi);
+	        	 printHeight=printPageh*parseInt(printWidth/600)+Number(printsize);
+		 		 if(Number(printdpi)==-3){
+		 				printWidth = 4350;
+		 				printHeight = 2000;
+		 			}
+	        	 workbench.platform.printer.printWidth = Number(printWidth);
+	          	 workbench.platform.printer.printHeight = Number(printHeight);
+	           	 workbench.platform.printer.paper = 1; 
+	         }
+    workbench.platform.printer.printWithFrame("iframe_a");
+}
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

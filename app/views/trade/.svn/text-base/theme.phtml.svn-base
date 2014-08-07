@@ -1,0 +1,37 @@
+@color-base: #000;
+@color-header-h: lighten_hsv(@color-base, 10%);
+@color-header-q: lighten_hsv(@color-base, 5%);
+@color-header-x: lighten_hsv(@color-base, -5%);
+    
+.navbar-inverse .navbar-inner ,.bottom-susp{
+background-color: @color-header-h;
+background-image: -webkit-gradient(linear,0 0,0 100%,from(@color-header-h),to(@color-header-q));
+background-image: -webkit-linear-gradient(top, @color-header-h, @color-header-q);
+background-image: linear-gradient(to bottom, @color-header-h, @color-header-q);
+}
+
+.topNav dd h3 a:hover,.topNav dd.on h3 a,.topNav dd.dqzt h3 a {
+        background: #fff;
+        color: @color-header-x;
+}
+.topNav dd ul li a:hover {
+        background: #f5f5f5;
+        color: @color-header-x;
+}
+    .nav .sub li a:hover {
+        color: @color-header-x;
+        line-height: 20px;
+        background: #f5f5f5;
+    }
+    .nav .sub div a:hover,.nav .m h3 a:hover {
+        color: @color-header-x;
+        text-decoration: none;
+    }
+    .nav .on h3 a {
+        background: #fff;
+        color: @color-header-x;
+        padding: 0 9px;
+        border-width: 0px 1px 0px 1px;
+        border-color: #d7d7d7;
+        border-style: solid;
+    }

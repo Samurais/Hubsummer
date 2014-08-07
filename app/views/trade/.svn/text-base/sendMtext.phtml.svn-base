@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<head>
+    <meta charset="utf-8">
+    <title>爱用交易管理</title>
+    <link href="http://g.alicdn.com/sj/qnui/1.1.2/css/sui.min.css" rel="stylesheet"/>
+	<script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery.min.js" ></script>
+	<script type="text/javascript" src="http://g.alicdn.com/sj/qnui/1.1.2/js/sui.min.js" ></script>
+</head>
+<style type="text/css">
+.row-fluid{width:100%;*zoom:1}.row-fluid:before,.row-fluid:after{display:table;line-height:0;content:""}.row-fluid:after{clear:both}.row-fluid [class*="span"]{display:block;float:left;width:100%;min-height:30px;margin-left:2.127659574468085%;*margin-left:2.074468085106383%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.row-fluid [class*="span"]:first-child{margin-left:0}.row-fluid .span12{width:100%;*width:99.94680851063829%}.row-fluid .span11{width:91.48936170212765%;*width:91.43617021276594%}.row-fluid .span10{width:82.97872340425532%;*width:82.92553191489361%}.row-fluid .span9{width:74.46808510638297%;*width:74.41489361702126%}.row-fluid .span8{width:65.95744680851064%;*width:65.90425531914893%}.row-fluid .span7{width:57.44680851063829%;*width:57.39361702127659%}.row-fluid .span6{width:48.93617021276595%;*width:48.88297872340425%}.row-fluid .span5{width:40.42553191489362%;*width:40.37234042553192%}.row-fluid .span4{width:31.914893617021278%;*width:31.861702127659576%}.row-fluid .span3{width:23.404255319148934%;*width:23.351063829787233%}.row-fluid .span2{width:14.893617021276595%;*width:14.840425531914894%}.row-fluid .span1{width:6.382978723404255%;*width:6.329787234042553%}.row-fluid .offset12{margin-left:104.25531914893617%;*margin-left:104.14893617021275%}.row-fluid .offset12:first-child{margin-left:102.12765957446808%;*margin-left:102.02127659574467%}.row-fluid .offset11{margin-left:95.74468085106382%;*margin-left:95.6382978723404%}.row-fluid .offset11:first-child{margin-left:93.61702127659574%;*margin-left:93.51063829787232%}.row-fluid .offset10{margin-left:87.23404255319149%;*margin-left:87.12765957446807%}
+</style>
+<body style="padding:0;" >
+<div id="sendcontent" style="font-size: 14px;">
+			<div class="row-fluid" id="nametitle" >  
+                </div>
+            <div class="row-fluid" id="dgfy" >
+	            <div id="ddbh_mos" style="float:left;margin-right:10px;"></div>
+	            <div id="gmsj_mos" style="float:left;margin-right:10px;"></div>
+	            <div id="fhsj_mos" style="float:left;margin-right:10px;"></div>
+	            <div id="mjyb_mos" style="float:left;"></div>
+            </div>
+            <div class="row-fluid" id="xmsd" >
+            	<div id="mjxm_mos" style="float:left;margin-right:10px;"></div>
+	            <div id="mjww_mos" style="float:left;margin-right:10px;"></div>
+	            <div id="mjsj_mos" style="float:left;margin-right:10px;"></div>
+	            <div id="mjdh_mos" style="float:left;"></div>
+            </div>
+            <div class="row-fluid" id="dzly" style="display:block;">
+            </div>
+            <div class="row-fluid" id="dzlys" style="display:block;">
+            </div>
+        	<table  id="tableheight" border="1" cellspacing="0" cellpadding="0" style="text-align:center;width:100%;">
+        	<thead id="tablesmo" ></thead>
+                <tbody id="customtbody">
+			          </tbody>
+                <tfoot id="babytotalp" >
+                </tfoot>
+            </table>
+            <div class="row-fluid" id="dhsjww" style="display:block;">
+           		<div id="mjdh_mof" style="float:left;margin-right:10px;"></div>
+	            <div id="mjsj_mof" style="float:left;margin-right:10px;"></div>
+	            <div id="mjww_mof" style="float:left;"></div>
+            </div>
+            <div class="row-fluid" id="dpwz" style="display:block;">
+            	<div id="mjwz_mof" style="float:left;margin-right:10px;"></div>
+	            <div id="dpmc_mof" style="float:left;"></div>
+            </div>
+            <div id="vsaddr" style="display:block;">
+            </div>
+            <div id="vsliu" style="display:block;">
+            </div>
+            <div id="vsbz" style="display:block;">
+            </div>
+        </div>
+<script type="text/javascript">
+var  shash=window.location.hash.substr(1);
+var params = shash.split('&');
+var map = new HashMap();
+for (var i in params) {
+    var p = params[i].split("=");
+    if (p.length == 2) {
+        map.put(p[0], p[1]);
+    }
+}
+var fsmessage = decodeURIComponent(map.get("fsmessage"));
+var ssmessage = decodeURIComponent(map.get("ssmessage"));
+var babylists = decodeURIComponent(map.get("babylists"));
+var babylist = decodeURIComponent(map.get("babylist"));
+var babyfee = decodeURIComponent(map.get("babyfee"));
+var fontstyle = decodeURIComponent(map.get("fontstyle"));
+var fontstyles=fontstyle.split(';');
+if(fontstyles[0]==null||fontstyles[0]==''){
+	fontstyles[0]=14;
+	fontstyles[1]="宋体";
+}
+$(document).ready(function(){
+	createmo();
+});
+function createmo(){
+	var fsmessages=fsmessage.split('|:|');
+	var fsmess='';
+	for(index in fsmessages){
+		fsmess=fsmessages[index].split('|,|');
+		switch (fsmess[0]){
+	 	case '店铺名称':{if(fsmess[1]!='')$('#dpmc_mof').append('店铺名称：'+fsmess[1]);break;}
+	 	case '卖家旺旺':{if(fsmess[1]!='')$('#mjww_mof').append('卖家旺旺：'+fsmess[1]);break;}
+	 	case '卖家电话':{if(fsmess[1]!='')$('#mjdh_mof').append('卖家电话：'+fsmess[1]);break;}
+	 	case '卖家手机':{if(fsmess[1]!='')$('#mjsj_mof').append('卖家手机：'+fsmess[1]);break;}
+	 	case '卖家地址':{if(fsmess[1]!='')$('#vsaddr').append('<div >卖家地址：'+fsmess[1]+'</div>');break;}
+	 	case '卖家网址':{if(fsmess[1]!='')$('#mjwz_mof').append('卖家网址：'+fsmess[1]);break;}
+	 	case '卖家备注':{if(fsmess[1]!='')$('#vsbz').append('<div >卖家备注：'+fsmess[1]+'</div>');break;}
+	 	case '给买家的留言':{if(fsmess[1]!='')$('#vsliu').append('<div >给买家的留言：'+fsmess[1]+'</div>');break;}
+	 	case '订单编号':{if(fsmess[1]!='')$('#ddbh_mos').append('订单编号：'+fsmess[1]);break;}
+	 	case '发货单编号':{if(fsmess[1]!='')$('#nametitle').append('<div style="display: block; position:absolute;margin:3% 0 0 72%; text-align:right;">'+fsmess[1]+'</div>');break;}
+	 }
+	}
+
+	var ssmessages=ssmessage.split('|:|');
+	var ssmess='';
+	for(index in ssmessages){
+		ssmess=ssmessages[index].split('|,|');
+		switch (ssmess[0]){
+		case '模版标题':{if(ssmess[1]!='')$('#nametitle').append('<p style="text-align:center;font-size:20px;font-weight:bold;">'+ssmess[1]+'</p>');break;}
+	 	case '买家姓名':{if(ssmess[1]!='')$('#mjxm_mos').append('买家姓名：'+ssmess[1]);break;}
+	 	case '买家旺旺':{if(ssmess[1]!='')$('#mjww_mos').append('买家旺旺：'+ssmess[1]);break;}
+	 	case '买家电话':{if(ssmess[1]!='')$('#mjdh_mos').append('买家电话：'+ssmess[1]);break;}
+	 	case '买家手机':{if(ssmess[1]!='')$('#mjsj_mos').append('买家手机：'+ssmess[1]);break;}
+	 	case '买家地址':{if(ssmess[1]!='')$('#dzly').append('<div >买家地址：'+ssmess[1]+'</div>');break;}
+	 	case '买家留言':{if(ssmess[1]!='')$('#dzlys').append('<div >买家留言：'+ssmess[1]+'</div>');break;}
+	 	case '买家邮编':{if(ssmess[1]!='')$('#mjyb_mos').append('买家邮编：'+ssmess[1]);break;}
+	 	case '发货时间':{if(ssmess[1]!='')$('#fhsj_mos').append('发货时间：'+ssmess[1]);break;}
+	 	case '购买时间':{if(ssmess[1]!='')$('#gmsj_mos').append('购买时间：'+ssmess[1]);break;}
+	 }
+	}
+
+	var babylistss=babylists.split('|,|');
+	var babyvals='<tr ><td >ID</td>';
+	var babyhj=0;
+	if(babylists.indexOf('商品名称') > -1) babyvals+='<td >商品名称</td>';
+	if(babylists.indexOf('商家编码') > -1) babyvals+='<td >商家编码</td>';
+	if(babylists.indexOf('商品属性') > -1) babyvals+='<td >商品属性</td>';
+	if(babylists.indexOf('单价') > -1) babyvals+='<td >单价</td>';
+	if(babylists.indexOf('数量') > -1) babyvals+='<td >数量</td>';
+	if(babylists.indexOf('优惠') > -1) babyvals+='<td >优惠</td>';
+	if(babylists.indexOf('金额') > -1) babyvals+='<td >金额</td>';
+	if(babylists.indexOf('合计') > -1) babyhj=1;
+	babyvals=babyvals+'</tr>';
+	if(babylistss.length>1) $('#tablesmo').append(babyvals);
+	var khnum=babylistss.length+1;
+	var babylistxs=babylist.split('|,|');
+	var babyvalx='';
+	var babyxval='';
+	var sendi=1;
+	if(babylist!=''){
+		for(index in babylistxs){
+			babyxval=babylistxs[index].split('|:');
+			babyvalx='<tr ><td >'+sendi+'</td>';
+			if(babylists.indexOf('商品名称') > -1) babyvalx+='<td >'+babyxval[0]+'</td>';
+			if(babylists.indexOf('商家编码') > -1) babyvalx+='<td >'+babyxval[1]+'</td>';
+			if(babylists.indexOf('商品属性') > -1) babyvalx+='<td >'+babyxval[2]+'</td>';
+			if(babylists.indexOf('单价') > -1) babyvalx+='<td >'+Number(babyxval[3]).toFixed(2)+'</td>';
+			if(babylists.indexOf('数量') > -1) babyvalx+='<td >'+babyxval[4]+'</td>';
+			if(babylists.indexOf('优惠') > -1) babyvalx+='<td >'+Number(babyxval[5]).toFixed(2)+'</td>';
+			if(babylists.indexOf('金额') > -1) babyvalx+='<td >'+Number(babyxval[6]).toFixed(2)+'</td>';
+			babyvalx=babyvalx+'</tr>';
+			$('#customtbody').append(babyvalx);
+			sendi++;
+		}
+		var babyfees=babyfee.split('|,|');
+		if(babyhj==1)$('#babytotalp').append('<tr ><td colspan="'+khnum+'">合计金额：（优惠：'+Number(babyfees[0]).toFixed(2)+'元　　运费：'+Number(babyfees[1]).toFixed(2)+'元　　实收款：'+Number(babyfees[2]).toFixed(2)+'元）</td></tr>');
+	}else{
+		if(babyhj==1)$('#babytotalp').append('<tr ><td colspan="'+khnum+'">合计金额：（优惠：52.00元　　运费：2.00元　　实收款：520.00元）</td></tr>');
+	}
+	var dzlys=document.getElementById("dzlys").innerHTML;
+	var vsliu=document.getElementById("vsliu").innerHTML;
+	var vsbz=document.getElementById("vsbz").innerHTML;
+	var dpwz=document.getElementById("dpwz").innerHTML;
+	var vsaddr=document.getElementById("vsaddr").innerHTML;
+	var dzly=document.getElementById("dzly").innerHTML;
+	var dgfy=document.getElementById("dgfy").innerHTML;
+	var xmsd=document.getElementById("xmsd").innerHTML;
+	var dhsjww=document.getElementById("dhsjww").innerHTML;
+	if(dzlys.length == 13||dzlys==null)document.getElementById('dzlys').style.display = "none";	
+	if(vsliu.length == 13||vsliu==null)document.getElementById('vsliu').style.display = "none";
+	if(vsbz.length == 13||vsbz==null)document.getElementById('vsbz').style.display = "none";
+	if(dpwz.length == 148||dpwz==null)document.getElementById('dpwz').style.display = "none";	
+	if(vsaddr.length == 13||vsaddr==null)document.getElementById('vsaddr').style.display = "none";	
+	if(dzly.length == 13||dzly==null)document.getElementById('dzly').style.display = "none";
+	if(dgfy.length == 297||dgfy==null||dgfy=='')document.getElementById('dgfy').style.display = "none";
+	if(xmsd.length == 300||xmsd==null||xmsd=='')document.getElementById('xmsd').style.display = "none";
+	if(dhsjww.length == 222||dhsjww==null||dhsjww=='')document.getElementById('dhsjww').style.display = "none";
+	$("#sendcontent").attr("style","font-size:"+fontstyles[0]+"px;font-family:"+fontstyles[1]);
+}
+	
+function HashMap(){var size=0;var entry=new Object();this.put=function(key,value){if(!this.containsKey(key)){size++}entry[key]=value};this.get=function(key){if(this.containsKey(key)){return entry[key]}else{return null}};this.remove=function(key){if(delete entry[key]){size--}};this.containsKey=function(key){return(key in entry)};this.containsValue=function(value){for(var prop in entry){if(entry[prop]==value){return true}}return false};this.values=function(){var values=new Array(size);for(var prop in entry){values.push(entry[prop])}return values};this.keys=function(){var keys=new Array(size);for(var prop in entry){keys.push(prop)}return keys};this.size=function(){return size}};
+</script>
+</body>
+</html>

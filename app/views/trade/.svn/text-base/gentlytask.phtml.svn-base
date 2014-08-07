@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+
+<div style="margin-left: 10px;" class="container">
+		<div style="display: none;" id="adv_top"></div>
+   			<form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;"  >
+    		<label>买家昵称：</label>
+          <div class="input-control control-right">
+					   <input type="text" class="input-fat" id="sendnick" onkeypress="event.keyCode==13?sselect():'';"><i class="sui-icon icon-touch-magnifier"></i>
+					</div>
+		 <div class="input-control control-right" style="display:none;">
+					   <input type="text" class="input-fat"  onkeypress="event.keyCode==13?sselect():'';"><i class="sui-icon icon-touch-magnifier"></i>
+					</div>
+		 <label id="state">&nbsp;&nbsp;&nbsp;&nbsp;状态：</label>
+            <!-- 
+            <input type="text" id="sendnick" class="span2" />
+           
+                <select id="taskstate" class="span1" style="width:90px;">
+                    <option value="0">所有</option>
+                    <option value="1">未处理</option>
+                    <option value="6">已转交</option>
+                    <option value="2">已完成</option>
+                </select> --> 
+                <span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner" id="select1">
+					<a  role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+       		    		<input id="taskstate" value="all" name="taskstate" type="hidden" onchange="masterchen1234(this)">
+       		    		<i class="caret"></i>
+       		    		<span id="taskstate">所有</span>
+       		    	</a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+           				<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="0">所有</a></li>
+            			<li role="presentation" pointstu="pointstu" class=""><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">未处理</a></li>             
+            			<li role="presentation" pointstu="pointstu" class="" id="pointdfh"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="6">已转交</a></li>
+            			<li role="presentation" pointstu="pointstu" class=""><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">已完成</a></li>
+        			</ul>
+			</span>
+		</span>
+		
+        <label id="clrs">&nbsp;&nbsp;&nbsp;&nbsp;处理人：</label>
+        
+            <span class="sui-dropdown dropdown-bordered select" id="clrids">
+									<span class="dropdown-inner">
+										<a role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+											<input  value="" type="hidden" />
+											<i class="caret"></i>
+       										<span>所有</span>
+       									</a>
+						        		<ul role="menu" id="clrid" aria-labelledby="drop4" class="sui-dropdown-menu"> 
+						        		<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="">所有</a></li>           	
+						            	</ul>
+									</span>
+								</span>   
+								         	
+        &nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:sselect();" class="sui-btn btn-primary"> 查 询 </a>
+        </form>
+		<ul class="sui-nav nav-tabs nav-large" id="myTab">
+            <li class="active"><a data-toggle="tab" href="#alltask" onclick="alltask();">全部任务<span id="allnum"></span></a></li>
+            <li><a data-toggle="tab" href="#untreated" onclick="untreated();">未处理的<span id="untreatsum"></span></a></li>
+			<li><a data-toggle="tab" href="#mytask" onclick="my();">已处理的<span id="mynum"></span></a></li>
+            <li><a data-toggle="tab" href="#allstask" onclick="myall();">我创建的<span id="allsnum"></span></a></li>
+		</ul>
+        <div style="text-align:left;" >
+        <label class="checkbox-pretty inline" id="qx">
+        		<input type="checkbox"  id="taskqx" name="onsale_bbs" value="option1" class="taskqx" />&nbsp;<span class="lbl" >全选</span>
+        		<button class="sui-btn btn-small btn-primary" onclick="batchcl();" id="cl">批量处理</button>
+        		 <button class="sui-btn btn-small btn-primary" onclick="batchzj();" id="zj">批量转交</button>
+        	</label>
+        	 <div style="text-align:right;margin-top:-20px;">
+        	<span style="flroat:right;color:#989898;"><a href="#"  data-placement="bottom" data-toggle="tooltip" title=" 1、一个订单可以添加多个任务，但“未处理”的任务只能有一个。即只有订单上的任务都完成或没有任务时，才可以添加新任务；</br> 2、任务创建者可以把任务指派给自己或者其他人处理；</br> 3、任务处理人可以自己处理任务，也可以将任务转交给其他人处理。" >使用帮助</a></span>
+        </div>
+        </div>
+		<div class="tab-content" >
+              <div id="alltask" class="tab-pane active" style="overflow: hidden">
+                <div id="all_list" style="margin-top: 10px;">
+                <div tabindex="-1" class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div></div>
+                <div id="allfy"></div>
+            </div>
+
+			<div id="allstask" class="tab-pane active" style="overflow: hidden">
+				<div id="alls_list" style="margin-top: 10px;"></div>
+				<div id="allsfy"></div>
+			</div>
+			<div id="mytask" class="tab-pane" style="overflow: hidden">
+				<div id="my_list" style="margin-top: 10px;"></div>
+				<div id="mytaskfy"></div>
+			</div>
+	        <div id="untreated" class="tab-pane" style="overflow: hidden">
+	            <div id="untreated_list" style="margin-top: 10px;"></div>
+	            <div id="untreatedtaskfy"></div>
+	        </div>
+		</div>			
+	</div>
+</div>
+	<script type="text/javascript" >
+	window.onload = function(){
+	    QN.initTheme();
+	    $("#indexsel").attr("class","dqzt");
+        onload_viptime('gentlytask');
+        getnicks();
+    };
+    function masterchen1234(TT){
+    	console.log(TT.value);
+    }
+    $(".checkall").click(function(){/*全选*/
+        if(this.checked){
+       	 $("input[name='onsale_bb']").parent('label').checkbox('check');
+       	 $("input[name='onsale_bb']").parent('label').checkbox('check');
+        }else{
+       	 $("input[name='onsale_bb']").parent('label').checkbox('uncheck');
+       	 $("input[name='onsale_bb']").parent('label').checkbox('uncheck');
+        }
+    });
+    function sselect(){
+        if(sta=="my"){
+            my();
+        }else if(sta=="alls"){
+            myall();
+        }else if(sta=="untreated"){
+            untreated()
+        }else{
+            alltask();
+        }
+    }
+    function reshow(){
+        if(sta=="my"){
+            my();
+        }else if(sta=="alls"){
+            myall();
+        }else if(sta=="untreated"){
+            untreated()
+        }else{
+            alltask();
+        }
+    }
+	function alltask(){
+        $("#qx").show();
+        $("#cl").show();
+        $("#zj").show();
+        $("#clrs").show();
+        $("#clrids").show();
+        $("#state").show();
+        $("#taskstate").show();
+        $("#select1").show();
+		sta="alld";
+        allshow(1);
+	}
+    function allshow(pageno){
+    	$("#taskqx").parent('label').checkbox('uncheck');
+       /*$("#taskqx").parent('label').checkbox('uncheck');*/
+        $("#all_list").html('<div tabindex="-1" class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>');
+        $("#allfy").empty();
+        /* $("#clrid").empty();*/
+      
+        clid=[]
+        var param={};
+        param.fields="meta.id,content,title,gmt_create,id,sub_biz_type,receiver_nick,receiver_uid,biz_type,status,biz_id,biz_nick,status,total_count,sender_nick";
+        param.need_meta=true;
+        param.current_page=pageno;
+        param.biz_type="trade";
+        param.page_size=20;
+        switch($("#taskstate").val()){
+            case "1":
+                param.status="0,1,3,4,5";
+                break;
+            case "6":
+                param.status="6";
+                break;
+            case "2":
+                param.status="2";
+                break;
+        };
+       
+     
+        if($("#clrid").siblings('a').children('input').val() > 1 ){
+       		 param.receiver_uid=$('#clrid').siblings('a').children('input').val();
+            }
+        if($("#sendnick").val().replace(/^\s+/g,"").replace(/\s+$/g,"")!=""){
+            param.biz_nick=$("#sendnick").val().replace(/^\s+/g,"").replace(/\s+$/g,"");
+        }
+
+       QN.top.invoke({
+            "cmd": "taobao.qianniu.tasks.get",
+            "param": param,
+            "method": "get",
+            "success": function (e){
+                if(typeof  e=== 'string'){
+                    e = JSON.parse(e);
+                }
+                var resp=e.qianniu_tasks_get_response.tasks;
+                resp=resp.q_task;
+                $("#all_list").html('');
+                if(resp){
+                    sum=resp[0].total_count;
+                    $("#allnum").html('('+sum+')');
+                    $("#allsnum").html('');
+                    $("#mynum").html('');
+                    $("#untreatsum").html('');
+                    for(var i=0;i<resp.length;i++){
+                        var datas={};
+                        datas.myid=i;
+                        datas.id=resp[i].id;
+                        datas.ddid=resp[i].biz_id;
+                        datas.fqr=decodeURI(resp[i].sender_nick);
+                        datas.biz_nick=decodeURI(resp[i].biz_nick);
+                        datas.clr=decodeURI(resp[i].receiver_nick);
+                        var dd= datas.biz_nick.indexOf("cntaobao");
+                        if(dd==0){
+                            datas.biz_nick= datas.biz_nick.substr(8);
+                        }
+                        datas.gmt_create=resp[i].gmt_create;
+                        if(resp[i].meta){
+                            datas.title=resp[i].meta.title;
+                            datas.content=resp[i].meta.content;
+                            datas.dataid=resp[i].meta.id;
+                        }else{
+                            datas.title="暂无标题哦";
+                            datas.content="暂无内容哦";
+                        }
+                        var num = 40;
+                        if(datas.content.length > num){
+                            datas.content= datas.content.substring(0,num)+"...";
+                        }
+                        datas.sta=sta;
+                        datas.istasks="1";
+                        switch (resp[i].status){
+                            case 0:
+                                datas.dataTaskStartCss="sui-label labe-warning";
+                                datas.dataTaskStart="未处理";
+                                break;
+                            case 1:
+                                datas.dataTaskStartCss="sui-label labe-important";
+                                datas.dataTaskStart="执行中";
+                                break;
+                            case 2:
+                                datas.istasks="";
+                                datas.dataTaskStartCss="sui-label label-success";
+                                datas.dataTaskStart="已完成";
+                                break;
+                            case 3:
+                                datas.dataTaskStartCss="sui-label labe-impor";
+                                datas.dataTaskStart="超时";
+                                break;
+                            case 4:
+                           	 	datas.istasks="";
+                                datas.dataTaskStartCss="sui-label label-info";
+                                datas.dataTaskStart="取消";
+                                break;
+                            case 5:
+                                datas.dataTaskStartCss="sui-label label-info";
+                                datas.dataTaskStart="忽略";
+                                break;
+                            case 6:
+                                datas.istasks="";
+                                datas.dataTaskStartCss="sui-label label-info";
+                                datas.dataTaskStart="已转交";
+                                break;
+                        }
+                        switch(resp[i].sub_biz_type){
+                            case "TradeCreate":
+                                datas.lx="新订单";
+                                break;
+                            case "TradeRated":
+                                datas.lx="买家已评价";
+                                break;
+                            case "TradeModifyFee":
+                                datas.lx="订单价格已修改";
+                                break;
+                            case "TradeMemoModified":
+                                datas.lx="交易备注已修改";
+                                break;
+                            case "TradeCloseAndModifyDetailOrder":
+                                datas.lx="子订单已关闭或修改";
+                                break;
+                            case "TradeLogisticsAddressChanged":
+                                datas.lx="修改交易收货地址";
+                                break;
+                            case "TradeClose":
+                                datas.lx="订单关闭";
+                                break;
+                            case "TradeChanged":
+                                datas.lx="订单信息已修改";
+                                break;
+                            case "TradeBuyerPay":
+                                datas.lx="买家已付款";
+                                break;
+                            case "TradeSellerShip":
+                                datas.lx="卖家已发货";
+                                break;
+                            case "TradeDelayConfirmPay":
+                                datas.lx="已延长收货时间";
+                                break;
+                            case "TradePartlyRefund":
+                                datas.lx="子订单退款成功";
+                                break;
+                            case "TradePartlyConfirmPay":
+                                datas.lx="子订单打款成功";
+                                break;
+                            case "TradeSuccess":
+                                datas.lx="交易成功";
+                                break;
+                            case "TradeTimeoutRemind":
+                                datas.lx="订单已超时";
+                                break;
+
+                            case "TradeModify":
+                                datas.lx="修改价格/收货地址";
+                                break;
+                            case "TradeDelay":
+                                datas.lx="延长收货时间";
+                                break;
+                            case "TradeReturn":
+                                datas.lx="退换货/退款";
+                                break;
+                            case "TradeShipQuery":
+                                datas.lx="查件/问题件";
+                                break;
+                            case "TradeInvoice":
+                                datas.lx="开发票";
+                                break;
+                            case "TradeBadComment":
+                                datas.lx="中差评";
+                                break;
+                            case "other":
+                                datas.lx="其它";
+                                break;
+                            default:
+                                datas.lx="暂无信息";
+                                break;
+                        };
+                        if(resp[i].receiver_uid!=alluid){
+                            datas.istasks="";
+                        }
+                        if(datas.istasks=="1"){
+                            var cl={};
+                            cl.id=resp[i].id;
+                            cl.dataid=datas.dataid;
+                            clid[clid.length]=cl;
+                        }
+                        datas.bzyw="订单编号";
+                        var source = $("#all_list_template").html();
+                        var template=Handlebars.compile(source);
+                        var htmlstr = template(datas);
+                        $("#all_list").append(htmlstr).trigger('create');
+                    }
+                    $("#allfy").empty();
+                    pagin("allfy","allshow",pageno,Math.ceil(sum/20) ,sum);
+                }else{
+                    sum=0;
+                    $("#allnum").html('('+sum+')');
+                    $("#allsnum").html('');
+                    $("#mynum").html('');
+                    $("#untreatsum").html('');
+                    $("#all_list").html('');
+                    $("#all_list").html('<div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有查到任务数据哦！</div><s class="msg-icon"></s></div>');
+                    return;
+                }
+            },
+            "error":function(e){
+	            	if(typeof  e=== 'string'){
+	                    e = JSON.parse(e);
+	                }
+	            	/* $("#hints_vip").html('<p>网络连接超时，请检查网络后再试</p>');*/
+				     $("#hints_vips").html('<p>错误方法【allshow】：'+JSON.stringify(e)+'</p>');
+				   	/* showMsg('hint_vip');*/
+					   	$.alert('网络连接超时，请检查网络后再试');
+            }
+        });
+    }
+	function my(){/*已处理*/
+		$("#taskqx").parent('label').checkbox('uncheck');
+        $("#qx").hide();
+        $("#cl").hide();
+        $("#zj").hide();
+        $("#clrs").hide();
+        $("#clrids").hide();
+        $("#state").hide();
+        $("#taskstate").hide();
+        $("#select1").hide();
+		sta="my";
+		myshow(1);
+	}
+    function untreated(){/*未处理*/
+    	$("#taskqx").parent('label').checkbox('uncheck');
+        sta="untreated";
+        $("#qx").show();
+        $("#cl").show();
+        $("#zj").show();
+        $("#select1").hide();
+        $("#state").hide();
+        $("#taskstate").hide();
+        $("#clrs").hide();
+        $("#clrids").hide();
+        untreatedshow(1);
+    }
+    function myall(){
+    	$("#taskqx").parent('label').checkbox('uncheck');
+        $("#qx").hide();
+        $("#cl").hide();
+        $("#zj").hide();
+        $("#clrs").show();
+        $("#clrids").show();
+        $("#state").show();
+        $("#taskstate").show();
+        $("#select1").show();
+        sta="alls";
+        alls(1);
+    }
+	function myshow(pageno){
+        clid=[];
+		$("#taskqx").parent('label').checkbox('uncheck');
+	        $("#my_list").html('<div tabindex="-1" class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>');
+	        $("#mytaskfy").empty();
+            var param={};
+            param.receiver_uid=uid;
+            param.fields="meta.id,content,title,sub_biz_type,gmt_create,id,receiver_nick,biz_type,status,biz_id,biz_nick,status,total_count,sender_nick";
+            param.page_size=20;
+            param.current_page=pageno;
+            param.need_meta=true;
+            param.biz_type="trade";
+            param.status="2,6";
+            /*switch($("#taskstate").find("option:selected").val()){
+                case "1":
+                    param.status="0,1,3,4,5";
+                    break;
+                case "6":
+                    param.status="6";
+                    break;
+                case "2":
+                    param.status="2";
+                    break;
+            };*/
+            if($("#sendnick").val().replace(/^\s+/g,"").replace(/\s+$/g,"")!=""){
+                param.biz_nick=$("#sendnick").val().replace(/^\s+/g,"").replace(/\s+$/g,"");
+            }
+
+			 QN.top.invoke({
+				 "cmd": "taobao.qianniu.tasks.get",
+				 "param": param,
+				 "method": "get",
+                 "success": function (e){
+                     if(typeof  e=== 'string'){
+                         e = JSON.parse(e);
+                     }
+                     var resp=e.qianniu_tasks_get_response.tasks;
+                     resp=resp.q_task;
+                     $("#my_list").empty();
+                     if(resp){
+                         sum=resp[0].total_count;
+                         $("#allnum").html('');
+                         $("#allsnum").html('');
+                         $("#mynum").html('('+sum+')');
+                         $("#untreatsum").html('');
+                         for(var i=0;i<resp.length;i++){
+                             var datas={};
+                             datas.myid=i;
+                             datas.id=resp[i].id;
+                             datas.ddid=resp[i].biz_id;
+                             datas.fqr=decodeURI(resp[i].sender_nick);
+                             datas.biz_nick=decodeURI(resp[i].biz_nick);
+                             datas.clr=decodeURI(resp[i].receiver_nick);
+                             var dd= datas.biz_nick.indexOf("cntaobao");
+                             if(dd==0){
+                                 datas.biz_nick= datas.biz_nick.substr(8);
+                             }
+                             datas.gmt_create=resp[i].gmt_create;
+                             if(resp[i].meta){
+                                 datas.title=resp[i].meta.title;
+                                 datas.content=resp[i].meta.content;
+                                 datas.dataid=resp[i].meta.id;
+                             }else{
+                                 datas.title="暂无标题哦";
+                                 datas.content="暂无内容哦";
+                             }
+                             var num = 40;
+                             if(datas.content.length > num){
+                                 datas.content= datas.content.substring(0,num)+"...";
+                             }
+                             datas.sta=sta;
+                             datas.istasks="1";
+                             switch (resp[i].status){
+                                 case 0:
+                                     datas.dataTaskStartCss="sui-label labe-warning";
+                                     datas.dataTaskStart="未处理";
+                                     break;
+                                 case 1:
+                                     datas.dataTaskStartCss="sui-label labe-important";
+                                     datas.dataTaskStart="执行中";
+                                     break;
+                                 case 2:
+                                     datas.istasks="";
+                                     datas.dataTaskStartCss="sui-label labe-success";
+                                     datas.dataTaskStart="已完成";
+                                     break;
+                                 case 3:
+                                     datas.dataTaskStartCss="sui-label labe-impor";
+                                     datas.dataTaskStart="超时";
+                                     break;
+                                 case 4:
+                                	 datas.istasks="";
+                                     datas.dataTaskStartCss="sui-label labe-info";
+                                     datas.dataTaskStart="取消";
+                                     break;
+                                 case 5:
+                                     datas.dataTaskStartCss="sui-label labe-info";
+                                     datas.dataTaskStart="忽略";
+                                     break;
+                                 case 6:
+                                     datas.istasks="";
+                                     datas.dataTaskStartCss="sui-label labe-info";
+                                     datas.dataTaskStart="已转交";
+                                     break;
+                             }
+                             switch(resp[i].sub_biz_type){
+                                 case "TradeCreate":
+                                     datas.lx="新订单";
+                                     break;
+                                 case "TradeRated":
+                                     datas.lx="买家已评价";
+                                     break;
+                                 case "TradeModifyFee":
+                                     datas.lx="订单价格已修改";
+                                     break;
+                                 case "TradeMemoModified":
+                                     datas.lx="交易备注已修改";
+                                     break;
+                                 case "TradeCloseAndModifyDetailOrder":
+                                     datas.lx="子订单已关闭或修改";
+                                     break;
+                                 case "TradeLogisticsAddressChanged":
+                                     datas.lx="修改交易收货地址";
+                                     break;
+                                 case "TradeClose":
+                                     datas.lx="订单关闭";
+                                     break;
+                                 case "TradeChanged":
+                                     datas.lx="订单信息已修改";
+                                     break;
+                                 case "TradeBuyerPay":
+                                     datas.lx="买家已付款";
+                                     break;
+                                 case "TradeSellerShip":
+                                     datas.lx="卖家已发货";
+                                     break;
+                                 case "TradeDelayConfirmPay":
+                                     datas.lx="已延长收货时间";
+                                     break;
+                                 case "TradePartlyRefund":
+                                     datas.lx="子订单退款成功";
+                                     break;
+                                 case "TradePartlyConfirmPay":
+                                     datas.lx="子订单打款成功";
+                                     break;
+                                 case "TradeSuccess":
+                                     datas.lx="交易成功";
+                                     break;
+                                 case "TradeTimeoutRemind":
+                                     datas.lx="订单已超时";
+                                     break;
+
+                                 case "TradeModify":
+                                     datas.lx="修改价格/收货地址";
+                                     break;
+                                 case "TradeDelay":
+                                     datas.lx="延长收货时间";
+                                     break;
+                                 case "TradeReturn":
+                                     datas.lx="退换货/退款";
+                                     break;
+                                 case "TradeShipQuery":
+                                     datas.lx="查件/问题件";
+                                     break;
+                                 case "TradeInvoice":
+                                     datas.lx="开发票";
+                                     break;
+                                 case "TradeBadComment":
+                                     datas.lx="中差评";
+                                     break;
+                                 case "other":
+                                     datas.lx="其它";
+                                     break;
+                                 default:
+                                     datas.lx="暂无信息";
+                                     break;
+                             };
+                             if(datas.istasks=="1"){
+                                 var cl={};
+                                 cl.id=resp[i].id;
+                                 cl.dataid=datas.dataid;
+                                 clid[clid.length]=cl;
+                             }
+                                datas.bzyw="订单编号";
+                                var source = $("#all_list_template").html();
+                                var template=Handlebars.compile(source);
+                                var htmlstr = template(datas);
+                                $("#my_list").append(htmlstr).trigger('create');
+                            }
+                            $("#mytaskfy").empty();
+                            pagin("mytaskfy","myshow",pageno,Math.ceil(sum/20) ,sum);
+			            }else{
+				            sum=0;
+                             $("#untreatsum").html('');
+				            $("#mynum").html('('+sum+')');
+				            $("#allsnum").html('');
+                            $("#allnum").html('');
+			            	$("#mytaskfy").html('');
+			            	$("#my_list").html('');
+			            	$("#my_list").html('<div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有查到任务数据哦！</div><s class="msg-icon"></s></div>');
+			            	return;
+			            }
+
+				 },
+				 "error":function(e){
+					 if(typeof  e=== 'string'){
+		                    e = JSON.parse(e);
+		                }
+					 /*$("#hints_vip").html('<p>网络连接超时，请检查网络后再试</p>');*/
+				     $("#hints_vips").html('<p>错误方法【myshow】：'+JSON.stringify(e)+'</p>');
+				   	 /*showMsg('hint_vip');*/
+				   	 $.alert('网络连接超时，请检查网络后再试');
+				 }
+			 });
+	}
+    function untreatedshow(pageno){/*未处理*/
+        clid=[];
+        $("#taskqx").parent('label').checkbox('uncheck');
+        $("#untreated_list").html('<div tabindex="-1" class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>');
+        $("#untreatedtaskfy").empty();
+        var param={};
+        param.receiver_uid=uid;
+        param.fields="meta.id,content,title,sub_biz_type,gmt_create,id,receiver_nick,biz_type,status,biz_id,biz_nick,status,total_count,sender_nick";
+        param.page_size=20;
+        param.current_page=pageno;
+        param.need_meta=true;
+        param.biz_type="trade";
+        param.status="0,1,3,4,5";
+        /*switch($("#taskstate").find("option:selected").val()){
+            case "1":
+                param.status="0,1,3,4,5";
+                break;
+            case "6":
+                param.status="6";
+                break;
+            case "2":
+                param.status="2";
+                break;
+        };*/
+        if($("#sendnick").val().replace(/^\s+/g,"").replace(/\s+$/g,"")!=""){
+            param.biz_nick=$("#sendnick").val().replace(/^\s+/g,"").replace(/\s+$/g,"");
+        }
+
+        QN.top.invoke({
+            "cmd": "taobao.qianniu.tasks.get",
+            "param": param,
+            "method": "get",
+            "success": function (e){
+                if(typeof  e=== 'string'){
+                    e = JSON.parse(e);
+                }
+                var resp=e.qianniu_tasks_get_response.tasks;
+                resp=resp.q_task;
+                $("#untreated_list").empty();
+                if(resp){
+                    sum=resp[0].total_count;
+                    $("#allnum").html('');
+                    $("#allsnum").html('');
+                    $("#mynum").html('');
+                    $("#untreatsum").html('('+sum+')');
+                    for(var i=0;i<resp.length;i++){
+                        var datas={};
+                        datas.myid=i;
+                        datas.id=resp[i].id;
+                        datas.ddid=resp[i].biz_id;
+                        datas.fqr=decodeURI(resp[i].sender_nick);
+                        datas.biz_nick=decodeURI(resp[i].biz_nick);
+                        datas.clr=decodeURI(resp[i].receiver_nick);
+                        var dd= datas.biz_nick.indexOf("cntaobao");
+                        if(dd==0){
+                            datas.biz_nick= datas.biz_nick.substr(8);
+                        }
+                        datas.gmt_create=resp[i].gmt_create;
+                        if(resp[i].meta){
+                            datas.title=resp[i].meta.title;
+                            datas.content=resp[i].meta.content;
+                            datas.dataid=resp[i].meta.id;
+                        }else{
+                            datas.title="暂无标题哦";
+                            datas.content="暂无内容哦";
+                        }
+                        var num = 40;
+                        if(datas.content.length > num){
+                            datas.content= datas.content.substring(0,num)+"...";
+                        }
+                        datas.sta=sta;
+                        datas.istasks="1";
+                        switch (resp[i].status){
+                            case 0:
+                                datas.dataTaskStartCss="sui-label labe-warning";
+                                datas.dataTaskStart="未处理";
+                                break;
+                            case 1:
+                                datas.dataTaskStartCss="sui-label labe-important";
+                                datas.dataTaskStart="执行中";
+                                break;
+                            case 2:
+                                datas.istasks="";
+                                datas.dataTaskStartCss="sui-label labe-success";
+                                datas.dataTaskStart="已完成";
+                                break;
+                            case 3:
+                                datas.dataTaskStartCss="sui-label labe-impor";
+                                datas.dataTaskStart="超时";
+                                break;
+                            case 4:
+                            	datas.istasks="";
+                                datas.dataTaskStartCss="sui-label labe-info";
+                                datas.dataTaskStart="取消";
+                                break;
+                            case 5:
+                                datas.dataTaskStartCss="sui-label labe-info";
+                                datas.dataTaskStart="忽略";
+                                break;
+                            case 6:
+                                datas.istasks="";
+                                datas.dataTaskStartCss="sui-label labe-info";
+                                datas.dataTaskStart="已转交";
+                                break;
+                        }
+                        switch(resp[i].sub_biz_type){
+                            case "TradeCreate":
+                                datas.lx="新订单";
+                                break;
+                            case "TradeRated":
+                                datas.lx="买家已评价";
+                                break;
+                            case "TradeModifyFee":
+                                datas.lx="订单价格已修改";
+                                break;
+                            case "TradeMemoModified":
+                                datas.lx="交易备注已修改";
+                                break;
+                            case "TradeCloseAndModifyDetailOrder":
+                                datas.lx="子订单已关闭或修改";
+                                break;
+                            case "TradeLogisticsAddressChanged":
+                                datas.lx="修改交易收货地址";
+                                break;
+                            case "TradeClose":
+                                datas.lx="订单关闭";
+                                break;
+                            case "TradeChanged":
+                                datas.lx="订单信息已修改";
+                                break;
+                            case "TradeBuyerPay":
+                                datas.lx="买家已付款";
+                                break;
+                            case "TradeSellerShip":
+                                datas.lx="卖家已发货";
+                                break;
+                            case "TradeDelayConfirmPay":
+                                datas.lx="已延长收货时间";
+                                break;
+                            case "TradePartlyRefund":
+                                datas.lx="子订单退款成功";
+                                break;
+                            case "TradePartlyConfirmPay":
+                                datas.lx="子订单打款成功";
+                                break;
+                            case "TradeSuccess":
+                                datas.lx="交易成功";
+                                break;
+                            case "TradeTimeoutRemind":
+                                datas.lx="订单已超时";
+                                break;
+
+                            case "TradeModify":
+                                datas.lx="修改价格/收货地址";
+                                break;
+                            case "TradeDelay":
+                                datas.lx="延长收货时间";
+                                break;
+                            case "TradeReturn":
+                                datas.lx="退换货/退款";
+                                break;
+                            case "TradeShipQuery":
+                                datas.lx="查件/问题件";
+                                break;
+                            case "TradeInvoice":
+                                datas.lx="开发票";
+                                break;
+                            case "TradeBadComment":
+                                datas.lx="中差评";
+                                break;
+                            case "other":
+                                datas.lx="其它";
+                                break;
+                            default:
+                                datas.lx="暂无信息";
+                                break;
+                        };
+                        if(datas.istasks=="1"){
+                            var cl={};
+                            cl.id=resp[i].id;
+                            cl.dataid=datas.dataid;
+                            clid[clid.length]=cl;
+                        }
+                        datas.bzyw="订单编号";
+                        var source = $("#all_list_template").html();
+                        var template=Handlebars.compile(source);
+                        var htmlstr = template(datas);
+                        $("#untreated_list").append(htmlstr).trigger('create');
+                    }
+                    $("#untreatedtaskfy").empty();
+                    pagin("untreatedtaskfy","untreatedshow",pageno,Math.ceil(sum/20) ,sum);
+                }else{
+                    sum=0;
+                    $("#mynum").html('');
+                    $("#allsnum").html('');
+                    $("#allnum").html('');
+                    $("#untreatsum").html('('+sum+')');
+                    $("#untreatedtaskfy").html('');
+                    $("#untreated_list").html('');
+                    $("#untreated_list").html('<div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有查到任务数据哦！</div><s class="msg-icon"></s></div>');
+                    return;
+                }
+
+            },
+            "error":function(e){
+            	if(typeof  e=== 'string'){
+                    e = JSON.parse(e);
+                }
+				 /*$("#hints_vip").html('<p>网络连接超时，请检查网络后再试</p>');*/
+			     $("#hints_vips").html('<p>错误方法【untreatedshow】：'+JSON.stringify(e)+'</p>');
+			   	 /*showMsg('hint_vip');*/
+			     $.alert('网络连接超时，请检查网络后再试');
+            }
+        });
+    }
+	var uid="";/**子帐号id**/
+	var nick="";/**子帐号昵称**/
+	var isChildAccount;/**false主账户登录true子帐号登录**/
+	var mainUid;/**主帐号id**/
+	var mainNick;/**主帐号昵称**/
+	var sta;/**当前页面**/
+	var sum;/**分页总数**/
+	var data;/**任务元全局**/
+	var currentId;
+	var num=0;
+	var childsum=0;
+	var alluid;
+    var clid=[];
+	function getnicks(){
+		 QN.application.invoke({
+			 "cmd": "getLoginuser",
+			 "success": function (e){
+				 if(typeof  e=== 'string'){
+		            	e = JSON.parse(e);
+		            }
+	            	mainNick=decodeURI(e.user_nick);
+					mainUid=e.user_id;
+                 var  shash=window.location.hash.substr(1);
+                 var params = shash.split('&');
+                 var map = new HashMap();
+                 for (var i in params) {
+                     var p = params[i].split("=");
+                     if (p.length == 2) {
+                         map.put(p[0], p[1]);
+                     }
+                 }
+                 var stag=map.get('sta');
+                 var tradeStatus=map.get('tradeStatus');
+                 if(e.sub_user_id==""){
+		            	uid=mainUid;
+		            	nick=mainNick;
+						isChildAccount=false;
+						alluid=uid;
+		            }else{
+		            	uid=e.sub_user_id;
+		            	nick=decodeURI(e.sub_user_nick);
+		            	isChildAccount=true;
+		            	alluid=uid;
+		            }
+                 QN.top.invoke({
+                     "cmd": "taobao.subusers.get",
+                     "param": {"user_nick":mainNick},
+                     "method": "get",
+                     "success": function (e){
+                         if(typeof  e=== 'string'){
+                             e = JSON.parse(e);
+                         }
+                         var resp=e.subusers_get_response.subaccounts.sub_account_info;
+                         if(resp){
+                        	$("#clrid").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+mainUid+'">'+mainNick+'</a></li>');
+                             for(var i=0;i<resp.length;i++){
+                            	 	 $("#clrid").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+resp[i].sub_id+'">'+decodeURI(resp[i].sub_nick)+'</a></li>');
+                             
+                             }
+                         }
+                         if(stag=="untreated"||tradeStatus=="task"){
+                             untreated();
+                             $('#myTab a[href="#untreated"]').tab('show');
+                         }else if(stag=="my"){
+                             my();
+                             $('#myTab a[href="#mytask"]').tab('show');
+                         }else if(stag=="alls"){
+                             myall();
+                             $('#myTab a[href="#allstask"]').tab('show');
+                         }else {
+                             alltask();
+                         }
+                     }
+                 });
+			 },
+            "error":function (e){
+            	if(typeof  e=== 'string'){
+                    e = JSON.parse(e);
+                }
+				 /*$("#hints_vip").html('<p>网络连接超时，请检查网络后再试</p>');*/
+			     $("#hints_vips").html('<p>错误方法【getnicks】：'+JSON.stringify(e)+'</p>');
+			   	 /*showMsg('hint_vip');*/
+			     $.alert('网络连接超时，请检查网络后再试');
+            }
+		 });
+	}
+		
+    function HashMap(){
+        var size=0;
+        var entry=new Object();
+        this.put=function(key,value){
+            if(!this.containsKey(key)){
+                size++;
+            }
+            entry[key]=value};
+        this.get=function(key){
+            if(this.containsKey(key)){
+                return entry[key];
+            }else{
+                return null;
+            }
+        };
+        this.remove=function(key){
+            if(delete entry[key]){
+                size--;
+            }
+        };
+        this.containsKey=function(key){
+            return(key in entry);
+        };
+        this.containsValue=function(value){
+            for(var prop in entry){
+                if(entry[prop]==value){
+                    return true;
+                }
+            }
+            return false;
+        };
+        this.values=function(){
+            var values=new Array(size);
+            for(var prop in entry){
+                values.push(entry[prop]);
+            }
+            return values;
+        };
+        this.keys=function(){
+            var keys=new Array(size);
+            for(var prop in entry){
+                keys.push(prop);
+            }
+            return keys;
+        };
+        this.size=function(){
+            return size;
+        };
+    }
+	function alls(pageno){
+        $("#taskqx").parent('label').checkbox('uncheck');
+        $("#alls_list").html('<div tabindex="-1" class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>');
+        $("#allsfy").empty();
+        clid=[];
+        var param={};
+        param.sender_uid=alluid;
+        param.fields="meta.id,content,title,gmt_create,id,sub_biz_type,receiver_nick,receiver_uid,biz_type,status,biz_id,biz_nick,status,total_count,sender_nick";
+        param.page_size=20;
+        param.current_page=pageno;
+        param.need_meta=true,
+        param.biz_type="trade";
+        switch($("#taskstate").find("option:selected").val()){
+            case "1":
+                param.status="0,1,3,4,5";
+                break;
+            case "6":
+                param.status="6";
+                break;
+            case "2":
+                param.status="2";
+                break;
+        };
+        
+     
+        if($("#clrid").siblings("a").children("input").val() >1){
+			param.receiver_uid=$("#clrid").siblings("a").children("input").val();
+            }
+        if($("#sendnick").val().replace(/^\s+/g,"").replace(/\s+$/g,"")!=""){
+            param.biz_nick=$("#sendnick").val().replace(/^\s+/g,"").replace(/\s+$/g,"");
+        }
+        QN.top.invoke({
+            "cmd": "taobao.qianniu.tasks.get",
+            "param": param,
+            "method": "get",
+            "success": function (e){
+                if(typeof  e=== 'string'){
+                    e = JSON.parse(e);
+                }
+                var resp=e.qianniu_tasks_get_response.tasks;
+                resp=resp.q_task;
+                $("#alls_list").empty();
+                if(resp){
+                    sum=resp[0].total_count;
+                    $("#allnum").html('');
+                    $("#allsnum").html('('+sum+')');
+                    $("#mynum").html('');
+                    $("#untreatsum").html('');
+                    for(var i=0;i<resp.length;i++){
+                        var datas={};
+                        datas.myid=i;
+                        datas.id=resp[i].id;
+                        datas.ddid=resp[i].biz_id;
+                        datas.fqr=decodeURI(resp[i].sender_nick);
+                        datas.biz_nick=decodeURI(resp[i].biz_nick);
+                        datas.clr=decodeURI(resp[i].receiver_nick);
+                        var dd= datas.biz_nick.indexOf("cntaobao");
+                        if(dd==0){
+                            datas.biz_nick= datas.biz_nick.substr(8);
+                        }
+                        datas.gmt_create=resp[i].gmt_create;
+                        if(resp[i].meta){
+                            datas.title=resp[i].meta.title;
+                            datas.content=resp[i].meta.content;
+                            datas.dataid=resp[i].meta.id;
+                        }else{
+                            datas.title="暂无标题哦";
+                            datas.content="暂无内容哦";
+                        }
+                        var num = 40;
+                        if(datas.content.length > num){
+                            datas.content= datas.content.substring(0,num)+"...";
+                        }
+
+
+                        datas.sta=sta;
+                        datas.istasks="1";
+                        switch (resp[i].status){
+                            case 0:
+                                datas.dataTaskStartCss="sui-label labe-warning";
+                                datas.dataTaskStart="未处理";
+                                break;
+                            case 1:
+                                datas.dataTaskStartCss="sui-label labe-important";
+                                datas.dataTaskStart="执行中";
+                                break;
+                            case 2:
+                                datas.istasks="";
+                                datas.dataTaskStartCss="sui-label labe-success";
+                                datas.dataTaskStart="已完成";
+                                break;
+                            case 3:
+                                datas.dataTaskStartCss="sui-label labe-impor";
+                                datas.dataTaskStart="超时";
+                                break;
+                            case 4:
+                           	 	datas.istasks="";
+                                datas.dataTaskStartCss="sui-label labe-info";
+                                datas.dataTaskStart="取消";
+                                break;
+                            case 5:
+                                datas.dataTaskStartCss="sui-label labe-info";
+                                datas.dataTaskStart="忽略";
+                                break;
+                            case 6:
+                                datas.istasks="";
+                                datas.dataTaskStartCss="sui-label labe-info";
+                                datas.dataTaskStart="已转交";
+                                break;
+                        }
+                        switch(resp[i].sub_biz_type){
+                            case "TradeCreate":
+                                datas.lx="新订单";
+                                break;
+                            case "TradeRated":
+                                datas.lx="买家已评价";
+                                break;
+                            case "TradeModifyFee":
+                                datas.lx="订单价格已修改";
+                                break;
+                            case "TradeMemoModified":
+                                datas.lx="交易备注已修改";
+                                break;
+                            case "TradeCloseAndModifyDetailOrder":
+                                datas.lx="子订单已关闭或修改";
+                                break;
+                            case "TradeLogisticsAddressChanged":
+                                datas.lx="修改交易收货地址";
+                                break;
+                            case "TradeClose":
+                                datas.lx="订单关闭";
+                                break;
+                            case "TradeChanged":
+                                datas.lx="订单信息已修改";
+                                break;
+                            case "TradeBuyerPay":
+                                datas.lx="买家已付款";
+                                break;
+                            case "TradeSellerShip":
+                                datas.lx="卖家已发货";
+                                break;
+                            case "TradeDelayConfirmPay":
+                                datas.lx="已延长收货时间";
+                                break;
+                            case "TradePartlyRefund":
+                                datas.lx="子订单退款成功";
+                                break;
+                            case "TradePartlyConfirmPay":
+                                datas.lx="子订单打款成功";
+                                break;
+                            case "TradeSuccess":
+                                datas.lx="交易成功";
+                                break;
+                            case "TradeTimeoutRemind":
+                                datas.lx="订单已超时";
+                                break;
+
+                            case "TradeModify":
+                                datas.lx="修改价格/收货地址";
+                                break;
+                            case "TradeDelay":
+                                datas.lx="延长收货时间";
+                                break;
+                            case "TradeReturn":
+                                datas.lx="退换货/退款";
+                                break;
+                            case "TradeShipQuery":
+                                datas.lx="查件/问题件";
+                                break;
+                            case "TradeInvoice":
+                                datas.lx="开发票";
+                                break;
+                            case "TradeBadComment":
+                                datas.lx="中差评";
+                                break;
+                            case "other":
+                                datas.lx="其它";
+                                break;
+                            default:
+                                datas.lx="暂无信息";
+                                break;
+                        };
+                        datas.bzyw="订单编号";
+                        var source = $("#myall_list_template").html();
+                        var template=Handlebars.compile(source);
+                        var htmlstr = template(datas);
+                        $("#alls_list").append(htmlstr).trigger('create');
+                    }
+                    $("#allsfy").empty()
+                    pagin("allsfy","alls",pageno,Math.ceil(sum/20) ,sum);
+                }else{
+                    sum=0;
+                    $("#allnum").html('');
+                    $("#allsnum").html('('+sum+')');
+                    $("#mynum").html('');
+                    $("#untreatsum").html('');
+                    $("#allsfy").html('');
+                    $("#alls_list").html('<div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">没有查到任务数据哦！</div><s class="msg-icon"></s></div>');
+                    return;
+                }
+
+            },
+            "error":function(e){
+            	if(typeof  e=== 'string'){
+                    e = JSON.parse(e);
+                }
+				 /*$("#hints_vip").html('<p>网络连接超时，请检查网络后再试</p>');*/
+			     $("#hints_vips").html('<p>错误方法【alls】：'+JSON.stringify(e)+'</p>');
+			   	 /*showMsg('hint_vip');*/
+			     $.alert('网络连接超时，请检查网络后再试');
+            }
+        });
+	}
+	function shubsz(obj){
+		obj.style.cursor='pointer';
+	}
+
+	function disposeTask(id){
+        QN.component.invoke({
+            category:'qtask_deal',
+            param:{
+                task_ids:[id]
+            },
+            error : function(msg, cmd, param){
+            },
+            success : function(rsp, cmd, param){
+            	/*$("#hints").html('<p>任务处理成功！</p>');
+	            showMsg('hint');*/
+            	layer.msg('任务处理成功！',2, 1);
+                if(sta=="alld"){
+                    allshow(1);
+                }else if(sta=="my"){
+                    myshow(1);
+                }else{
+                    alls(1);
+                }
+            }
+        });
+	}
+    function transfer(id){
+        QN.component.invoke({
+            category:'qtask_transfer',
+            param:{
+                meta_ids:[id]
+            },
+            error : function(msg, cmd, param) {
+             },
+            success : function(rsp, cmd, param) {
+            	/*$("#hints").html('<p>任务转交成功！</p>');
+	            showMsg('hint');*/
+            	layer.msg('任务转交成功！',2, 1);
+                if(sta=="alld"){
+                    allshow(1);
+                }else if(sta=="my"){
+                    myshow(1);
+                }else{
+                    alls(1);
+                }
+            }
+        });
+    }
+	function batchcl(){
+        var id=[];
+        if(0==$("."+sta+"check:checked").length){
+        	/*$("#hints").html('<p>亲，您没有选择任务哦！</p>');
+            showMsg('hint');*/
+        	/*layer.msg('亲，您没有选择任务哦！',2, -1);*/
+        	$.alert('没有选择的订单！');
+            return;
+        	}
+             $("."+sta+"check:checked").each(function(){
+                var plid=$(this).val();
+                for(var i=0;i<clid.length;i++){
+                    if(clid[i].id==plid){
+                        id[id.length]=clid[i].id;
+                        break;
+                    }
+                }
+            });
+            if(id.length>0){
+                QN.component.invoke({
+                    category:'qtask_deal',
+                    param:{
+                        task_ids:id
+                    },
+                    error : function(msg, cmd, param) {
+                    },
+                    success : function(rsp, cmd, param){
+                    	/*$("#hints").html('<p>任务处理成功！</p>');
+                        showMsg('hint');*/
+                    	layer.msg('任务处理成功！',2, 1);
+                        if(sta=="alld"){
+                        allshow(1);
+                        }else if(sta=="my"){
+                            myshow(1);
+                        }else{
+                            alls(1);
+                        }
+                    }
+                });
+            }else{
+            	/*$("#hints").html('<p>亲，没有查到需要您处理的任务哦！</p><p style="color:red">* 只有指派给自己且”未处理“状态的任务才能处理。</p>');
+                showMsg('hint');*/
+                layer.msg('亲，没有查到需要您处理的任务哦！</br><p style="color:red">* 只有指派给自己且”未处理“状态的任务才能处理。</p>',2,3);
+            }
+	}
+
+    function batchzj(){
+            var id=[];
+            if(0==$("."+sta+"check:checked").length){
+            	/*$("#hints").html('<p>亲，您没有选择任务哦！</p>');
+                showMsg('hint');*/
+            	/*layer.msg('亲，您没有选择任务哦！',2, -1);*/
+            	$.alert('没有选择的订单！');
+                return;
+            }
+            $("."+sta+"check:checked").each(function(){
+                var plid=$(this).val();
+                for(var i=0;i<clid.length;i++){
+                    if(clid[i].id==plid){
+                        id[id.length]=clid[i].dataid;
+                        break;
+                    }
+                }
+            });
+            if(id.length>0){
+                QN.component.invoke({
+                    category:'qtask_transfer',
+                    param:{
+                        meta_ids:id
+                    },
+                    error : function(msg, cmd, param) {
+
+                    },
+                    success : function(rsp, cmd, param) {
+                    	/*$("#hints").html('<p>任务转交成功！</p>');
+                        showMsg('hint');*/
+                    	layer.msg('任务转交成功！',2, 1);
+                        if(sta=="alld"){
+                            allshow(1);
+                        }else if(sta=="my"){
+                            myshow(1);
+                        }else{
+                            alls(1);
+                        }
+                    }
+                });
+            }else{
+            	/*$("#hints").html('<p>亲，没有查到需要您转交的任务哦！</p><p style="color:red">* 只有指派给自己且”未处理“状态的任务才能转交。</p>');
+                showMsg('hint');*/
+            	layer.msg('亲，没有查到需要您处理的任务哦！</br><p style="color:red">* 只有指派给自己且”未处理“状态的任务才能处理。',2,3);
+            }
+    }
+    $("#taskqx").click(function(){
+        if(this.checked){
+            $("."+sta+"check").parent('label').checkbox('check');
+            $("."+sta+"check").parent('label').checkbox('check');
+        }else{
+            $("."+sta+"check").parent('label').checkbox('uncheck');
+            $("."+sta+"check").parent('label').checkbox('uncheck');
+        }
+    });
+
+	function lianxikf(nick){
+		 QN.wangwang.invoke({
+		     category: 'wangwang', 
+		     cmd: 'chat',
+		     param: {'uid':"cntaobao"+nick},
+		     success: function (rsp) {
+		     },
+		     error: function (msg) {
+		     }
+		 });
+	}
+    function tixing(id){
+        QN.top.invoke({
+            "cmd": "taobao.qianniu.task.message.send",
+            "param": {"task_id":id},
+            "method": "get",
+            "success": function (e){
+            	/*$("#hints").html('<p>提醒发送成功！</p>');
+                showMsg('hint');*/
+           layer.msg('提醒发送成功！',2, 1);
+            },
+            "error":function(e){
+            	if(typeof  e=== 'string'){
+                    e = JSON.parse(e);
+                }
+			 /*$("#hints_vip").html('<p>提醒发送失败,请稍后再试！</p>');*/
+		     $("#hints_vips").html('<p>错误方法【tixing】：'+JSON.stringify(e)+'</p>');
+		   	 /*showMsg('hint_vip');*/
+		     layer.msg('提醒发送失败,请稍后再试！',2, 3);
+            }
+        });
+    }
+ 	</script>
+    <script id="all_list_template" type="text/x-handlebars-template">
+        <table class="sui-table table-striped table-bordered "
+               style="margin-bottom: 10px;">
+            <thead>
+            <tr>
+                <th colspan="2">
+                   <label class="checkbox-pretty inline" ><input type="checkbox" id="check{{myid}}" name="onsale_bb" value="{{id}}" class="{{sta}}check" /><span></span></label>
+                    <span  class="lbl" style="margin-right: 10px" >{{bzyw}}：
+                         <a href="<?php echo APP_WEB_INDEX_ROOT?>/trade/index#tid={{ddid}}&event=tradeDetail&state=task&sta={{sta}}">{{ddid}}</a>
+                    </span>
+                        <span style="margin-left: 20px">买家：<a onclick="lianxikf('{{biz_nick}}');" href="#" >
+                                <img border="0" id="wwkfim" src="http://amos.im.alisoft.com/online.aw?v=2&uid={{biz_nick}}&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" />                          {{biz_nick}}</a>
+                        </span>
+                    <span style="float: right;margin-right: 20px;padding: 5px 10px;font-size: 13px;" class="{{dataTaskStartCss}}">{{dataTaskStart}}</span>
+                    <span style="float: right;color:#989898;margin-right: 30px;">{{gmt_create}}</span>
+                </th>
+            </tr>
+            </thead>
+			<tbody>
+            <tr>
+                <td>
+					<div class="sui-row-fluid" style="margin:5px 0;">
+						<div class="span10">
+					<p style="margin-top:-4px"><span >创建人：{{fqr}}</span><span style="margin-left:30px;">类型：{{lx}}</span><span style="float: right;margin-right: 10px">处理人：
+                            <a onclick="lianxikf('{{clr}}');" href="#" >
+                                <img border="0" id="wwkfim" src="http://amos.im.alisoft.com/online.aw?v=2&uid={{clr}}&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" />
+                               {{clr}} </a> </span></p>
+                    <p style="margin-top:-8px;"  title="点击查看任务详情">标题：<a href='<?php echo APP_WEB_INDEX_ROOT?>/trade/details_page?vers=<?php echo REAL_ROOT_VER;?>#dataid={{dataid}}&sta={{sta}}'>{{title}}</a></p>
+                    <p style="margin-top:-8px;margin-bottom:-5px;">描述：<span style="color:red;">{{content}}</span></p>
+						</div>
+					</div>
+                </td>
+                <td width="15%" style="vertical-align:middle; text-align:center;">
+					<div class="sui-row-fluid" style="margin:5px 0;">
+						<div class="span2">
+                    {{#if istasks}}
+                    <p style="margin:5px 0px 0px 0px;padding:0;" > <a data-toggle="modal" href="javascript:void(0);" onclick="disposeTask({{id}});" class="sui-btn btn-small btn-primary">&nbsp;&nbsp;处&nbsp;&nbsp;&nbsp;理&nbsp;&nbsp;</a></p>
+                    <p style="margin:5px 0px 0px 0px;padding:0;"> <a data-toggle="modal"   href="javascript:void(0);" onclick="transfer({{dataid}});" class="sui-btn btn-small btn-primary">&nbsp;&nbsp;转&nbsp;&nbsp;&nbsp;交&nbsp;&nbsp;</a></p>
+                    {{else}}
+                    <p style="margin:5px 0px 0px 0px;padding:0;" title="不是处理人或已完成的任务无需处理哦^-^"> <a href="javascript:void(0);"data-toggle="modal"  class="sui-btn btn-small">&nbsp;&nbsp;处&nbsp;&nbsp;&nbsp;理&nbsp;&nbsp;</a></p>
+                    <p style="margin:5px 0px 0px 0px;padding:0;" title="不是处理人或已完成的任务无需处理哦^-^"> <a href="javascript:void(0);"data-toggle="modal" class="sui-btn btn-small">&nbsp;&nbsp;转&nbsp;&nbsp;&nbsp;交&nbsp;&nbsp;</a></p>
+                    {{/if}}
+						</div>	
+					</div>
+                </td>
+            </tr>
+			</tbody>
+        </table>
+    </script>
+    <script id="myall_list_template" type="text/x-handlebars-template">
+        <table class="sui-table table-striped table-bordered  "
+               style="margin-bottom: 10px;">
+            <thead>
+
+            <tr>
+                <th colspan="2">
+					<label class="checkbox-pretty inline" ><input type="checkbox" id="check{{myid}}" name="onsale_bb" value="{{id}}" class="{{sta}}check" /><span></span></label>
+                    <span  class="lbl" style="margin-right: 10px">{{bzyw}}：<a href="<?php echo APP_WEB_INDEX_ROOT?>/trade/index#tid={{ddid}}&event=tradeDetail&state=task">{{ddid}}</a></span>
+                        <span style="margin-left: 20px">买家：<a onclick="lianxikf('{{biz_nick}}');" href="#" >
+                                <img border="0" id="wwkfim" src="http://amos.im.alisoft.com/online.aw?v=2&uid={{biz_nick}}&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" />                          {{biz_nick}}</a>
+                        </span>
+                    <span style="float: right;margin-right: 20px ;padding: 5px 10px;font-size: 13px;" class="{{dataTaskStartCss}}">{{dataTaskStart}}</span>
+                    <span style="float: right;color:#989898;margin-right: 30px;">{{gmt_create}}</span>
+                </th>
+
+            </tr>
+            </thead>
+			<tbody>
+            <tr>
+                <td>
+					<div class="sui-row-fluid" style="margin:5px 0;">
+					<p style="margin-top:-4px"><span >创建人：{{fqr}}</span><span style="margin-left:30px;">类型：{{lx}}</span><span style="float: right;margin-right: 10px">处理人：
+                            <a onclick="lianxikf('{{clr}}');" href="#" >
+                                <img border="0" id="wwkfim" src="http://amos.im.alisoft.com/online.aw?v=2&uid={{clr}}&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" />
+                                {{clr}} </a> </span></p>
+                    <p style="margin-top:-8px;" title="点击查看任务详情">标题：<a href='<?php echo APP_WEB_INDEX_ROOT?>/trade/details_page?vers=<?php echo REAL_ROOT_VER;?>#dataid={{dataid}}&sta={{sta}}'>{{title}}</a></p>
+                    <p style="margin-top:-8px;margin-bottom:-5px;">描述：<span style="color:red;">{{content}}</span></p>
+					</div>
+                </td>
+                <td width="15%"  style="vertical-align:middle; text-align:center;">
+                    {{#if istasks}}
+                    <p style="margin:5px 0px 0px 0px;padding:0;" title="点击发送消息提醒处理人"> <a   href="javascript:void(0);"data-toggle="modal"  class="sui-btn btn-small btn-primary" onclick="tixing({{id}});">催一催</a></p>
+                    {{else}}
+                    <p style="margin:5px 0px 0px 0px;padding:0;" title="已完成或已转交的任务不能再催了哦^-^"> <a  href="javascript:void(0);"data-toggle="modal"  class="sui-btn btn-small" >催一催</a></p>
+                    {{/if}}
+					
+                </td>
+            </tr>
+			</tbody>
+        </table>
+    </script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

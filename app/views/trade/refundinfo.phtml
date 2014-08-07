@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+<div style="margin-left: 10px;" class="container">
+	<div style="display: none;" id="adv_top"></div>
+    <!--<ul class="sui-breadcrumb breadcrumb-dark" style="margin-top:10px">
+    	<li ><a href="<?php echo APP_WEB_INDEX_ROOT?>/trade/index?vers=<?php echo REAL_ROOT_VER;?>" >订单管理</a></li>
+        <li><a href="javascript:getdetail();" >订单详情</a></li>
+        <li class="active">退款信息</li>
+    </ul>-->
+	<div id="tuikuantime">
+		<p id="tuikuaninfo"></p>
+	</div>
+    <table class="sui-table table-bordered" id="butinfo">
+    	<tr>
+    		<td>
+            	<div class="sui-row-fluid">
+                	<div class="span12">
+                    	<a id="butagree" onclick="gorefundinfo('agree');" class="sui-btn btn-primary">同意退款</a>
+                        <a id="butnoref" onclick="gorefundinfo('refuse');" class="sui-btn btn-primary">拒绝退款</a>
+                        <a id="butrefmessage" data-toggle="modal" data-target="#addmessage" data-keyboard="false" class="sui-btn btn-primary">发表留言</a>
+                        <a style="display: none;" id="butreturned" class="sui-btn btn-primary" href="javascript:gorefundinfo('returned')" onclick="Load_refundaddr()">同意退货，发送退货地址</a>
+                 	</div>
+            	</div>
+			</td>
+		</tr>
+    </table>   
+    <table class="sui-table table-bordered"  id="refitem"></table>
+    <table class="sui-table table-bordered" id="refinto"></table>
+    <table class="sui-table table-bordered" id="refmessage"></table>
+    <!--Profile Form添加留言 -->
+	 <div id="addmessage" class="sui-modal hide fade" role="dialog" tabIndex="-1" data-hasfoot="true" data-backdrop="static" data-width="560px" style="display:none;">
+		<div class="modal-dialog">    
+			<div class="modal-content">      
+				<div class="modal-header">        
+					<button aria-hidden="true" class="sui-close" type="button" data-dismiss="modal">×</button>        
+					<h4 class="modal-title">添加留言</h4>      
+				</div> 
+			 <div class="modal-body">
+	            <form class="form-horizontal">
+	                <p></p><samp>选择常用短语:&nbsp;&nbsp;</samp>
+	                <select onchange="refmemochoice()" style="width: 260px;"    id="refmemone">
+	                </select>
+	                </p>
+	                <textarea class="textarea" placeholder="" id="addrefmessage" style="width: 515px; height: 130px"></textarea>
+	            </form>
+	        </div>
+	        <div class="modal-footer">     
+			  		<button id="savenickBtn" class="sui-btn btn-primary btn-large" type="button" data-ok="modal" onclick="addref();">确定</button>
+					<button class="sui-btn btn-default btn-large" type="button" data-dismiss="modal">关闭</button>      
+				</div>    
+			</div>  
+		</div>
+	</div>
+		 <!--同意退货 -->
+	<div id ="returned"  class="sui-modal hide fade" role="dialog" tabIndex="-1" data-hasfoot="true" data-backdrop="static" data-width="500px" style="display:none;">
+		<div class="modal-dialog">    
+			<div class="modal-content">      
+				<div class="modal-header">        
+					<button aria-hidden="true" class="sui-close" type="button" data-dismiss="modal">×</button>        
+					<h4 class="modal-title">同意退货</h4>      
+				</div> 
+			<div class="modal-body">
+                    <div class="control-group">
+                        <div class="controls">
+                            <span>选择退货地址：</span>
+                            <select id="Buyer_return_addr" style="width:80%;">
+                            </select>
+                        </div>
+                         <div class="controls">
+                         	<textarea class="textarea" id="refund_note" placeholder="请输入您的退货留言...." style="width: 450px; height: 100px;resize: none;"></textarea>
+                        </div>
+                </div>
+		   </div>
+		   <div class="modal-footer">     
+			  		<button id="savenickBtn" class="sui-btn btn-primary btn-large" type="button" onclick="enter_refund()">确定</button>
+					<button class="sui-btn btn-default btn-large" type="button" data-dismiss="modal">关闭</button>      
+				</div>    
+			</div>  
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var user_id ='';
+var grefid='';
+var goid='';
+var gtid=''; 
+var SysSecond;
+var taobaotime='';
+var InterValObj;
+var refuse='';
+window.onload = function(){
+    QN.initTheme();
+    $("#indexsel").attr("class","dqzt");
+    onload_viptime('refundinfo');
+    setTimeout(gettbtime,10);/*淘宝时间*/  
+    var  shash=window.location.hash.substr(1);
+    var params = shash.split('&');
+    var map = new HashMap();
+    for (var i in params) {
+        var p = params[i].split("=");
+        if (p.length == 2) {
+            map.put(p[0], p[1]);
+        }
+    }
+    $("#butnoref").hide();
+   	grefid =map.get('refundId');
+    goid =map.get('oid');
+    gtid =map.get('tid');
+    if(grefid==null||grefid==''){
+        grefid=map.get('_task_biz_id_');
+    }
+    setTimeout(gettidoid,10);
+}
+function reshow(){
+    setTimeout(getrefundifo,100);
+    setTimeout(huidiao,100);
+    setTimeout(showbutref,100);
+    gettbtime();/*重新获取淘宝时间*/
+	window.clearInterval(InterValObj);/*重新开始计时*/
+}
+function gettidoid(){
+	if(gtid==null||goid==null&&grefid!=null){
+		QN.top.invoke({
+	    	cmd: "taobao.refund.get",
+	    	param: {'fields':'tid,oid','refund_id':grefid},
+	    	method: "get",
+	    	success: function (rsp){
+	    		if(typeof  rsp=== 'string'){
+	            	rsp = JSON.parse(rsp);
+	           	}
+	            var gettoval=rsp.refund_get_response.refund;
+	            gtid=gettoval.tid;
+	            goid=gettoval.oid;
+	            setTimeout(getrefundifo,100);
+				setTimeout(huidiao,100);
+				setTimeout(showbutref,100);
+	    	}
+	    });
+	}else{
+		setTimeout(getrefundifo,100);
+		setTimeout(huidiao,100);
+		setTimeout(showbutref,100);
+	}
+}
+
+//将时间减去1秒，计算天、时、分、秒 
+function SetRemainTime() { 	 
+ if (SysSecond > 0) { 
+  SysSecond = SysSecond-1; 
+  var second = Math.floor(SysSecond % 60);             // 计算秒     
+  var minite = Math.floor((SysSecond / 60) % 60);      //计算分 
+  var hour = Math.floor((SysSecond / 3600) % 24);      //计算小时 
+  var day = Math.floor((SysSecond / 3600) / 24);        //计算天				  	 
+	var info='<h6><font color= red >你还有'+day+'天'+hour+'小时'+minite+'分'+second+'秒</font><font color=#000>来处理本次退款!</font></h6>';			  
+	$("#tuikuaninfo").html(info);							
+ } else {//剩余时间小于或等于0的时候，就停止间隔函数 
+  window.clearInterval(InterValObj); 
+  //这里可以添加倒计时时间为0后需要执行的事件 
+ } 
+}
+
+function DateDiff( sDate1, sDate2 )   /*获得两天的时间差*/
+{
+	var diff;		
+	diff = sDate1.getTime() - sDate2.getTime();			//获得时间差,毫秒		
+	var day, hour, minute, second;
+	
+	day = Math.floor( diff / 86400000 );	//天  60*60*24*1000 = 86400000
+	diff -= day * 86400000; 
+	hour = Math.floor( diff / 3600000 );	//时
+	diff -= hour * 3600000;
+	minute = Math.floor( diff / 60000 );	//分
+	diff -= minute * 60000;
+	second = Math.floor( diff / 1000 );		//秒     
+	var sum=(day*24*60*60)+(hour*60*60)+(minute*60)+second;
+	if(sum!=0)
+		{
+			return sum;
+		}else{					
+   		return 0;
+   	}	
+	
+} 
+
+function gettbtime(){/*获取淘宝的系统时间*/        
+	 QN.top.invoke({
+	        "cmd": "taobao.time.get",
+	        "method": "get",
+	        "success":function (rsp){
+	            if(typeof rsp === 'string'){
+	                var    rsp = JSON.parse(rsp);
+	            }else{
+	                var	rsp= rsp;
+	            }
+	          taobaotime=rsp.time_get_response.time;           				            
+	          },
+	        error: function(msp){			       
+	        }
+	    });		    		      
+	}	
+
+function wangwang(bnick){/*旺旺聊天*/
+    var wangnick='cntaobao'+bnick;
+    QN.wangwang.invoke({
+        category: 'wangwang',
+        cmd: 'chat',
+        param: {'uid':wangnick},
+        success: function (rsp) {
+
+        },
+        error: function (msg) {
+            if(msp.sub_msg){
+            	layer.msg(msp.sub_msg,1,3);
+                
+            }else{
+            	layer.msg('操作失败，请重试！',1,3);
+            	
+            }
+        }
+    });
+
+
+
+}
+
+function showbutref()
+{
+
+    QN.top.invoke({
+        "cmd": "taobao.user.seller.get",
+        "param":{
+            fields:'nick,type,user_id'
+        },
+        "method": "get",
+        "success" : function(rsp) {
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            var nick=rsp.user_seller_get_response.user.nick;
+            getmyref(nick);
+            user_id=rsp.user_seller_get_response.user.nick;
+            if(rsp.user_seller_get_response.user.type=='B'){
+                $("#butnoref").remove();
+            }else{
+                $("#butnoref").show();
+            }
+        },
+        error: function(msp){
+            if(typeof msp === 'string'){
+                var msp = JSON.parse(msp);
+            }else{
+                var	msp= msp;
+            }
+           if(msp.sub_code=='subuser.has-no-permission'){
+        	   /* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+               showMsg('hint'); */
+            }else if(msp.msg=='Missing required arguments:refund_id'){
+            	layer.msg('亲，您的退款id丢失，请退出重试！',1,3);
+            	
+            }else{
+                if(msp.sub_msg){
+                	layer.msg(msp.sub_msg,1,3);
+                	
+                }else{
+                	geterrorinfo('taobao.user.seller.get',msp);
+                }
+            }
+
+        }
+    });
+}
+function Alert(str) {
+    var msgw,msgh,bordercolor;
+    msgw=350;
+    msgh=80;
+    titleheight=25
+    bordercolor="#336699";
+    titlecolor="#99CCFF";
+    var sWidth,sHeight;
+    sWidth = document.body.offsetWidth;
+    sHeight = document.body.offsetHeight;
+    var bgObj=document.createElement("div");
+    bgObj.setAttribute('id','alertbgDiv');
+    bgObj.style.position="absolute";
+    bgObj.style.top="0";
+    bgObj.style.background="#E8E8E8";
+    bgObj.style.filter="progid:DXImageTransform.Microsoft.Alpha(style=3,opacity=25,finishOpacity=75";
+    bgObj.style.opacity="0.6";
+    bgObj.style.left="0";
+    bgObj.style.width = sWidth + "px";
+    bgObj.style.height = sHeight + "px";
+    bgObj.style.zIndex = "10000";
+    document.body.appendChild(bgObj);
+
+    var msgObj = document.createElement("div")
+    msgObj.setAttribute("id","alertmsgDiv");
+    msgObj.setAttribute("align","center");
+    msgObj.style.background="white";
+    msgObj.style.border="1px solid " + bordercolor;
+    msgObj.style.position = "absolute";
+    msgObj.style.left = "50%";
+    msgObj.style.font="12px/1.6em Verdana, Geneva, Arial, Helvetica, sans-serif";
+
+    msgObj.style.marginLeft = "-150px";
+
+    msgObj.style.top = (document.body.scrollTop+200)+"px";
+    msgObj.style.width = msgw + "px";
+    msgObj.style.height = msgh + "px";
+    msgObj.style.textAlign = "center";
+    msgObj.style.lineHeight ="25px";
+    msgObj.style.zIndex = "10001";
+    document.body.appendChild(msgObj);
+
+    var title=document.createElement("h4");
+    title.setAttribute("id","alertmsgTitle");
+    title.setAttribute("align","left");
+    title.style.margin="0";
+    title.style.padding="3px";
+    title.style.background = bordercolor;
+    title.style.filter="progid:DXImageTransform.Microsoft.Alpha(startX=20, startY=20, finishX=100, finishY=100,style=1,opacity=75,finishOpacity=100);";
+    title.style.opacity="0.75";
+    title.style.border="1px solid " + bordercolor;
+    title.style.height="18px";
+    title.style.font="12px Verdana, Geneva, Arial, Helvetica, sans-serif";
+    title.style.color="white";
+    title.innerHTML="提示信息";
+    document.getElementById("alertmsgDiv").appendChild(title);
+
+    var txt = document.createElement("p");
+    txt.setAttribute("id","msgTxt");
+    txt.style.margin="16px 0";
+    txt.innerHTML = str;
+    document.getElementById("alertmsgDiv").appendChild(txt);
+
+    window.setTimeout("closewin()",500);
+}
+function closewin() {
+    document.body.removeChild(document.getElementById("alertbgDiv"));
+    document.getElementById("alertmsgDiv").removeChild(document.getElementById("alertmsgTitle"));
+    document.body.removeChild(document.getElementById("alertmsgDiv"));
+}
+function getrefundifo()
+{
+    QN.top.invoke({
+        cmd:"taobao.refund.get",
+        param:{
+            fields:'refund_remind_timeout,address,buyer_nick,refund_id,created,order_status,good_status,status,refund_fee,reason,desc,tid,oid,has_good_return',
+            refund_id:grefid
+        },
+        method: "get",
+        success: function(rsp) {
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            var refund=rsp.refund_get_response.refund;
+            var datas={};
+            datas.title=refund.title;
+            datas.price= refund.price;
+            datas.num= refund.num;
+            datas.num_iid= refund.num_iid;
+			datas.buyer_nick=refund.buyer_nick;			
+            goid=refund.oid;
+            gtid=refund.tid;
+            getitem();
+            datas.refund_id=refund.refund_id;/*退款编号*/
+            datas.created=refund.created;/*申请退款时间*/
+            datas.order_status=refund.order_status;
+            switch(refund.order_status){
+                case 'TRADE_NO_CREATE_PAY':{$('#butnoref').remove();$('#butagree').remove();$('#butrefmessage').remove();datas.order_status='没有创建支付宝交易';break;}
+                case 'WAIT_BUYER_PAY':{$('#butnoref').remove();$('#butagree').remove();$('#butrefmessage').remove();datas.order_status='等待买家付款';break;}
+                case 'WAIT_SELLER_SEND_GOODS':{$('#butnoref').remove();$('#butrefmessage').remove();datas.order_status='等待卖家发货,';break;}
+                case 'WAIT_BUYER_CONFIRM_GOODS':{$('#butnoref').attr('onclick','gorefundinfo("refsend");');datas.order_status='卖家已发货,';break;}
+                case 'TRADE_BUYER_SIGNED':{datas.order_status='买家已签收,';break;}
+                case 'TRADE_FINISHED':{datas.order_status='交易成功,';break;}
+                case 'TRADE_CLOSED':{datas.order_status='交易关闭,';break;}
+                case 'TRADE_CLOSED_BY_TAOBAO':{datas.order_status='交易被淘宝关闭,';break;}
+            }
+            switch(refund.good_status){
+                case 'BUYER_NOT_RECEIVED':{
+                    if(refund.order_status=='WAIT_BUYER_CONFIRM_GOODS'){
+                        datas.order_status+='买家未收到货，全额退款 ';
+                    }else{
+                        datas.order_status='卖家未发货，全额退款 ';
+                    }
+                    break;
+                }
+                case 'BUYER_RECEIVED':{
+                    if(refund.has_good_return){
+                        datas.order_status="买家已收到货,退货并退款";
+                        $('#butreturned').show();
+                        $('#butagree').hide();
+                    }else{
+                        datas.order_status="买家已收到货,不退货仅退款";
+                    }
+                    break;}
+                case 'BUYER_RETURNED_GOODS':{
+                    datas.order_status='买家已退货,全额退款';
+                	break;
+                }
+            }
+            datas.status=refund.status;/*退款状态*/
+            switch(refund.status){
+                case 'WAIT_SELLER_AGREE':{datas.status='退款申请等待卖家确认中';break;}
+                case 'WAIT_BUYER_RETURN_GOODS':{
+                    if(refund.good_status=='BUYER_RECEIVED' && refund.has_good_return){
+                    	$('#butnoref').remove();
+                    	$('#butagree').show();
+                  	 	$('#butreturned').hide();
+                    	$('#butagree').text('已收到货，同意退款');
+                    }else{
+                        $('#butagree').remove();
+                    }
+                    datas.status='卖家已经同意退款，等待买家退货';
+                    break;
+                    }
+                case 'WAIT_SELLER_CONFIRM_GOODS':{datas.status='买家已经退货，等待卖家确认收货';break;}
+                case 'SELLER_REFUSE_BUYER':{$('#butnoref').remove();$('#butagree').remove();datas.status='卖家不同意申请，等待买家修改';break;}
+                case 'CLOSED':{$('#butinfo').remove();datas.status='退款关闭';break;}
+                case 'SUCCESS':{$('#butinfo').remove();datas.status='退款成功';break;}
+            }
+
+            datas.refund_fee=refund.refund_fee;/*退款金额*/
+            datas.reason=refund.reason;/*退款原因*/
+            datas.desc=refund.desc;/*退款说明*/		
+			try{
+	             if(refund.refund_remind_timeout!=undefined && refund.refund_remind_timeout!='undefined'){
+	              	var nowtime=refund.refund_remind_timeout.timeout;
+				        SysSecond=parseInt(DateDiff(new Date(nowtime.replace(/-/g,"/")),new Date(taobaotime.replace(/-/g,"/"))));	/*获得两个时间的时间差*/			
+						$("#tuikuaninfo").html('正在奋力加载数据....');
+						InterValObj = window.setInterval(SetRemainTime, 1000); //间隔函数，1秒执行			
+	             }else{
+	  					$("#tuikuantime").hide();
+					}	
+			}catch(e){
+				
+			}
+
+	        var source = $("#refinto_template").html();
+            var template=Handlebars.compile(source);
+            var htmlstr = template(datas);
+            $("#refinto").html(htmlstr).trigger('create');
+            if(refund.order_status!='WAIT_SELLER_SEND_GOODS'){
+                getrefmessage();
+            }
+
+        },
+        error: function(msp){
+            /*请求出错处理 */
+            if(typeof msp === 'string'){
+                var msp = JSON.parse(msp);
+            }else{
+                var	msp= msp;
+            }
+            if(msp.sub_code=='subuser.has-no-permission'){
+        /*     	$("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+                showMsg('hint'); */
+            }else if(msp.msg=='Missing required arguments:refund_id'){
+            	layer.msg('亲，您的退款id丢失，请退出重试！',1,3);
+            	
+            }else{
+                if(msp.sub_msg){
+                	layer.msg(msp.sub_msg,1,3);
+                }else{
+                	geterrorinfo('taobao.refund.get',msp);
+                }
+            }
+        }
+    });
+}
+function getitem()
+{
+    QN.top.invoke({
+        cmd: "taobao.trade.fullinfo.get",
+        param:{
+            fields:'receiver_state,receiver_city,receiver_district,receiver_address,orders',
+            tid:gtid
+        },
+        method: "get",
+        success : function(rsp) {
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            var datas={};
+
+            var trade =  rsp.trade_fullinfo_get_response.trade;
+           $('#addr').html(trade.receiver_state+' '+trade.receiver_city+' '+trade.receiver_district+' '+trade.receiver_address);
+            for(var n in trade.orders.order){
+                if(goid==trade.orders.order[n].oid){
+                    datas.title=trade.orders.order[n].title;
+                    datas.num=trade.orders.order[n].num;
+                    datas.pic_path=trade.orders.order[n].pic_path;
+                    datas.price=trade.orders.order[n].price;
+                    datas.sku_properties_name=trade.orders.order[n].sku_properties_name;
+                    datas.outer_sku_id=trade.orders.order[n].outer_sku_id;
+                    datas.outer_iid=trade.orders.order[n].outer_iid;
+                    var source = $("#reflist_template").html();
+                    var template=Handlebars.compile(source);
+                    var htmlstr = template(datas);
+                    $("#refitem").html(htmlstr).trigger('create');
+                }
+
+            }
+        },
+        error: function(msp){
+            /*请求出错处理 */
+            /* alert(JSON.stringify(msp));*/
+            if(typeof msp === 'string'){
+                var msp = JSON.parse(msp);
+            }else{
+                var	msp= msp;
+            }
+            if(msp.sub_code=='subuser.has-no-permission'){
+            	/* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+                showMsg('hint'); */
+            }else{
+                if(msp.sub_msg){
+                	layer.msg(msp.sub_msg,1,3);
+                	
+                }else{
+                	geterrorinfo('taobao.trade.fullinfo.get',msp);
+                }
+            }
+        }
+    });
+
+}
+
+function Load_refundaddr(){
+	QN.top.invoke({
+		cmd:'taobao.logistics.address.search',
+		method:'get',
+		success:function(resp){
+			if(typeof resp ==='string'){var rsp=JSON.parse(resp);}else{var rsp=resp;}
+			var addrinfo=rsp.logistics_address_search_response.addresses.address_result;
+			$('#Buyer_return_addr').empty();
+			$('#refund_note').empty();
+			var source=$("#Buyer_return_template").html();
+			var template=Handlebars.compile(source);
+			var htmlstr='';
+			var datas={};
+			 for(var i in addrinfo){
+				datas.province=addrinfo[i].province;
+				datas.city=addrinfo[i].city;
+				datas.country=addrinfo[i].country;
+				datas.addr=addrinfo[i].addr;
+				datas.zip_code=addrinfo[i].zip_code;
+				datas.contact_name=addrinfo[i].contact_name;
+				datas.phone=addrinfo[i].phone;
+				datas.mobile_phone=addrinfo[i].mobile_phone;
+				datas.cancel_def=addrinfo[i].cancel_def;
+				htmlstr=template(datas);
+				$('#Buyer_return_addr').append(htmlstr);
+				datas={};
+			}	 
+		},
+		error:function(msg){
+			if(typeof msg ==='string'){var rsp=JSON.parse(msg);}else{var rsp=msg;}
+		}
+	});
+	
+}
+function enter_refund(){
+	if($('#refund_note').val()==''||$('#refund_note').val()==null||$('#refund_note').val()=='null'){
+		layer.msg("请输入您的退货留言",1,3);
+		return;
+	}
+	$("#returned").modal('hide');
+	setTimeout(function(){
+		$("#twohints").html('<p>确定退货？');
+		document.getElementById('hintok').setAttribute("onclick", "tuihuo()");
+		$('#twohint').modal('show');
+	},100);
+}
+function tuihuo(){
+		var sbsb=$('#Buyer_return_addr').val();
+		var addrinfo=sbsb.split(',');
+		var refund_id=$("#refund_id").html();
+		var province=addrinfo[0];
+		var city=addrinfo[1];
+		var country=addrinfo[2];
+		var addr=addrinfo[3];
+		var zip_code=addrinfo[4];
+		var contact_name=addrinfo[5];
+		var mobile_phone=addrinfo[7];
+		var phone=addrinfo[6].replace(/-/g,'');
+		var remark=$('#refund_note').val();
+		if(phone==''|| phone==null){
+			phone=mobile_phone;
+		}
+		if(mobile_phone==''||mobile_phone==null){
+			mobile_phone=phone;
+		}
+		var nicks=$('#user_tbNick').html();
+		var address=province+','+city+','+country+','+addr;/*详细的退货地址*/
+		QN.top.invoke({
+			cmd:'taobao.rp.returngoods.agree',
+			method:'get',
+			param:{
+				refund_id:refund_id,
+				name:contact_name,
+				address:address,
+				post:zip_code,
+				tel:phone,
+				mobile:mobile_phone,
+				remark:remark			
+			},
+			success:function(resp){
+				if(typeof resp ==='string'){var rsp=JSON.parse(resp);}else{var rsp=resp;}
+				layer.msg('同意退货成功',1,1);
+		        getrefundifo();
+		        wangwangPC(nicks,'退货地址:'+address+','+zip_code+','+phone+','+mobile_phone);/*发送退货地址给用户*/
+			},
+			error:function(resp){
+				if(typeof resp ==='string'){var rsp=JSON.parse(resp);}else{var rsp=resp;}
+					if(rsp.msg=="Missing required arguments:tel"){
+						layer.msg('同意退货失败：缺少座机号码',1,3);
+					}else if(rsp.msg=='Missing required arguments:post'){
+						layer.msg('同意退货失败：缺少邮政编码',1,3);
+					}else if(rsp.msg=='Missing required arguments:mobile'){
+						layer.msg('同意退货失败：缺少手机号码',1,3);
+					}else if(rsp.msg=='Missing required arguments:name'){
+						layer.msg('同意退货失败：缺少退货人姓名',1,3);
+				  	}else if(rsp.sub_code=='subuser.has-no-permission'){
+		            	 /* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+		            	 showMsg('hint'); */
+				  	}else{
+				  		geterrorinfo('taobao.rp.returngoods.agree',rsp);
+					}
+				}
+		});
+}
+function getdetail()
+{
+    window.location.href='<?php echo APP_WEB_INDEX_ROOT?>/trade/tradedetail?vers=<?php echo REAL_ROOT_VER;?>#tid='+gtid;
+}
+/*获取退款留言快捷短语*/
+function getmyref(user_nick){
+	var fast_memos=window.localStorage.getItem("fast_memo"+user_nick);
+	 if(fast_memos==''|| fast_memos==null){
+		 $.ajax({
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getFast',
+			    type: 'POST',
+			    dataType:'html',
+			    data:{nick:user_nick,types:'fast_refmemo'},
+			    timeout:10000,
+		        success: function(dataP){ /*获取成功*/
+		            var dataPs=dataP;
+		            window.localStorage.setItem("fast_memo"+user_nick,dataPs);
+		            $("#refmemone").empty();
+		            var valP=dataPs.split('\\n');
+		            if(valP[0].indexOf('\n') > 0 ) valP=dataPs.split('\n');
+		            if(valP!=null&&valP.length>1){
+		                for(index in valP){
+		                    $("#refmemone").append('<option  value="'+valP[index]+'">'+valP[index]+'</option>');
+		                }
+		            }else $("#refmemone").append('<option  value="'+dataPs+'">'+dataPs+'</option>');
+		            $("#addrefmessage").val(valP[0]);
+		        }
+	    });
+	 }else{
+		 $("#refmemone").empty();
+         var valP=fast_memos.split('\\n');
+         if(valP[0].indexOf('\n') > 0 ) valP=fast_memos.split('\n');
+         if(valP!=null&&valP.length>1){
+             for(index in valP){
+                 $("#refmemone").append('<option  value="'+valP[index]+'">'+valP[index]+'</option>');
+             }
+         }else $("#refmemone").append('<option  value="'+fast_memos+'">'+fast_memos+'</option>');
+         	$("#addrefmessage").val(valP[0]);
+		 }
+}
+function refmemochoice(){
+    var selec= $("#refmemone").find('option:selected').val();
+    $("#addrefmessage").val(selec);
+}
+function addref()
+{
+ 	var datas=$('#addrefmessage').val();
+    if(datas.length>200){
+    	layer.msg('退款留言不能超过200字！',1,3);
+    	return;
+        /*showMsg('hint');
+        $("input[msgstu='again']").attr("onclick","closeMsg('addmessage');");*/
+    }else if(datas==''){
+    	layer.msg('退款留言不可以为空！</p>',1,3);
+    	return;
+       /* showMsg('hint');
+        $("input[msgstu='again']").attr("onclick","closeMsg('addmessage');");*/
+    }else{
+	     QN.top.invoke({
+		     cmd: "taobao.refund.message.add",
+		     param:{refund_id:grefid,content:datas},
+		     method:"get",
+		     success: function(rsp) {
+		     	if(typeof rsp === 'string'){
+			       var rsp = JSON.parse(rsp);
+			    }
+		        var rsperror=rsp.msg;
+		        if(rsperror==undefined){
+		        	layer.msg('添加成功！',1,1);
+		            getrefundifo();
+		            /*$("#butrefmessage").remove();*/
+		      	}else{
+		        	if(rsp.sub_msg){
+		            	layer.msg(rsp.sub_msg,1,3);
+		                
+		       		}else{
+		            	geterrorinfo('taobao.refund.message.add',rsp);
+		           	}
+		       	}
+		     },
+		     error: function(msp){
+		     	if(typeof msp === 'string'){var msp = JSON.parse(msp);}
+		       	if(msp.sub_code=='subuser.has-no-permission'){
+		            	 /* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+		                 showMsg('hint'); */
+		        }else{
+		        	if(msp.sub_msg){
+		            	layer.msg(msp.sub_msg,1,3);
+		           	}else{
+		            	geterrorinfo('taobao.refund.message.add',msp);
+		        	}
+		       	}
+		     }
+	    });
+    }
+}
+
+function nodoref(){
+    var datas=$('#refusetxt').val();
+    if(datas.length>200||datas.length<1){
+        layer.msg('拒绝说明内容不能超过200个字或低于1个字！',1,3);
+        
+    }else if(datas==''){
+    	layer.msg('拒绝说明不可以为空！',1,3);
+        
+    }else{
+    	if(refuse=='big'){
+        	layer.msg('图片不能大于130000字节！',1,3);
+            
+        }else{
+        	QN.top.invoke({
+            	cmd: "taobao.refund.refuse",
+            	param:{refund_id:grefid,refuse_message:datas,tid:gtid,oid:goid},
+            	method: "post",
+            	success: function(rsp) {
+	                if(typeof rsp === 'string'){
+	                    var rsp = JSON.parse(rsp);
+	                }else{
+	                    var	rsp= rsp;
+	                }
+                    var rsperror=rsp.msg;
+                    if(rsperror==undefined){
+                    	layer.msg('拒绝成功！',1,1);
+                        getrefundifo();
+                    }else{
+                        if(rsp.sub_msg){
+                        	layer.msg(rsp.sub_msg,1,3);
+                            
+                        }else{
+                        	geterrorinfo('taobao.refund.refuse',rsp);
+                        }
+                    }
+            	},
+            	error: function(msp){
+                	if(typeof msp === 'string'){
+                    	var msp = JSON.parse(msp);
+                	}
+	                if(msp.sub_code=='subuser.has-no-permission'){
+	                	/* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+	                    showMsg('hint'); */
+	                }else{
+	                    if(msp.sub_msg){
+	                    	layer.msg(msp.sub_msg,1,3);
+	                        
+	                    }else{
+	                    	geterrorinfo('taobao.refund.refuse',msp);
+	                    }
+	                }
+            	}
+        	});
+		}
+    }
+}
+
+function stringToBytes ( str ) {
+    var ch, st, re = [];
+    for (var i = 0; i < str.length; i++ ) {
+        ch = str.charCodeAt(i);
+        st = [];
+        do {
+            st.push( ch & 0xFF );
+            ch = ch >> 8;
+        }
+        while ( ch );
+        re = re.concat( st.reverse() );
+    }
+    return re;
+}
+function getrefmessage()
+{
+    $("#refmessage").empty();
+    QN.top.invoke({
+        cmd:"taobao.refund.messages.get",
+        param:{
+            fields:'content,owner_role,created,pic_urls',
+            refund_id:grefid
+        },
+        method: "get",
+        success : function(rsp) {
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }
+            if(rsp.refund_messages_get_response.refund_messages){
+	            try{
+		            for(var i in rsp.refund_messages_get_response.refund_messages.refund_message){
+		                var message=rsp.refund_messages_get_response.refund_messages.refund_message[i];
+		                var datas={};
+		                if(message.owner_role=='1'){
+		                    datas.owner_role=true;/*买家1*/
+		                }else if(message.owner_role=='2'){
+		                    datas.owner_role=false;/*卖家2*/
+		                }
+		                datas.content=message.content;/*留言内容*/
+		                datas.created=message.created;/*留言时间*/
+		                datas.pic_urls=message.pic_urls;
+		                var source = $("#refmessage_template").html();
+		                var template = Handlebars.compile(source);
+		                var htmlstr = template(datas);
+		                $("#refmessage").append(htmlstr).trigger('create');
+		            }      
+	            }catch(e){
+				}
+            }
+        },
+        error: function(msp){
+            if(typeof msp === 'string'){
+                var msp = JSON.parse(msp);
+            }else{
+                var	msp= msp;
+            }
+            if(msp.sub_code=='subuser.has-no-permission'){
+            	/* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+                showMsg('hint'); */
+            }else{
+                if(msp.sub_msg){
+                	layer.msg(msp.sub_msg,1,3);
+                    
+                }else{
+                	geterrorinfo('taobao.refund.messages.get',msp);
+                }
+            }
+        }
+    });
+}
+function gorefundinfo(sta){
+    if(grefid==''){
+        layer.msg("操作失败，请重试！",1,3);
+    }else{
+        var url='';
+        if(sta=='agree'){/*同意退款*/
+           url='http://refund.taobao.com/seller_agree_refund.htm?refundId='+grefid; 
+        }else if(sta=='refuse'){
+            url='http://refund.taobao.com/seller_refuse_refund.htm?refundId='+grefid;
+        }else if(sta=='refsend'){
+            url='http://refund.taobao.com/view_refund_detail_spirit.htm?refundId='+grefid;
+        }else if(sta=='returned'){/*同意退货*/
+        	$('#returned').modal('show');
+       	}else{
+            url='http://refund.taobao.com/view_refund_detail_spirit.htm?refundId='+grefid;
+        }
+        QN.application.invoke({
+            "cmd": "translateUrl",
+            "param":{'url':url},
+            "success": function (e){
+                if(typeof  e=== 'string'){
+                    e = JSON.parse(e);
+                }
+                window.open(e.url);
+            }
+        });
+    }
+}
+function HashMap(){var size=0;var entry=new Object();this.put=function(key,value){if(!this.containsKey(key)){size++}entry[key]=value};this.get=function(key){if(this.containsKey(key)){return entry[key]}else{return null}};this.remove=function(key){if(delete entry[key]){size--}};this.containsKey=function(key){return(key in entry)};this.containsValue=function(value){for(var prop in entry){if(entry[prop]==value){return true}}return false};this.values=function(){var values=new Array(size);for(var prop in entry){values.push(entry[prop])}return values};this.keys=function(){var keys=new Array(size);for(var prop in entry){keys.push(prop)}return keys};this.size=function(){return size}};
+function huidiao(){
+    var seccessrsult={};
+    QN.plugin.successResponse(seccessrsult);
+}
+</script>
+<script id="reflist_template" type="text/x-handlebars-template">
+    <tr>
+        <td width="20%"><img alt="商品图片" src="{{pic_path}}_80x80.jpg" width="60" align="middle" /></td>
+        <td class="80%"><h3 style="font-size:12px; margin:0; padding:0; line-height:14px;">{{title}}</h3>
+            <p style="margin:0; padding:0;">{{price}} x{{num}}</p>
+            <p style="margin:0; padding:0;">{{sku_properties_name}}</p>
+            {{#if outer_sku_id}}
+            <p style="margin:0;padding:0;color:gray;" >商家编码:{{outer_sku_id}}</p>
+            {{else}}
+            <p style="margin:0;padding:0;color:gray;" >商家编码:{{outer_iid}}</p>
+            {{/if}}
+        </td>
+    </tr>
+</script>
+<script id="refinto_template" type="text/x-handlebars-template">
+    <tr>
+        <td >
+	    <h4>退款信息</h4>
+    	<p style="margin:0; padding:0;" >　　退款编号：<span id="refund_id">{{refund_id}}</span></p>
+   		<p style="margin:0; padding:0;">申请退款时间：{{created}}</p>
+    	<p style="margin:0; padding:0;">　　退款类型：{{order_status}}</p>
+    	<p style="margin:0; padding:0;">　　退款状态：{{status}}</p>
+    	<p style="margin:0; padding:0;">需要退款金额：{{refund_fee}} 元 </p>
+    	<p style="margin:0; padding:0;">　　退款原因：{{reason}} </p>
+    	<p style="margin:0; padding:0;">　　退款说明：{{desc}}</p>
+		<p style="margin:0; padding:0;">　　收货地址：<span id="addr"></span></p>
+		<p style="margin:0; padding:0;">　　买家旺旺：<a onclick="wangwang('{{buyer_nick}}');"  href="javascript:void(0);"><img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid={{buyer_nick}}&site=cntaobao&s=2&charset=utf-8"/>{{buyer_nick}}</a></p>
+		<p id="user_tbNick" style="display:none;">{{buyer_nick}}</p>
+      </td>
+    </tr> 
+</script>
+<script id="refmessage_template" type="text/x-handlebars-template">
+
+    {{#if owner_role}}
+    <tr>
+        <td>买家</td> <td>{{created}}</td> <td>{{content}}
+            {{#if pic_urls.pic_url}}
+            {{#each pic_urls.pic_url}}
+            <a href="{{url}}" target="_blank"><img alt="退款图片" src="{{url}}_80x80.jpg" /></a>   
+            {{/each}}
+            {{/if}}
+        </td>
+    </tr>
+        {{else}}
+    <tr>
+        <td>卖家</td><td>{{created}}</td> <td>{{content}}
+            {{#if pic_urls.pic_url}}
+            {{#each pic_urls.pic_url}}
+            <a href="{{url}}" target="_blank"><img alt="退款图片" src="{{url}}_80x80.jpg" /></a>
+            {{/each}}
+            {{/if}}
+        </td>
+    </tr>
+     {{/if}}
+
+</script>
+<!-- 加载退货地址 -->
+<script id="Buyer_return_template" type="text/x-handlebars-template">
+		<option {{#if cancel_def}}selected{{/if}}>{{province}},{{city}},{{country}},{{addr}},{{zip_code}},{{contact_name}},{{phone}},{{mobile_phone}}</option>
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

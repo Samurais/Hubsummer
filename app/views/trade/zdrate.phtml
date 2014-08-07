@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+<div style="margin-left: 10px;" class="container">
+        <!--<ul class="breadcrumb">
+            <li><a href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/zdrate?vers=<?php echo REAL_ROOT_VER;?>">自动评价</a></li>
+            <li style="float:right;"><a href="javascript:openlines('http://bangpai.taobao.com/group/thread/15074034-289130457.htm?spm=zidongpingjia');" >点击查看教程</a></li>
+        </ul>
+        <div style="display: none;margin-top: -10px;padding-bottom: 5px;" id="adv_tops"></div>-->
+      <ul class="sui-nav nav-tabs" id="myTab" style="margin-top: 10px;">
+		  <li class="active"><a data-toggle="tab" href="#myzdrate" onclick="tradedots('rateset')">自动评价<span id="badnum"></span></a></li>
+		  <li ><a data-toggle="tab" href="#ratelogs" onclick="acBratelog()">评价日志<span id="neutralnum"></span></a></li>
+		  <li ><a data-toggle="tab" onclick="showblackname('1')" href="#ratebalckname" >黑名单<span id="neutralnum2"></span></a></li>
+		  <li ><a data-toggle="tab" href="#blacklog" onclick="showblacklog('1')" >拦截日志<span id="#blacklognum"></span></a></li>
+     </ul>
+		    
+	<div class="tab-content" style="overflow: visible;">
+			<!-- 自动评价 -->
+		  <div id="myzdrate" class="tab-pane active">
+		  	<div class="sui-msg  msg-block msg-info" style="margin-top: 10px;margin-right: 10px;">
+  <div class="msg-con">使用说明:
+    <p>
+      1、请先设置好评价内容再开启自动评价；<br>
+      <font style="color: red;">2、开启之前的订单不会评价，请手动批量评价；</font><a  href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/batchEvaluation?vers=<?php echo REAL_ROOT_VER;?>" type="button" class="sui-btn btn-primary btn-small" >批量评价</a><br>
+      3、软件默认为好评。
+    </p>
+  </div>
+  <s class="msg-icon"></s>
+</div>
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong >自动评价：</strong>
+				    	</div>
+						<div class="span10" >
+				        	<button class="sui-btn " id="offswitch" >加载中</button><span id="autotext" style="color: red;"></span>
+							<p><label style="display: none;" id="textoff" ><span  style="color: red;">※　未设置评价内容，将不能开启自动评价。</sapn>
+							</label></p>
+							<p>
+								<div class="sui-msg  msg-tips" style="display: none;" id="suboff">
+								  <div class="msg-con">子帐号无法操作自动评价开关按钮</div>
+								  <s class="msg-icon"></s>
+								</div>
+							</p>
+				    	</div>
+				  </div>
+				</div>
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>评价方式：</strong>
+				    	</div>
+				    	<div class="span10" >
+				    		<label class="radio-pretty  inline" >
+							    <input type="radio"  name="optionsRadios" id="optionsRadios1" value="0"  ><span>立即好评（推荐使用此方式）</span>
+							</label>
+							<br>
+							<label class="radio-pretty  inline">
+							    <input type="radio"  name="optionsRadios" id="optionsRadios2" value="1"  ><span>买家评价后进行好评。</span>
+							</label>
+							<div id="sel1" style="color: red;">
+				    		距系统默认评价<span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner"><a role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle"  style="min-width: 40px;">
+       		    	<input value="23" name="houser" id="houser" type="hidden"><i class="caret"></i><span id="houserval">加载中</span></a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu" style="max-width: 40px;">
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="23">1</a></li>             
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="22">2</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="21">3</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="20">4</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="19">5</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="18">6</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="17">7</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="16">8</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="15">9</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="14">10</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="13">11</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="12">12</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="11">13</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10">14</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="9">15</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="8">16</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="7">17</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="6">18</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">19</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">20</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">21</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">22</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">23</a></li>
+        			</ul>
+			</span>
+		</span>小时，进行评价。<button  type="button" class="sui-btn btn-primary btn-small" onclick="save1();">保存</button>
+				    			</div>
+				    		<label class="radio-pretty inline ">
+							    <input type="radio" name="optionsRadios" id="optionsRadios3" value="2"  ><span>定时抢评。</span>
+							</label>
+				    		<div id="sel2"  style="color: red;">
+				    		交易成功后的<span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner"><a role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle"  style="min-width: 40px;">
+       		    	<input value="14" name="day2" id="day2" type="hidden"><i class="caret"></i><span id="day2val">加载中</span></a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu" style="max-width: 40px;">
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="14">14</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="13">13</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="12">12</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="11">11</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10">10</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="9">9</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="8">8</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="7">7</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="6">6</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">5</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">4</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">3</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">2</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">1</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="0">0</a></li>
+        			</ul>
+			</span>
+		</span>天<span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner"><a role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle"  style="min-width: 40px;">
+       		    	<input value="23" name="houser2" id="houser2" type="hidden"><i class="caret"></i><span id="houser2val">加载中</span></a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu" style="max-width: 40px;">
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="23">23</a></li>             
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="22">22</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="21">21</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="20">20</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="19">19</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="18">18</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="17">17</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="16">16</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="15">15</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="14">14</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="13">13</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="12">12</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="11">11</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10">10</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="9">9</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="8">8</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="7">7</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="6">6</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">5</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">4</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">3</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">2</a></li>
+            			<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">1</a></li>
+        			</ul>
+			</span>
+		</span>小时，进行抢评。<button  type="button" class="sui-btn btn-primary btn-small"  onclick="save2();">保存</button>
+				  	    </div>
+				  </div>
+				</div>
+			</div>
+				
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>黑名单过滤:</strong>
+				    	</div>
+				    	<div class="span10" >
+				    		<label  class="checkbox-pretty inline ">
+							    <input type="checkbox"  id="checkboxhmd"  onclick="changehmd(this);"><span>不评价黑名单列表中的买家</span><button   type="button" class="sui-btn btn-small btn-primary"  onclick="lookblackname();">查看黑名单</button>
+							</label>
+				    	</div>
+				    </div>
+				</div>
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>自动黑名单:</strong>
+				    	</div>
+				    	<div class="span10">
+				    		<label  class="checkbox-pretty inline ">
+							    <input type="checkbox"  id="checkboxhmd2"  onclick="changehmd2(this);"><span>中差评自动加入黑名单</span><a href="javascript:void(0);" onclick="gettraderates(1,'bad');">一键导入历史中差评买家</a>
+							</label>
+							  <p >注：加入黑名单后在买家下一次下单时生效，也可以手动添加黑名单哦。<a href="javascript:$('#addblackname').modal('show');" >点击添加</a></p>
+				    	</div>
+				    </div>
+				</div>
+				<div class="grid-demo">
+					<div class="sui-row-fluid">
+						<div class="span2" style="text-align:right;">
+							<strong>电台提醒:</strong>
+				    	</div>
+				    	<div class="span8" >
+				    		<label  class="checkbox-pretty inline ">
+							    <input type="checkbox"  id="checkboxhmd3"  onclick="changehmd3(this);"><span>出现中差评时立即进行电台提醒</span>
+							</label>
+							<div class="sui-msg  msg-tips" >
+								  <div class="msg-con">开启方法：千牛消息中心——消息订阅——插件消息——勾选爱用交易管理——选择提醒方式，并确定保存成功。</span><a href="javascript:openlines('http://bangpai.taobao.com/group/thread/15074034-289628008.htm?spm=pcjiaoyiguanzhudiantaiyouli');">猛戳这里！</a></div>
+								  <s class="msg-icon"></s>
+								</div>
+		
+				    		<p >注：根据淘宝规则，必须双方评价完成后，才能获取买家的评价内容！<cite title="软件才能第一时间发出提醒通知！" >软件才能第一时间发出提醒通知！</cite></p>
+				    	</div>
+				    </div>
+				</div>
+						<table  class="sui-table table-bordered" style="margin-top: 10px;">
+							<thead ><tr>
+							<th colspan="2" style="margin-left: 10px;">
+								评价内容（随机选择回评内容）<button type="button" id="addbut" onclick="$('#addtext').modal('show');" class="sui-btn btn-small btn-primary">新增</button><span class="divider"></span>
+							</th></tr>
+							</thead>
+							<tbody id="samplechap">
+							</tbody>
+					  </table>
+		<!-- 			<div id="alert" class="alert">
+	  未设置评价内容，将不能开启自动评价。
+	</div> -->	
+
+ <!-- <div class="well">
+<!-- <p>1、淘宝规定超过15天的成功订单，不能再评价。若用户设置了【仅评价买家已评订单】,但买家在订单成功的第14天仍未评价，系统会自动进行评价！</p> 
+<p>1、默认给买家好评</p>
+<p>2、用户首次使用该功能时，软件只会自动评价首次开始的订单。首次使用之前的订单，不在此范围的订单，请用户自行手动评价。</p>
+<p>3、淘宝规定评价内容最大长度【500字符】</p>
+ </div>-->
+		 	 </div>
+		 	 <!-- 评价日志 -->
+			<div id="ratelogs" class="tab-pane">
+			<div id="autologtext" style="color: red;"></div>
+			共累计自动评价 <span id='lognums'>0</span> 条记录<!--  ，过滤10条-->
+					<table  class="sui-table table-bordered"  style="margin-top: 10px;">
+						<thead ><tr><th width="18%">评价时间</th>
+								<th width="30%">评价内容</th>
+								<th width="15%">被评价的买家</th>
+								<th width="25%">商品信息</th>
+								<th width="7%">备注</td>
+							</tr>
+						</thead>
+						<tbody id="mylogs">
+						</tbody>
+					</table>	    		
+ 					<div id="logcontent"></div>
+		 		 </div>
+		 	 <!-- 黑名单 -->
+			<div id="ratebalckname" class="tab-pane">
+			共累计黑名单 <span id='blacknamenums'>0</span> 名　<button type="button" class="btn btn-small btn-primary" onclick="$('#addblackname').modal('show');">新增黑名单</button><!--  ，过滤10条-->
+					<table  class="sui-table table-bordered" style="margin-top: 10px;">
+						<thead >
+							<tr><th width="12%">生成时间</th>
+								<th width="29%">原因</th>
+								<th width="15%">黑名单买家</th>
+								<th width="23%">备注</th>
+								<th width="16%"></th>
+							</tr>
+						</thead>
+						<tbody id="mybalcknames">
+						</tbody>
+					</table>	    		
+ 					<div id="blacknamecontent"></div>
+		 		 </div>
+		 	 <!-- 黑名单拦截日志-->
+			<div id="blacklog" class="tab-pane">
+			共累计拦截<span id='blacklognums'>0</span> 条记录
+					<table  class="sui-table table-bordered" style="margin-top: 10px;">
+						<thead ><tr><th width="12%">拦截时间</th>
+								<th width="15%">被拦截的买家</th>
+								<th width="29%">订单信息</th>
+								<th width="23%">备注</th>
+							</tr>
+						</thead>
+						<tbody id="myblacklogs">
+						</tbody>
+					</table>	    		
+ 					<div id="blacklogcontent"></div>
+		 		 </div>
+</div> 		 
+</div>
+	 <!--Profile Form添加评价内容-->
+	<div id="addtext" tabindex="-1" role="dialog" data-hasfoot="true" data-backdrop="static" class="sui-modal hide fade"  >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">添加评价内容</h4>
+      </div>
+      <div class="modal-body" >
+			<div  id="jsnone2" >
+				<form class="form-inline sui-form input-xlarge">
+           	  <textarea  id="addcon" style="margin-top: 5px;height: 100px;width:97%;resize: none;" placeholder="谢谢亲的支持，欢迎下次惠顾！" ></textarea>
+           	  </form>
+           	 </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  class="sui-btn btn-primary btn-large" onclick="ratesureadd();">确定添加</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+	 
+	 <!--Profile Form编辑评价内容-->
+	<div id="uptext" tabindex="-1" role="dialog" data-hasfoot="true" data-backdrop="static" class="sui-modal hide fade"  >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">编辑评价内容</h4>
+      </div>
+      <div class="modal-body" >
+				<form class="form-inline sui-form input-xlarge">
+           	  <textarea  id="jscon" style="margin-top: 5px;height: 100px;width:97%;resize: none;"  ></textarea>
+           	  </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  class="sui-btn btn-primary btn-large" onclick="surejS();">确定修改</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+        
+     <!--Profile Form添加黑名单-->
+<div id="addblackname" tabindex="-1" role="dialog" data-hasfoot="true" data-backdrop="static" class="sui-modal hide fade"  >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">添加黑名单</h4>
+      </div>
+      <div class="modal-body" >
+<form class="sui-form form-horizontal">
+  <div class="control-group">
+    <label for="balcknick" class="control-label">买家昵称：</label>
+    <div class="controls">
+      <input type="text" id="balcknick" placeholder="黑名单买家昵称不能为空">
+    </div>
+  </div>
+  <div class="control-group">
+    <label for="blackreason" class="control-label">原因：</label>
+    <div class="controls">
+      <textarea rows="3" id="blackreason" placeholder="拉黑原因不能为空"></textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <label for="remark" class="control-label">备注：</label>
+    <div class="controls">
+      <textarea rows="3" id="remark" ></textarea>
+    </div>
+  </div>
+</form> 	
+      </div>
+      <div class="modal-footer">
+        <button type="button"  class="sui-btn btn-primary btn-large" onclick="addblacknick();">添加</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+	 
+	 <!--Profile Form编辑黑名单备注内容-->
+	 <div id="upremark" tabindex="-1" role="dialog" data-hasfoot="true" data-backdrop="static" class="sui-modal hide fade"  >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">编辑黑名单备注内容</h4>
+      </div>
+      <div class="modal-body" >
+				<form class="form-inline sui-form input-xlarge">
+           	  <textarea  id="upremarktext" style="margin-top: 5px;height: 100px;width:97%;resize: none;"  ></textarea>
+           	  </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  class="sui-btn btn-primary btn-large" onclick="sureupremark();">确定修改</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+        
+     <!--Profile Form一键导入黑名单-->
+     <div id="blackrates" tabindex="-1" role="dialog" data-hasfoot="tue" data-backdrop="static" class="sui-modal hide fade" data-width="480px" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">一键导入黑名单</h4>
+      </div>
+      <div class="modal-body" >
+      	<p id="showblackrates"></p>
+        <p id="showblackrates2">是否确认将其全部导入黑名单？</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large" onclick="importing();">确定导入</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+     	 <!--Profile Form旺旺客服工作台客服调试用户界面-->
+	 <div id="wwkef" tabindex="-1" role="dialog" data-hasfoot="true"  data-backdrop="static" class="sui-modal hide fade" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">wwkfDebug</h4>
+      </div>
+      <div class="modal-body" >
+			  <div class="control-group">
+			    <label class="control-label" for="balcknick">buyerNick:</label>
+			    <div class="controls">
+			      <input type="text" id="wwkefnick" placeholder="please enter seller's nick~">
+			    </div>
+			  </div>
+			  
+			  	<div class="control-group">
+			    <label class="control-label" for="balcknick">password for look:</label>
+			    <div class="controls">
+			      <input type="password" id="wwpass1" >
+			    </div>
+			  </div>
+			  
+			  <div class="control-group">
+			    <label class="control-label" for="balcknick">*password for wirte:</label>
+			    <div class="controls">
+			      <input type="password" id="wwpass2" >
+			    </div>
+			  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large" onclick="wwkefsure();">Sure</button>
+        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">close</button>
+      </div>
+    </div>
+  </div>
+</div>
+   
+
+
+<script type="text/javascript">
+window.onload = function(){
+	
+    QN.initTheme();
+    $("#zdpjsel").attr("class","dqzt");
+	showload();
+	onload_viptime('zdrate');
+	document.onkeydown = showKeyDown;
+	window.localStorage.setItem(user_nick+'newuser2_rate','yes');
+	$('#zdratexx').empty();
+	if(vipuser==0){
+		ittoolspam('AD20140730133000','zdpjpf');
+	}else{
+		ittoolspam('AD20140730133000','zdpjpvip');
+	}
+
+}
+function acBratelog(){
+	window.localStorage.setItem(user_nick+'newuser2_ratelog','yes');
+	$('#neutralnum').empty();
+	tradedots('ratelog');
+}
+/**
+ * Js键盘监听事件
+ * @author Duanhq
+ */
+function showKeyDown(evt)
+{
+	evt = (evt) ? evt : window.event;
+	   if(event.keyCode==113&&event.altKey){// alt + F2  
+		   if(user_nick=='dressa2z'||user_nick=='爱用科技'||user_nick=='vigossde'){
+			   	$('#wwkefnick').val(null);
+			     $('#wwkef').modal('show');
+		   }
+	}
+}
+/**
+ * 旺旺客服
+ * @author Duanhq
+ */
+function wwkefsure(){
+	
+	closeMsg('');
+	var looke=$('#wwpass1').val();
+	var wirte=$('#wwpass2').val();
+	
+	
+	if(looke==''){
+    	$.alert('<p>Please enter your password for look~</p>');
+        return;
+	}else if(looke!='loveappi8u7y6t5'){
+    	$.alert('<p>Sorry,not fund your password for look...</p>');
+		return;
+	}else if(wirte!=''){
+		if(wirte=='i8u7y6t5r4'){
+			vipuser=1;
+		}else{
+			vipuser=0;
+		}
+	}else{
+		vipuser=0;
+	}
+	mynick=$('#wwkefnick').val();
+	if(vipuser==1){
+    	$.alert('<p>哇奥，你发现了什么，这居然是最高的权限。。(Debug Successful!)</p><p>User name:'+user_nick+'</p>');
+	}else{
+    	$.alert('<p>看看，你也只能够看看而已。。(Debug Successful!)</p><p>User name:'+user_nick+'</p>');
+	}
+	var subnick=mynick.split(':');
+	if(subnick.length==1){
+		$('#suboff').hide();
+		subnick='';
+	}else{
+		$('#suboff').show();
+	}
+	$("input[name='optionsRadios']").unbind('change');
+	showloads();
+	if(user_nick!='vigossde'){
+	$("#offswitch").attr("disabled",true);
+	setTimeout(function (){
+		$("#offswitch").attr("disabled",true);
+	},1000);
+	setTimeout(function (){
+		$("#offswitch").attr("disabled",true);
+	},1500);
+	setTimeout(function (){
+		$("#offswitch").attr("disabled",true);
+	},2000);
+	}
+}
+function reshow(){
+	$("input[name='optionsRadios']").unbind('change');
+	showload();
+}
+/*******评价方式*******/
+function change(){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	 var radio = document.getElementsByName("optionsRadios");
+	 var radioLength = radio.length;
+	 var radioValue='';
+	// $("#offswitch").attr("disabled",false);
+	 for(var i = 0;i < radioLength;i++){
+	    if(radio[i].checked){
+	     	radioValue = radio[i].value;
+
+	   }
+	}
+	$.ajax({
+	        type: 'POST',
+	        data:{nick:mynick,check:radioValue},
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/check_pj',
+		        success: function(data){
+					layer.msg('操作成功!', 1, 1);
+				},
+		       error: function(){
+		    	     $.alert('<p>操作失败，请重试！</p>');
+			}
+		    });
+}
+/********************************修改定时抢评时间*********************************/
+function save1(){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	var day=14;
+	var houser=$('#houser').val();
+	$.ajax({
+	    type: 'POST',
+	    data:{nick:mynick,day:day,houser:houser},
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/svaerate1',
+	        success: function(data){
+	        	layer.msg('操作成功!', 1, 1);
+			},
+	       error: function(){
+	    	    $.alert('<p>操作失败，请重试！</p>');
+		}
+    });
+}
+/*****************************定时评价时间************************/
+function save2(){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	var day=$('#day2').val();
+	var houser=$('#houser2').val();
+	$.ajax({
+	    type: 'POST',
+	    data:{nick:mynick,day:day,houser:houser},
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/svaerate2',
+	        success: function(data){
+	        	layer.msg('操作成功!', 1, 1);
+			},
+	       error: function(){
+	            $.alert('<p>操作失败，请重试！</p>');
+		}
+    });
+}
+/***************************黑名单过滤关闭/开启***********************/
+function changehmd(obj){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	var radioValue='';
+	if(obj.checked==true){
+		radioValue=1;
+	}else{
+		radioValue=0;
+	}
+	$.ajax({
+	    type: 'POST',
+	    data:{nick:mynick,check:radioValue},
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/check_hmd',
+	        success: function(data){
+	        	layer.msg('操作成功!', 1, 1);
+			},
+	       error: function(){
+	            $.alert('<p>操作失败，请重试！</p>');
+		}
+    });
+}
+/*********************自动添加黑名单开启/关闭***********************/
+function changehmd2(obj){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	var radioValue='';
+    if(obj.checked==true)
+    {
+    	radioValue=1;
+    }else{
+    	radioValue=0;
+
+    }
+	$.ajax({
+	    type: 'POST',
+	    data:{nick:mynick,check:radioValue},
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/check_zdhmd',
+	        success: function(data){
+	        	layer.msg('操作成功!', 1, 1);
+			},
+	       error: function(){
+	            $.alert('<p>操作失败，请重试！</p>');
+		}
+    });
+}
+/***********添加黑名单*************/
+function addblacknick(){
+	closeMsg('');
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	var blacknick=$('#balcknick').val();
+	blacknick=blacknick.replace(/(\s*)|(\s)/g,""); /*消除空格*/
+	var blackreason=$('#blackreason').val();
+	var remark=$('#remark').val();
+	if(blacknick==''){
+		layer.msg("黑名单（买家昵称）不能为空!", 2, function(){
+		   
+		});
+	}else if(blackreason==''){
+		layer.msg("黑名单（加入黑名单原因）不能为空!", 2, function(){
+		   
+		});
+	}else{
+		$('#addblackname').modal('hide');
+		$('#balcknick').val(null);
+		$('#blackreason').val(null);
+		$('#remark').val(null);
+		$.ajax({
+	    	type: 'POST',
+	    	data:{sellernick:mynick,blacknick:blacknick,blackreason:blackreason,remark:remark},
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/addblackname',
+		        success: function(data){
+			        if(data==1){
+			        	layer.msg('操作成功!', 1, 1);
+			            showblackname(1);
+			        }else{
+			        	 $.alert('<p>添加失败，原因：黑名单已存在，重复添加!</p>');
+			        }
+				},
+		       error: function(){
+		       	 $.alert('<p>操作失败，请重试！</p>');
+			}
+	    });
+	}
+}
+function changehmd3(obj){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	var radioValue='';
+	if(obj.checked==true){
+		radioValue=1;
+	}else{
+		radioValue=0;
+	}
+	$.ajax({
+	    type: 'POST',
+	    data:{nick:mynick,check:radioValue},
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/check_email?nick='+mynick+'&check='+radioValue,
+	        success: function(data){
+	        	layer.msg('操作成功!', 1, 1);
+			},
+	       error: function(){
+	    	     $.alert('<p>操作失败，请重试！</p>');
+		}
+    });
+}
+var mynick;
+var glen=0;/*评价内容条数*/
+var page_no=1;
+var subnick;
+var isauth=false;
+var mydata='off';
+/******************************初始载入********************************/
+function showload(){
+	$('#setemail').show();
+	QN.application.invoke({
+		 "cmd": "getLoginuser",
+		 "success": function (e){
+			 if(typeof  e=== 'string'){
+	            	e = JSON.parse(e);
+	            }
+		 mynick=decodeURI(e.user_nick);
+		 if(e.sub_user_nick!=null&&e.sub_user_nick!=''){
+		 	subnick=decodeURI(e.sub_user_nick);
+		 	$('#suboff').show();
+		/* 	alert(e.sub_user_id);*/
+		 }else{
+			 subnick='';
+		 }
+		 showloads();
+		 
+		 
+		 }
+	 });
+
+}
+function showloads(){
+		 $.ajax({
+			    type: 'POST',
+			    data:{nick:mynick},
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/zdrate',
+			        success: function(data){
+			        	isauth=true;
+				        mydata=data;
+					},
+			       error: function(){
+				}
+		    });
+		 /**
+		  *	自动评价
+		  */
+		 $.ajax({
+			    type: 'POST',
+			    data:{nick:mynick},
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/showzdrate',
+			        success: function(data){
+				        data=JSON.parse(data);
+				        
+				        
+				        $("input[name='optionsRadios']").parent('label').checkbox().checkbox('uncheck');
+    					$("input[name='optionsRadios'][value='"+data.alreadyrate+"']").parent('label').checkbox().checkbox('check');
+				        if(data.robhouser!=''){
+				        	
+				        	$('#houser').val(data.robhouser);
+							$('#houserval').html(Math.abs(data.robhouser-24));
+							
+							$('#day2').val(data.timingday);
+							$('#day2val').html(data.timingday);
+				        	
+				        	$('#houser2').val(data.timinghouser);
+							$('#houser2val').html(data.timinghouser);
+				        }
+				        if(data.blackrate==1){//不自动评价黑名单用户
+				        	$("#checkboxhmd").parent('label').checkbox().checkbox('check');
+				        }else{
+				        	$("#checkboxhmd").parent('label').checkbox().checkbox('uncheck');
+				        }
+				        if(data.zdblackrate==1){//自动添加黑名单用户
+					    	$("#checkboxhmd2").parent('label').checkbox().checkbox('check');
+				        }else{
+				        	$("#checkboxhmd2").parent('label').checkbox().checkbox('uncheck');
+				        }
+				        if(data.emailrate==1){//邮件提醒
+				        	$("#checkboxhmd3").parent('label').checkbox().checkbox('check');
+				        }else{
+				        	$("#checkboxhmd3").parent('label').checkbox().checkbox('uncheck');
+				        }
+				        $('#email').empty();
+				      /*  if(data.selleremail!=0&&data.selleremail!=null){
+				        	$('#email').text(data.selleremail);
+				        }else{
+					        $('#fmemail').remove();
+				        }*/
+				        $('#samplechap').empty();
+				        glen=data.ratetexts.length;
+				        if(data.ratetexts!=0){
+					        for(index in data.ratetexts){
+						        var mytext=data.ratetexts[index];
+						        $('#samplechap').append('<tr id=\'tr'+mytext.id+'\'><td width="80%" id=\''+mytext.id+'\'>'+mytext.content+'</td><td width="20%" style="text-align: center;"><button class="sui-btn btn-small btn-primary" href="javascript:void(0);" onclick="uptext(\''+mytext.id+'\')" type="button">编辑</button><button style="margin-left: 5px;"  onclick="todetext(\''+mytext.id+'\')" class="sui-btn btn-small" type="button">删除</button></td></tr>');
+					        }
+					        $('#textoff').hide();
+						   	 /*var sel="";
+							  if($("#kg").attr("class")=="btn"){
+								    $("#kg").attr("class","btn btn-primary");
+									$("#kg").html("已开启");
+									sel="on";
+							  }else{
+									$("#kg").attr("class","btn");
+									$("#kg").html("未开启");
+									sel="off";
+							 }*/
+						    $("#offswitch").attr("class","sui-btn btn-primary");
+							$("#offswitch").html("已开启");
+							$("#offswitch").attr("disabled",false);
+					        //$('#offswitch').bootstrapSwitch('setActive', true);
+				        }else{/*禁用开关*/
+				        	 $('#textoff').show();
+				        	 $("#offswitch").attr("disabled","disabled");
+				        }
+				        if(subnick!=''){
+				        	/*禁用开关*/
+				        	$("#offswitch").attr("disabled","disabled");
+				        }
+				        
+				        if(data.myoff=='off'){ 
+				        	$('#myoffzt').text('未开启');
+							$("#offswitch").attr("class","sui-btn");
+							$("#offswitch").html("未开启");
+				        	//$('#offswitch').bootstrapSwitch('setState', false);
+				        }else{
+					        	$('#myoffzt').text('已开启');
+							    $("#offswitch").attr("class","sui-btn btn-primary");
+								$("#offswitch").html("已开启");
+					        	//$('#offswitch').bootstrapSwitch('setState', true);
+					        	//$('#offswitch').bootstrapSwitch('setState', true);
+				        }
+
+				        if(glen==10){
+					        $('#addbut').hide();
+				        }else{
+				        	$('#addbut').show();
+				        }
+				        $("input[name='optionsRadios']").on('change',function(){
+				        	change();
+				        });
+				        $("#offswitch").on("click", function(){//为按钮绑定click事件
+				        	$("#offswitch").attr("disabled","disabled");
+					       	 var sel="";
+						   	  if($("#offswitch").attr("class")=="sui-btn"){
+							   	    if(vipuser==0){
+								   	     tradePoint(mynick,'开启自动评价');
+							   	      	 $('#buyvip').modal('show');
+								   	     $("#offswitch").attr("disabled",false);
+							   	      	return;
+							   	    }else{
+								   	    if(isauth){
+				   				    		if(mydata=='off'){
+			   					    			QN.application.invoke({
+			   					    				 "cmd": "translateUrl",
+			   					    				 "param":{'url':"https://oauth.taobao.com/authorize?response_type=code&client_id=21085840&redirect_uri=<?php echo APP_WEB_INDEX_ROOT;?>/tc/trades?scope=item&view=web&state=tradepczdrate"},
+			   					    				 "success": function (e){
+			   					    					 if(typeof  e=== 'string'){
+			   					    			            	e = JSON.parse(e);
+			   					    			            }
+			   					    					 window.location.href=e.url;
+			   					    				 }
+			   					    			});
+			   					        }else{
+			   					        	sel="on";
+									   		QN.top.invoke({/*查询应用为用户开通的增量消息服务*/
+									   			"cmd": 'taobao.tmc.user.permit',
+									   			"method": "get",
+									   			"success": function (resp){
+									   				$.ajax({
+									    		        type: 'POST',
+			    										data:{nick:mynick,sel:sel},
+									    			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/pjsz',
+									    			        success: function(data){
+													   		    $("#offswitch").attr("class","sui-btn btn-primary");
+													   			$("#offswitch").html("已开启");
+													   			$('#myoffzt').text('已开启');
+													   			$("#offswitch").attr("disabled",false);
+													           layer.msg('开通成功!', 2, 1);
+									    					},
+									    			       error: function(){
+									    			       		$.alert('<p>发送后台失败，请重试!</p>');
+									    			    	   $("#offswitch").attr("disabled",false);
+									    			
+									    				}
+									    		    });
+
+									   	            },
+									   				"error": function (msg) {
+									   					if(msg.sub_code=='subuser.has-no-permission'){
+										   					 /* $("#hints").html('<p>该子帐号无此操作权限, 请通过主帐号设置开通相应权限!</p>');
+													         showMsg('hint'); */
+									   					    }else{
+									   					    	$("#offswitch").attr("disabled",false);
+									   					    	$.alert('<p>开通消息失败，请重试!</p>');
+									   					    }
+									   				    }
+									   	    });
+			   					        	//window.location.href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/zdrate"; 
+
+			   					        }
+									   	}else{
+								   			 $.ajax({
+									    		    type: 'POST',
+			    									data:{nick:mynick},
+								   				    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/zdrate',
+								   				        success: function(data){
+								   					        mydata=data;
+								   				    		if(mydata=='off'){
+								   					    			QN.application.invoke({
+								   					    				 "cmd": "translateUrl",
+								   					    				 "param":{'url':"https://oauth.taobao.com/authorize?response_type=code&client_id=21085840&redirect_uri=<?php echo APP_WEB_INDEX_ROOT;?>/tc/trades?scope=item&view=web&state=tradepczdrate"},
+								   					    				 "success": function (e){
+								   					    					 if(typeof  e=== 'string'){
+								   					    			            	e = JSON.parse(e);
+								   					    			            }
+								   					    					 window.location.href=e.url;
+								   					    				 }
+								   					    			});
+								   					        }else{
+								   					        	sel="on";
+														   		QN.top.invoke({/*查询应用为用户开通的增量消息服务*/
+														   			"cmd": 'taobao.tmc.user.permit',
+														   			"method": "get",
+														   			"success": function (resp){
+														   				$.ajax({
+														    		        type: 'POST',
+								    										data:{nick:mynick,sel:sel},
+														    			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/pjsz',
+														    			        success: function(data){
+																		   		    $("#offswitch").attr("class","sui-btn btn-primary");
+																		   			$("#offswitch").html("已开启");
+																		   			$('#myoffzt').text('已开启');
+																		   			$("#offswitch").attr("disabled",false);
+																		   			layer.msg('开通成功!', 2, 1);
+														    					},
+														    			       error: function(){
+														    			    	    $.alert('<p>发送后台失败，请重试!</p>');
+														    			    	   $("#offswitch").attr("disabled",false);
+														    			
+														    				}
+														    		    });
+
+														   	            },
+														   				"error": function (msg) {
+														   					if(msg.sub_code=='subuser.has-no-permission'){
+															   					 /* $("#hints").html('<p>该子帐号无此操作权限, 请通过主帐号设置开通相应权限!</p>');
+																		         showMsg('hint'); */
+														   					    }else{
+														   					    	$("#offswitch").attr("disabled",false);
+																			       $.alert('<p>开通消息失败，请重试!</p>');
+														   					    }
+														   				    }
+														   	    });
+								   					        	//window.location.href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/zdrate"; 
+
+								   					        }
+								   						},
+								   				       error: function(){
+												            $.alert('<p>授权信息获取失败，请重试!</p>');
+								    			    	   $("#offswitch").attr("disabled",false);
+								   					}
+								   			    });
+									   	}
+								   			 
+								   			 }
+
+
+							   		
+						   	  }else{
+							   		sel="off";
+					   				$.ajax({
+									    type: 'POST',
+			    						data:{nick:mynick,type:'zdrate'},
+					    			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/gettmcinfo',
+					    			        success: function(data){
+						    			        if(data=='yes'){
+											   		QN.top.invoke({/*查询应用为用户开通的增量消息服务*/
+											   			"cmd": 'taobao.tmc.user.cancel',
+											   			"param": {nick:mynick},
+											   			"method": "get",
+											   			"success": function (resp){
+											   				$.ajax({
+															    type: 'POST',
+									    						data:{nick:mynick,sel:sel},
+											    			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/pjsz',
+											    			        success: function(data){
+															   			$("#offswitch").attr("class","sui-btn");
+															   			$("#offswitch").html("未开启");
+															   			$('#myoffzt').text('未开启');
+											   					    	$("#offswitch").attr("disabled",false);
+											   					    	layer.msg('关闭成功!', 2, 1);
+											    					},
+											    			       error: function(){
+											    			       	 $.alert('<p>发送后台失败，请重试!</p>');
+											    			    	   $("#offswitch").attr("disabled",false);
+											    				}
+											    		    });
+
+											   	            },
+											   				"error": function (msg) {
+											   					if(msg.sub_code=='subuser.has-no-permission'){
+											   						/* $("#hints").html('<p>该子帐号无此操作权限, 请通过主帐号设置开通相应权限!</p>');
+															        showMsg('hint'); */
+											   					    }else if(msg.sub_code=='isv.increment-service-error:user-not-permit'){
+														   				$.ajax({
+														    		        type: 'POST',
+									    									data:{nick:mynick,sel:sel},
+														    			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/pjsz',
+														    			        success: function(data){
+																		   			$("#offswitch").attr("class","sui-btn");
+																		   			$("#offswitch").html("未开启");
+																		   			$('#myoffzt').text('未开启');
+														   					    	$("#offswitch").attr("disabled",false);
+														   					    	layer.msg('关闭成功!', 2, 1);
+														    					},
+														    			       error: function(){
+														    			    	   $("#hints").html('<p>发送后台失败，请重试!</p>');
+																			       showMsg('hint');
+														    			    	   $("#offswitch").attr("disabled",false);
+														    			
+														    				}
+														    		    });
+											   					    }else{
+																	        $.alert('<p>关闭消息失败，请重试!</p>');
+																	       $("#offswitch").attr("disabled",false);
+											   					    	/*if(msg.sub_msg!=null&&msg.sub_msg!=''){alert(msg.sub_msg);}else{alert('关闭增量消息服务失败！');}*/
+											   					    }
+											   				    }
+											   	    });
+						    			        }else{
+										   			$("#offswitch").attr("class","sui-btn");
+										   			$("#offswitch").html("未开启");
+										   			$('#myoffzt').text('未开启');
+						   					    	$("#offswitch").attr("disabled",false);
+						   					    	layer.msg('关闭成功!', 2, 1);
+						    			        }
+					    					},
+					    			       error: function(){
+										        $.alert('<p>发送后台失败，请重试!</p>');
+					    			    	   $("#offswitch").attr("disabled",false);
+					    				}
+					    		    });
+							   		
+						   	  }
+				        });
+
+					},
+			       error: function(){
+			        /*请求出错处理 */
+
+			
+				}
+		    });
+		    /**
+		     *	评价日志
+		     */
+   		 $.ajax({
+				type: 'POST',
+				data:{nick:mynick,page:1},
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/zdratelog',
+			        success: function(data){
+			        	data=JSON.parse(data);
+			        	$('#lognums').text(data.assessTotal);/*自动评价总计*/
+				        $('#logcontent').empty();
+				        $('#mylogs').empty();
+				        
+			        	for(index in data.zdpj){
+				        	var log=data.zdpj[index];
+
+				        	if(log.status=='1'){
+					        	$('#mylogs').append('<tr><td>'+log.opttime+'</td><td>'+log.content+'</td><td>'+log.buyer_nick+'</td><td>订单号:'+log.tradeid+'</td><td><span class="ui-li-aside" style="color:#33CC00">成功</span></td></tr>');
+				        	}else if(log.status=='0'){
+				        		$('#mylogs').append('<tr><td>'+log.opttime+'</td><td>'+log.content+'</td><td>'+log.buyer_nick+'</td><td>订单号:'+log.tradeid+'</td><td><span class="ui-li-aside" style="color:#FF0000">失败</span></td></tr>');
+				        	}
+				        	
+			        	}
+			        	
+			        	if(data.assessTotal>20){
+			        	 var page_sum=Math.ceil(data.assessTotal/20); 
+			    		 pagin('logcontent','showlog',1,page_sum,data.assessTotal);
+			        	}else if(data.assessTotal==0){
+			        		$('#mylogs').html('<tr><td colspan="5" ><div class="sui-msg msg-large  msg-tips" style="width:100%"><div class="msg-con">近七天内没有评价记录哦</a></div><s class="msg-icon"></s></div></td></tr>');
+			        	}
+					},
+			       error: function(){
+			        /*请求出错处理 */
+
+			
+				}
+		    });
+		    /****** The End******/
+}
+/**
+ * 自动评价
+ */
+/***************************添加评价内容*******************/
+function ratesureadd(){
+	closeMsg('');
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	
+	var text=$('#addcon').val();
+	text=clearBr(text);
+	if(text==''){
+		layer.msg("评价内容不能为空", 2, function(){
+		   
+		});
+	}else if(text.length>=500){
+		layer.msg("评价内容不能超过500字", 2, function(){
+		   
+		});
+	}else{
+		$('#addtext').modal('hide');
+		 $.ajax({
+				type: 'POST',
+				data:{nick:mynick,content:text},
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/add',
+			        success: function(data){
+				        showload();
+				        $('#addcon').val('');
+				        layer.msg('操作成功!', 1, 1);
+					},
+			       error: function(){
+				}
+		    });
+	}
+}
+/***************************删除评价内容**********************/
+function todetext(id){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	gid=id;
+	$("#twohints").html('<p>您确定要删除这个条评价内容吗！</p>');
+	document.getElementById('hintok').setAttribute("onclick", "detext();");
+	$('#twohint').modal('show');
+}
+function detext(){
+	
+	 $.ajax({
+			type: 'POST',
+			data:{yooz:gid},
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/del',
+		        success: function(data){
+		        	$('#tr'+gid).remove();
+		        	glen--;
+		        	if(glen==0){
+		        		$('#textoff').show();
+		        		$('#myoffzt').text('未开启');
+						$("#offswitch").attr("class","sui-btn");
+						$("#offswitch").html("未开启");
+		        		$("#offswitch").attr("disabled","disabled");
+		   				$.ajax({
+							type: 'POST',
+							data:{nick:mynick,sel:'off'},
+		    			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/pjsz',
+		    			        success: function(data){
+		    					},
+		    			       error: function(){
+		    				}
+		    		    });
+		        	}
+		        	$('#addbut').show();
+		        	layer.msg('操作成功!', 1, 1);
+				},
+		       error: function(){
+		        /*请求出错处理 */
+			}
+	    });
+}
+var gid='';
+/****************************修改评价内容****************************/
+function uptext(id){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	gid=id;
+	$('#jscon').val($('#'+id).html());
+	$('#uptext').modal('show');
+}
+function surejS(){
+	closeMsg('');
+	var text=$('#jscon').val();
+	text=clearBr(text);
+	if(text==''){
+		layer.msg("评价内容不能为空", 2, function(){
+		   
+		});
+	}else if(text.length>500){
+		layer.msg("评价内容不能超过500字", 2, function(){
+		   
+		});
+	}else{
+		$('#uptext').modal('hide');
+ 		 $.ajax({
+				type: 'POST',
+				data:{yooz:gid,content:text},
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/up',
+			        success: function(data){
+			        	$('#'+gid).html(text);
+			        	layer.msg('操作成功!', 1, 1);
+					},
+			       error: function(){
+			        /*请求出错处理 */
+				}
+		    });
+	}
+}
+
+/******************************字符串清楚特殊字符*************************************/
+function clearBr(key) 
+{ 
+    key = key.replace(/[\r\n]/g, "");
+    key=key.replace(/(^\s*)|(\s*$)/g,""); /*消除首尾空格*/
+    return key; 
+}
+
+/**
+ * 评价日志
+ */
+/*************************************初始载入************************/
+function showlog(page_no){
+	 $.ajax({
+			type: 'POST',
+			data:{nick:mynick,page:page_no},
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/zdratelog',
+		        success: function(data){
+			        $('#logcontent').empty();
+			        $('#mylogs').empty();
+		        	data=JSON.parse(data);
+		        	for(index in data.zdpj){
+			        	var log=data.zdpj[index];
+			        	if(log.status=='1'){
+				        	$('#mylogs').append('<tr><td>'+log.opttime+'</td><td>'+log.content+'</td><td>'+log.buyer_nick+'</td><td>订单号:'+log.tradeid+'</td><td><span class="ui-li-aside" style="color:#33CC00">成功</span></td></tr>');
+			        	}else if(log.status=='0'){
+			        		$('#mylogs').append('<tr><td>'+log.opttime+'</td><td>'+log.content+'</td><td>'+log.buyer_nick+'</td><td>订单号:'+log.tradeid+'</td><td><span class="ui-li-aside" style="color:#FF0000">失败</span></td></tr>');
+			        	}
+		        	}  	
+		        	$('#lognums').text(data.assessTotal);/*自动评价总计*/
+		        	if(data.assessTotal>20){
+		        	 var page_sum=Math.ceil(data.assessTotal/20); 
+		    		 pagin('logcontent','showlog',page_no,page_sum,data.assessTotal);
+		        	}else if(data.assessTotal==0){
+			        		$('#mylogs').append('<td colspan="5" ><div class="sui-msg msg-large  msg-tips" style="width:100%"><div class="msg-con">近七天内没有评价记录哦</a></div><s class="msg-icon"></s></div></td>');
+			        }
+				},
+		       error: function(){
+		        /*请求出错处理 */
+			}
+	    });
+}
+/**
+ * 黑名单
+ */
+
+/**************** 初始化黑名单*********************/
+function showblackname(page_no){
+	 $.ajax({
+		type: 'POST',
+		data:{nick:mynick,page:page_no},
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/ratebalckname',
+	        success: function(data){
+	        	data=JSON.parse(data);
+	        	$('#blacknamenums').text(data.assessTotal);/*自动评价总计*/
+		        $('#blacknamecontent').empty();
+		        $('#mybalcknames').empty();
+	        	for(index in data.zdpj){
+		        	var log=data.zdpj[index];
+		        	if(log.remark==0||log.remark==null){
+		        		$('#mybalcknames').append('<tr id="trremark'+log.id+'"><td>'+log.blacktime+'</td><td>'+log.blackreason+'</td><td>'+log.blacknick+'</td><td id="remark'+log.id+'">无</td><td style="text-align: center;"><button class="ui-btn btn-small btn-primary" onclick="upremark(\''+log.id+'\')" type="button">编辑</button><button style="margin-left: 5px;" onclick="todeblackname(\''+log.id+'\')" class="sui-btn btn-small" type="button">删除</button></td></tr>');
+		        	}else{
+		        		$('#mybalcknames').append('<tr id="trremark'+log.id+'"><td>'+log.blacktime+'</td><td>'+log.blackreason+'</td><td>'+log.blacknick+'</td><td id="remark'+log.id+'">'+log.remark+'</td><td style="text-align: center;"><button class="sui-btn btn-small btn-primary" onclick="upremark(\''+log.id+'\')" type="button">编辑</button><button style="margin-left: 5px;" onclick="todeblackname(\''+log.id+'\')" class="sui-btn btn-small" type="button">删除</button></td></tr>');
+		        	}
+	        	}
+	        	if(data.assessTotal>20){
+	        	 var page_sum=Math.ceil(data.assessTotal/20); 
+	    		 pagin('blacknamecontent','showblackname',page_no,page_sum,data.assessTotal);
+	        	}else if(data.assessTotal==0){
+			        		$('#mybalcknames').html('<tr><td colspan="5" ><div class="sui-msg msg-large  msg-tips" style="width:100%"><div class="msg-con">您还没有拉入黑名单的用户哦</a></div><s class="msg-icon"></s></div></td></tr>');
+			   }
+			},
+	       error: function(){
+		}
+    });
+	 tradedots('rateblackname');
+}
+/***************编辑黑名单备注************************/
+function upremark(id){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	gid=id;
+	$('#upremarktext').val($('#remark'+id).html());
+	$('#upremark').modal('show');
+}
+function sureupremark(){
+	var text=$('#upremarktext').val();
+	text=clearBr(text);
+	if(text==''){
+		layer.msg("编辑内容不能为空！", 2, function(){
+		   
+		});
+	}else{
+		$('#upremark').modal('hide');
+ 		 $.ajax({
+				type: 'POST',
+				data:{yooz:gid,content:text},
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/upremark',
+			        success: function(data){
+			        	$('#remark'+gid).html(text);
+			        	layer.msg('操作成功!', 1, 1);
+					},
+			       error: function(){
+			        /*请求出错处理 */
+				}
+		    });
+	}
+}
+/*****************删除黑名单*****************/
+function todeblackname(id){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	gid=id;
+	$("#twohints").html('<p>您确定要删除黑名单用户吗！</p>');
+	document.getElementById('hintok').setAttribute("onclick", "deblack();");
+	$('#twohint').modal('show');
+}
+function deblack(){
+	 $.ajax({
+				type: 'POST',
+				data:{yooz:gid},
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/delblackname',
+		        success: function(data){
+		        	$('#trremark'+gid).remove();
+		        	$('#blacknamenums').text($('#blacknamenums').text()-1);/*黑名单总计*/
+		        	layer.msg('操作成功!', 1, 1);
+				},
+		       error: function(){
+		        /*请求出错处理 */
+			}
+	    });
+}
+/********************查看黑名单**********************/
+function lookblackname(){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+	$('#myTab a[href="#ratebalckname"]').tab('show');
+	showblackname(1);
+}
+/******************一键导入中差评**********************/
+var neutral = new Array();
+var bad = new Array(); 
+var neutralnums=0;
+var badnums=0;
+function gettraderates(page_no,result){
+    if(vipuser==0){
+      	$('#buyvip').modal('show');
+      	return;
+    }
+    var loadi=layer.load(5);
+	if(page_no==1){
+		neutralnums=0;
+		badnums=0;
+	}
+	if(result=='neutral'){
+		QN.top.invoke({
+		   	 "cmd": "taobao.traderates.get",
+		   	 "param": {'fields':"nick",
+			             'rate_type':'get',
+			             'role':'buyer',
+			             'result':result,
+			             'page_no':page_no,
+			             'page_size':40,
+			             'use_has_next':true},
+		   	 "method": "get",
+		   	 "success": function(e){
+		   		 if(typeof  e=== 'string'){
+			            	e = JSON.parse(e);
+			            }
+		   	 	var has_next = e.traderates_get_response.has_next;
+			   	 if(e.traderates_get_response.trade_rates!=null){
+				   		for(index in e.traderates_get_response.trade_rates.trade_rate){
+					   		var rsp=e.traderates_get_response.trade_rates.trade_rate[index];
+					   		if(neutral.length>0){
+					   			if(inArray(rsp.nick,neutral,false)){
+					   			}else{
+							   		neutral[neutralnums]=rsp.nick;
+							   		neutralnums++;
+					   			}
+					   		}else{
+						   		neutral[neutralnums]=rsp.nick;
+						   		neutralnums++;
+					   		}
+				   		}
+				   		if(has_next==false){
+				   			layer.close(loadi);
+				   			var sum=parseInt(neutral.length)+parseInt(bad.length)
+					   		if(sum==0){
+					   			$.alert('<p>恭喜亲，六个月以内亲并没有收到任何中差评，无需导入。</p>');
+					   		}else{
+					   			$('#showblackrates').text('亲，六个月以内的中差评买家共计有'+sum+'人（重复评价不记录），其中差评买家'+bad.length+'人，中评买家'+neutral.length+'人。');
+					   			$('#blackrates').modal('show');
+					   		}
+				   			
+				   		}else{
+				   			page_no++;
+				   			gettraderates(page_no,'neutral')
+				   		}
+			   	 }else{
+			   	 	layer.close(loadi);
+			   			var sum=parseInt(neutral.length)+parseInt(bad.length)
+				   		if(sum==0){
+				   			$.alert('<p>恭喜亲，六个月以内亲并没有收到任何中差评，无需导入。</p>');
+				   		}else{
+				   			$('#showblackrates').text('亲，六个月以内的中差评买家共计有'+sum+'人（重复评价不记录），其中差评买家'+bad.length+'人，中评买家'+neutral.length+'人。')
+							$('#blackrates').modal('show');
+				   		}
+			   			
+			   	 }
+		   	 },
+		   	 error: function(msp){
+		   	 	layer.close(loadi);
+		            if(typeof msp === 'string'){
+		                var msp = JSON.parse(msp);
+		            }else{
+		                var	msp= msp;
+		            }
+		            if(msp.sub_code=='subuser.has-no-permission'){
+		            	/* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+			    	    showMsg('hint'); */
+		           }else{
+			    	    $.alert('<p>操作失败，请重试！</p>');
+		            }
+		        }
+			        	 
+		   	 });
+	}else if(result=='bad'){
+		QN.top.invoke({
+		   	 "cmd": "taobao.traderates.get",
+		   	 "param": {'fields':"nick",
+			             'rate_type':'get',
+			             'role':'buyer',
+			             'result':result,
+			             'page_no':page_no,
+			             'page_size':40,
+			             'use_has_next':true},
+		   	 "method": "get",
+		   	 "success": function(e){
+		   		 if(typeof  e=== 'string'){
+			            	e = JSON.parse(e);
+			            }
+		   	 	var has_next = e.traderates_get_response.has_next;
+			   	 if(e.traderates_get_response.trade_rates!=null){
+				   		for(index in e.traderates_get_response.trade_rates.trade_rate){
+					   		var rsp=e.traderates_get_response.trade_rates.trade_rate[index];
+					   		if(neutral.length>0){
+					   			if(inArray(rsp.nick,bad,false)){
+					   			}else{
+							   		bad[badnums]=rsp.nick;
+							   		badnums++;
+					   			}
+					   		}else{
+					   			bad[badnums]=rsp.nick;
+						   		badnums++;
+					   		}
+				   		}
+				   		if(has_next==false){
+				   			gettraderates(1,'neutral');
+				   		}else{
+				   			page_no++;
+				   			gettraderates(page_no,'bad')
+				   		}
+			   	 }else{
+				   	gettraderates(1,'neutral');
+			   	 }
+		   	 },
+		   	 error: function(msp){
+		   	 	layer.close(loadi);
+		            if(typeof msp === 'string'){
+		                var msp = JSON.parse(msp);
+		            }else{
+		                var	msp= msp;
+		            }
+		            if(msp.sub_code=='subuser.has-no-permission'){
+		            /* 	$("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+		                showMsg('hint'); */
+		           }else{
+		        	   $.alert('<p>操作失败，请重试！</p>');
+		            }
+		        }
+			        	 
+		   	 });
+	}
+	
+}
+function importing(){
+	closeMsg('');
+	var neutrals=neutral;
+	if(neutral.length==0){
+		neutrals=0;
+	}
+	var bads=bad;
+	if(bad.length==0){
+		bads=0;
+	}
+	$.ajax({
+		   type: "POST",
+		   url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/blackrates',
+		   data:{ neutral:neutrals,bad:bads,nick:mynick},
+		   success: function(data){
+			    layer.msg('操作成功!', 1, 1);
+			},
+	       error: function(){
+	    	    $.alert('<p>与服务器数据库连接失败，请稍候重试！</p>');
+		},
+		   async:false
+		  });
+}
+
+/*********判断数组内是否存在某值**********/
+function inArray(needle,array,bool){  
+    if(typeof needle=="string"||typeof needle=="number"){    
+        var len=array.length;    
+        for(var i=0;i<len;i++){    
+            if(needle===array[i]){    
+                if(bool){    
+                    return i;
+                }    
+                return true;    
+            }    
+        }    
+        return false;    
+    }    
+}
+ /**
+ * 	黑名单拦截日志
+  */
+ /**************初始化载入日志*****************/
+function showblacklog(page_no){
+	 $.ajax({
+			type: 'POST',
+			data:{nick:mynick,page:page_no},
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/blacklogs',
+		        success: function(data){
+		        	data=JSON.parse(data);
+		        	$('#blacklognums').text(data.assessTotal);/*自动评价总计*/
+			        $('#blacklogcontent').empty();
+			        $('#myblacklogs').empty();
+		        	for(index in data.zdpj){
+			        	var log=data.zdpj[index];
+			        	$('#myblacklogs').append('<tr><td>'+log.mytime+'</td><td>'+log.buyernick+'</td><td>'+log.trade+'</td><td>无</td></tr>');
+		        	}
+		        	if(data.assessTotal>20){
+		        	 var page_sum=Math.ceil(data.assessTotal/20); 
+		    		 pagin('blacklogcontent','showblacklog',page_no,page_sum,data.assessTotal);
+		        	}else if(data.assessTotal==0){
+			        		$('#myblacklogs').html('<tr><td colspan="5" ><div class="sui-msg   msg-tips" style="width:100%"><div class="msg-con">最近这段时间没有拦截评价的记录</a></div><s class="msg-icon"></s></div></td></tr>');
+			   		}
+				},
+		       error: function(){
+		        /*请求出错处理 */
+			}
+	    });
+	 tradedots('rateblacklog');
+}
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body onload="onlaod();">
+<?php require_once ("app/views/public/top.php");?>
+    <div class="container" style="margin-left: 10px;">
+      <div style="display: none;" id="adv_top"></div>
+	      <div class="form-actions" style="margin-top: 10px;">
+		      <button class="sui-btn btn-primary" onclick="savesend();">保存模版</button>
+		      <button class="sui-btn btn-primary" onclick="yulianf();">预览模版</button>
+	      </div>
+      <form class="sui-form" style="margin-top: 10px;">
+            <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+						<label>模版宽高(毫米)：</label>
+							<div class="input-control control-right">
+							   <input type="text" class="span1" id="w" value=""> x
+		                		<input type="text" class="span1" id="h" value="">
+							</div>
+						<label>打印偏移校正(毫米)：</label>
+							    <i class="sui-icon icon-arrow-up" style="width: 24px;" onclick="changesize('up')"></i>&nbsp;<input type="text" class="span1" id="ud" value="0">&nbsp;<i class="sui-icon icon-arrow-down" style="width: 24px;" onclick="changesize('down')"></i> &nbsp;&nbsp;&nbsp;
+		                	    <i class="sui-icon icon-arrow-left" style="width: 24px;" onclick="changesize('left')"></i>&nbsp; <input type="text" class="span1" id="lr" value="0">&nbsp;<i class="sui-icon icon-arrow-right"  style="width: 24px;" onclick="changesize('right')"></i> 
+		             </form>
+		             
+            <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+				  <label>字体样式设置：</label>
+					<div class="input-control control-right">
+					   <!-- <select id="fontsize" style="width: 100px;">
+		                <option value="10">10</option>
+		                <option value="11">11</option>
+	                    <option value="12">12</option>
+	                    <option value="13" selected>13</option>
+		                <option value="14">14</option>
+		                <option value="15">15</option>
+		                <option value="16">16</option>
+		                <option value="17">17</option>
+		                <option value="18">18</option>
+		                <option value="19">19</option>
+		                <option value="20">20</option>
+	                </select>-->&nbsp;&nbsp;
+	                <span class="sui-dropdown dropdown-bordered select">
+							<span class="dropdown-inner">
+								<a role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle" >
+			       		    		<input  value="13"  type="hidden" >
+			       		    		<i class="caret"></i>
+			       		    		<span id="">13</span>
+			       		    	</a>
+			        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu" id="fontsize" >
+			           				<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10">10</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="11">11</a></li>             
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="12">12</a></li>
+			            			<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="13">13</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="14">14</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="15">15</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="16">16</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="17">17</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="18">18</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="19">19</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="20">20</a></li>
+			        			</ul>
+						</span>
+					</span>
+	                <!-- <select id="fontstyle" style="width: 100px;">
+		                <option value="宋体" selected>宋体</option>
+		                <option value="黑体" >黑体</option>
+		                <option value="楷体">楷体</option>
+	                </select> -->
+	                 <span class="sui-dropdown dropdown-bordered select">
+							<span class="dropdown-inner">
+								<a role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle" >
+			       		    		<input  value="宋体"  type="hidden" >
+			       		    		<i class="caret"></i>
+			       		    		<span id="">宋体</span>
+			       		    	</a>
+			        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu" id="fontstyle" >
+			           				<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="宋体">宋体</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="黑体">黑体</a></li>
+			            			<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="楷体">楷体</a></li>
+			            		</ul>
+						</span>
+					</span>          
+					</div>
+             </form>
+		             
+        <div class="sui-control-group">
+        	<div class="sui-form">
+                    <div class="sui-row-fluid">
+                        <div class="span4">
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" name="buyer" value="买家-姓名" id="buyname" ><span>买家-姓名</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buywang" name="buyer" value="买家-旺旺" ><span>买家-旺旺</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buyiphone" name="buyer" value="买家-电话" ><span>买家-电话</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buymobile" name="buyer" value="买家-手机"><span>买家-手机</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buyaddr" name="buyer" value="买家-地址"><span>买家-地址</span></label><br/>   
+	                            
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buyzid" name="buyer" value="买家-邮编"><span>买家-邮编</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buyliu" name="buyer" value="买家-留言"><span>买家-留言</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buytime" name="buyer" value="购买时间"><span>购买时间</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="ftime" name="buyer" value="发货时间"><span>发货时间</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buytitle" name="buyer" value="模版标题|:|"><span>发货单名称</span></label><br/>     
+	                        <input type="text" onkeyup="onkeyval(buytitle)" style="width:140px;" id="buytitlet" />
+                        </div>
+                        <div class="span4">
+                        	<label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="swang" name="seller" value="卖家-旺旺"><span>卖家-旺旺</span></label><br/>
+                            	<input type="text" style="display:none;" id="swangt"/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="sbz" name="seller" value="卖家-备注"><span>卖家-备注</span></label><br/>
+                            	<input type="text" style="display:none;" id="sbzt"/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="stitle" name="seller" value="店铺名称"><span>店铺-名称</span></label><br/>
+	                            <input type="text" onkeyup="onkeyval(stitle)" style="display:none;width:140px;" id="stitlet"/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="siphone" name="seller" value="卖家-电话"><span>卖家-电话</span></label><br/>
+	                            <input type="text" onkeyup="onkeyval(siphone)" style="width:140px;display:none;" id="siphonet"/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="smobile" name="seller" value="卖家-手机"><span>卖家-手机</span></label><br/>  
+	                            <input type="text" onkeyup="onkeyval(smobile)" style="width:140px;display:none;" id="smobilet"/>
+	                        
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="saddr" name="seller" value="卖家-地址"><span>卖家-地址</span></label><br/>
+	                            <input type="text" onkeyup="onkeyval(saddr)" style="width:140px;display:none;" id="saddrt"/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="shttp" name="seller" value="卖家-网址"><span>卖家-网址</span></label><br/>
+	                            <input type="text" onkeyup="onkeyval(shttp)" style="width:140px;" id="shttpt"/><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="sliu" name="seller" value="给买家的留言"><span>给买家的留言</span></label><br/>
+	                            <textarea onkeyup="onkeyval(sliu)" style="width:140px;" id="sliut"></textarea><br/>
+                        </div>
+                        <div class="span4">
+                        	<label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="buynumber" name="baby" value="发货单编号"><span>发货单编号</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babytid" name="baby" value="订单编号"><span>订单编号</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babyname" name="baby" value="商品名称"><span>商品名称</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babyuid" name="baby" value="商品编号"><span>商家编码</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babysid" name="baby" value="属性"><span>商品属性</span></label><br/>    
+	                            
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babyprice" name="baby" value="单价"><span>单价(元)</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babynum" name="baby" value="数量"><span>数量</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babyyou" name="baby" value="优惠"><span>优惠(元)</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babyallp" name="baby" value="金额"><span>金额(元)</span></label><br/>
+	                        <label style="display: inline;" class="checkbox-pretty inline"><input type="checkbox" id="babytotalp" name="baby" value="合计"><span>合计</span></label><br/>  
+                        </div>
+                    </div>   
+                </div>                  
+          </div>
+	        <div id="sendcontent" class="sui-well well-small" style="height:400px;margin-top: 10px;">        
+	            <div id="vbuynumber" style="display:none;position:relative; margin:20px 0 0 72%; text-align:right;">201311140001</div>
+	                <h4 id="vbuytitle" style="display:none;text-align:center;">发货单</h4>
+	            
+	            <div class="row-fluid" style="min-height:20px;">
+	            	<div id="vbabytid" style="margin-left:10px;float:left;display:none;min-height:20px;">订单编号：</div>
+	            	<div id="vbuytime" style="margin-left:40px;float:left;display:none;min-height:20px;">购买时间：</div>
+	            	<div id="vftime" style="margin-left:40px;float:left;display:none;min-height:20px;">发货时间：</div>
+	            	<div id="vbuyzid" style="margin-left:40px;float:left;display:none;min-height:20px;">邮编：</div>
+	            </div>
+	            <div class="row-fluid" style="min-height:20px;">
+	            	<div id="vbuyname" style="margin-left:10px;float:left;display:none;min-height:20px;">姓名：</div>
+	            	<div id="vbuywang" style="margin-left:63px;float:left;display:none;min-height:20px;">买家旺旺：</div>
+	            	<div id="vbuymobile" style="margin-left:40px;float:left;display:none;min-height:20px;">手机：</div>
+	            	<div id="vbuyiphone" style="margin-left:40px;float:left;display:none;min-height:20px;">电话：</div>
+	            </div>
+	            <div class="row-fluid" style="min-height:20px;">
+	            	<div class="span6" id="vbuyaddr" style="display:none;min-height:20px;">地址：</div>
+	            	<div class="span6" id="vbuyliu" style="display:none;min-height:20px;">留言：</div>
+	            </div>
+	        	<table class="sui-table table-striped table-bordered table-hover">
+	                <thead>
+	                    <tr>
+	                    	<th >行号</th>
+	                    	<th id="vbabyname" style="display:none;min-height:20px;">商品名称</th>
+	                    	<th id="vbabyuid" style="display:none;min-height:20px;">商家编码</th>
+	                    	<th id="vbabysid" style="display:none;min-height:20px;">商品属性</th>
+	                    	<th id="vbabynum" style="display:none;min-height:20px;">数量</th>
+	                    	<th id="vbabyprice" style="display:none;min-height:20px;">单价(元)</th>
+	                    	<th id="vbabyyou" style="display:none;min-height:20px;">优惠(元)</th>
+	                    	<th id="vbabyallp" style="display:none;min-height:20px;">金额(元)</th>
+	                    </tr>
+	                </thead>
+	                <tfoot id="vbabytotalp" style="display:none;">
+	                    <tr >
+	                    	<td id="tablecol" colspan="8">合计金额：（优惠：52元　　运费：2.00元　　实收款：520.00元）</td>
+	                    </tr>
+	                </tfoot>
+	            </table>
+	            
+	            <div class="row-fluid" style="min-height:20px;">
+	            	<div id="vsiphone" style="margin-left:10px;float:left;display:none;min-height:20px;">电话：</div>
+	            	<div id="vsmobile" style="margin-left:40px;float:left;display:none;min-height:20px;">手机：</div>
+	            	<div id="vswang" style="margin-left:40px;float:left;display:none;min-height:20px;">卖家旺旺：</div>
+	            </div>
+	            <div class="row-fluid" style="min-height:20px;">
+	            	<div  id="vshttp" style="margin-left:10px;float:left;display:none;min-height:20px;">网址：</div>
+	            	<div  id="vstitle" style="margin-left:80px;float:left;display:none;min-height:20px;">店铺名称：</div>
+	            </div>
+	            <div class="row-fluid" style="min-height:20px;">
+	            	<div class="span12" id="vsaddr" style="display:none;min-height:20px;">地址：</div>
+	            </div>
+	            <div class="row-fluid" style="min-height:20px;">
+	            	<div class="span12" id="vsliu" style="display:none;min-height:20px;">给买家的留言：</div>
+	            </div>
+	            <div class="row-fluid" style="min-height:20px;">
+	            	<div class="span12" id="vsbz" style="display:none;min-height:20px;">卖家备注：</div>
+	            </div>
+	        </div>
+        </form>
+        
+        <!--Profile Form打印预览-->
+        <div id="iframes" style="display: none;"></div>
+    </div>
+<script type="text/javascript">
+var semonick='';
+var buyerop={};
+var sellerop={};
+var babyop={};
+window.onload = function(){
+	QN.initTheme();
+	$("#dyfhsel").attr("class","dqzt");
+	onload_viptime('sendMo');
+}
+$(document).ready(function(){
+	setTimeout(sendmodel,10);
+	$("input[type='checkbox']").click(function(){
+		var key=$(this).attr("id");
+		var keys=$(this).attr("value");
+		var keyn=$(this).attr("name");
+		if(keyn=='buyer'){
+			var buyerk='';
+			var buyerval='';
+			/************************1*********************/
+			for(index in buyerop){
+				if(buyerop[index].indexOf("|:|") > 0){
+					buyerval=buyerop[index].split('|:|');
+					buyerval=buyerval[0]+"|:|";
+				}else{
+					buyerval=buyerop[index];
+					}
+				if(buyerval==keys){
+					buyerop.splice(index,1);
+					buyerk=1;
+					$("#v"+key).css({"display":"none"});
+					$("#p"+key).css({"display":"none"});
+				}
+			}
+			if(buyerk!=1){
+				if(keys.indexOf("|:|") > 0){
+					 if(document.getElementById(key+"t").value=='')document.getElementById(key+"t").value=$("#v"+key).html();
+					 buyerop.push(keys+document.getElementById(key+"t").value);
+					 }else buyerop.push(keys);
+				$("#v"+key).css({"display":"block"});
+				}
+		}else if(keyn=='seller'){
+			var sellerk='';
+			var sellerval='';
+			/************************2*********************/
+			for(index in sellerop){
+				sellerval=sellerop[index].split('|:|');
+				sellerval=sellerval[0];
+				if(sellerval==keys){
+					sellerop.splice(index,1);
+					sellerk=1;
+					$("#v"+key).css({"display":"none"});
+					$("#p"+key).css({"display":"none"});
+				}
+			}
+			if(sellerk!=1){
+				sellerop.push(keys+"|:|"+document.getElementById(key+"t").value);
+				$("#v"+key).css({"display":"block"});
+			}
+		}else if(keyn=='baby'){
+			var babyk='';
+			var babyval='';
+			var tablecols=1;
+			/************************3*********************/
+			for(index in babyop){
+				babyval=babyop[index];
+				if(babyval==keys){
+					babyop.splice(index,1);
+					babyk=1;
+					$("#v"+key).css({"display":"none"});
+					$("#p"+key).css({"display":"none"});
+					tablecols--;
+				}
+				if(babyval!="订单编号"||babyval!="合计")tablecols++;
+			}
+			if(babyk!=1){
+				babyop.push(keys);
+				$("#v"+key).css({"display":""});
+			}
+			$("#tablecol").css({"colspan":'"'+tablecols+'"'});
+			$("#ptablecol").css({"colspan":'"'+tablecols+'"'});
+		}
+	});
+});
+function reshow(){
+	window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/sendMo?vers=<?php echo REAL_ROOT_VER;?>';
+}
+function sendmodel(){
+	QN.application.invoke({
+		 "cmd": "getLoginuser",
+		 "success": function (e){
+			 if(typeof  e=== 'string'){
+	            	e = JSON.parse(e);
+	            }
+		     semonick=decodeURI(e.user_nick);
+		    var sendMtext = window.localStorage.getItem("sendMtext"+semonick);
+			if(sendMtext=="null"||sendMtext==null){
+				$.ajax({
+				     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/sendModel',
+				     type: 'POST',
+				     dataType:'html',
+				     data:{nick:semonick},
+				     timeout:10000,
+				     success: function(data){
+				    	 var datatemp=eval('('+data+')');
+				    	 window.localStorage.setItem("sendMtext"+semonick,data);
+				    	 buyerop=datatemp[0]['buyerop'].split('|,|');
+				    	 sellerop=datatemp[0]['sellerop'].split('|,|');
+				    	 babyop=datatemp[0]['babyop'].split(',');
+				    	 var tl=datatemp[0].size;
+						    tl=tl.replace("'","");
+						    tl=tl.split('X');
+						    document.getElementById("ud").value=tl[0];
+						    document.getElementById("lr").value=tl[1];
+						 var wh=datatemp[0].sizewh;
+							wh=wh.replace("'","");
+							wh=wh.split('X');
+						    document.getElementById("w").value=wh[0];
+						    document.getElementById("h").value=wh[1];
+						   /* $("#fontsize").find("option[value='"+wh[2]+"']").attr("selected",true);*/
+						    $("#fontsize li").attr('class','');
+					    	$("#fontsize").siblings('a').children('input').val(wh[2]);
+				            $("#fontsize").siblings('a').children('span').html(wh[2]);
+				            $("#fontsize li a[value=''"+wh[2]+"']").parent('li').attr('class','active');
+						   /* $("#fontstyle").find("option[value='"+wh[3]+"']").attr("selected",true);*/ 
+						    $("#fontstyle li").attr('class','');
+					    	$("#fontstyle").siblings('a').children('input').val(wh[3]);
+				            $("#fontstyle").siblings('a').children('span').html(wh[3]);
+				            $("#fontstyle li a[value=''"+wh[3]+"']").parent('li').attr('class','active');
+				    	 sendModelse();
+				     }
+				 });
+			}else{
+				 var datatemp=eval('('+sendMtext+')');
+				 buyerop=datatemp[0]['buyerop'].split('|,|');
+		    	 sellerop=datatemp[0]['sellerop'].split('|,|');
+		    	 babyop=datatemp[0]['babyop'].split(',');
+		    	 var tl=datatemp[0].size;
+				    tl=tl.replace("'","");
+				    tl=tl.split('X');
+				    document.getElementById("ud").value=tl[0];
+				    document.getElementById("lr").value=tl[1];
+				 var wh=datatemp[0].sizewh;
+					wh=wh.replace("'","");
+					wh=wh.split('X');
+				    document.getElementById("w").value=wh[0];
+				    document.getElementById("h").value=wh[1];
+				    /*$("#fontsize").find("option[value='"+wh[2]+"']").attr("selected",true);*/
+				    $("#fontsize li").attr('class','');
+			    	$("#fontsize").siblings('a').children('input').val(wh[2]);
+		            $("#fontsize").siblings('a').children('span').html(wh[2]);
+		            $("#fontsize li a[value=''"+wh[2]+"']").parent('li').attr('class','active');
+				   /* $("#fontstyle").find("option[value='"+wh[3]+"']").attr("selected",true);*/
+		            $("#fontstyle li").attr('class','');
+			    	$("#fontstyle").siblings('a').children('input').val(wh[3]);
+		            $("#fontstyle").siblings('a').children('span').html(wh[3]);
+		            $("#fontstyle li a[value=''"+wh[3]+"']").parent('li').attr('class','active');
+		    	 sendModelse();
+				}
+		 }
+	});
+	}
+
+	function sendModelse(){
+		var buyerval='';
+	   	var sellerval='';
+		var tablecol=1;
+	   	 for(index in buyerop){
+	   		 var buyerval=buyerop[index].split('|:|');
+	   		 switch (buyerval[0]){
+	   		 	case '买家-姓名':{$("#buyname").parent('label').checkbox('check');$("#buyname").parent('label').checkbox('check');$("#vbuyname").css({"display":"block"});break;}
+	   		 	case '买家-旺旺':{$("#buywang").parent('label').checkbox('check');$("#buywang").parent('label').checkbox('check');$("#vbuywang").css({"display":"block"});break;}
+	   		 	case '买家-电话':{$("#buyiphone").parent('label').checkbox('check');$("#buyiphone").parent('label').checkbox('check');$("#vbuyiphone").css({"display":"block"});break;}
+	   		 	case '买家-手机':{$("#buymobile").parent('label').checkbox('check');$("#buymobile").parent('label').checkbox('check');$("#vbuymobile").css({"display":"block"});break;}
+	   		 	case '买家-地址':{$("#buyaddr").parent('label').checkbox('check');$("#buyaddr").parent('label').checkbox('check');$("#vbuyaddr").css({"display":"block"});break;}
+	   		 	case '买家-邮编':{$("#buyzid").parent('label').checkbox('check');$("#buyzid").parent('label').checkbox('check');$("#vbuyzid").css({"display":"block"});break;}
+	   		 	case '买家-留言':{$("#buyliu").parent('label').checkbox('check');$("#buyliu").parent('label').checkbox('check');$("#vbuyliu").css({"display":"block"});break;}
+	   		 	case '发货时间':{$("#ftime").parent('label').checkbox('check');$("#ftime").parent('label').checkbox('check');$("#vftime").css({"display":"block"});break;}
+	   		 	case '购买时间':{$("#buytime").parent('label').checkbox('check');$("#buytime").parent('label').checkbox('check');$("#vbuytime").css({"display":"block"});break;}
+	   		 	case '模版标题':{$("#buytitle").parent('label').checkbox('check');$("#buytitle").parent('label').checkbox('check');document.getElementById("buytitlet").value=buyerval[1];$("#vbuytitle").html(buyerval[1]);$("#vbuytitle").css({"display":"block"});break;}
+	   		 }
+		    	 }
+	   	 for(index in sellerop){
+	   		 var sellerval=sellerop[index].split('|:|');
+	   		 switch (sellerval[0]){
+	   		 	case '店铺名称':{$("#stitle").parent('label').checkbox('check');$("#stitle").parent('label').checkbox('check');$("#vstitle").css({"display":"block"});$("#vstitle").html('店铺名称：');break;}//document.getElementById("stitlet").value=sellerval[1];$("#vstitle").css({"display":"block"});
+	   		 	case '卖家-旺旺':{$("#swang").parent('label').checkbox('check');$("#swang").parent('label').checkbox('check');$("#vswang").css({"display":"block"});break;}
+	   		 	case '卖家-备注':{$("#sbz").parent('label').checkbox('check');$("#sbz").parent('label').checkbox('check');$("#vsbz").css({"display":"block"});break;}
+	   		 	case '卖家-电话':{$("#siphone").parent('label').checkbox('check');$("#siphone").parent('label').checkbox('check');$("#vsiphone").css({"display":"block"});$("#vsiphone").html('卖家-电话：');break;}//document.getElementById("siphonet").value=sellerval[1];$("#vsiphone").css({"display":"block"});
+	   		 	case '卖家-手机':{$("#smobile").parent('label').checkbox('check');$("#smobile").parent('label').checkbox('check');$("#vsmobile").css({"display":"block"});$("#vsmobile").html('卖家-手机：');break;}//document.getElementById("smobilet").value=sellerval[1];$("#vsmobile").css({"display":"block"});
+	   		 	case '卖家-地址':{$("#saddr").parent('label').checkbox('check');$("#saddr").parent('label').checkbox('check');$("#vsaddr").css({"display":"block"});$("#vsaddr").html('卖家-地址：');break;}//document.getElementById("saddrt").value=sellerval[1];$("#vsaddr").css({"display":"block"});
+	   		 	case '卖家-网址':{$("#shttp").parent('label').checkbox('check');$("#shttp").parent('label').checkbox('check');document.getElementById("shttpt").value=sellerval[1];$("#vshttp").css({"display":"block"});$("#vshttp").html('卖家-网址：'+sellerval[1]);break;}
+	   		 	case '给买家的留言':{$("#sliu").parent('label').checkbox('check');$("#sliu").parent('label').checkbox('check');document.getElementById("sliut").value=sellerval[1];$("#vsliu").css({"display":"block"});$("#vsliu").html('给买家的留言：'+sellerval[1]);break;}
+	   		 }
+		    	 }
+	   	 for(index in babyop){
+	   		 tablecol++;
+	   		 switch (babyop[index]){
+	   		 	case '订单编号':{$("#babytid").parent('label').checkbox('check');$("#babytid").parent('label').checkbox('check');$("#vbabytid").css({"display":"block"});tablecol--;break;}
+	   		 	case '商品名称':{$("#babyname").parent('label').checkbox('check');$("#babyname").parent('label').checkbox('check');$("#vbabyname").css({"display":""});break;}
+	   		 	case '商品编号':{$("#babyuid").parent('label').checkbox('check');$("#babyuid").parent('label').checkbox('check');$("#vbabyuid").css({"display":""});break;}
+	   		 	case '属性':{$("#babysid").parent('label').checkbox('check');$("#babysid").parent('label').checkbox('check');$("#vbabysid").css({"display":""});break;}
+	   		 	case '单价':{$("#babyprice").parent('label').checkbox('check');$("#babyprice").parent('label').checkbox('check');$("#vbabyprice").css({"display":""});break;}
+	   		 	case '数量':{$("#babynum").parent('label').checkbox('check');$("#babynum").parent('label').checkbox('check');$("#vbabynum").css({"display":""});break;}
+	   		 	case '优惠':{$("#babyyou").parent('label').checkbox('check');$("#babyyou").parent('label').checkbox('check');$("#vbabyyou").css({"display":""});break;}
+	   		 	case '金额':{$("#babyallp").parent('label').checkbox('check');$("#babyallp").parent('label').checkbox('check');$("#vbabyallp").css({"display":""});break;}
+	   		 	case '合计':{$("#babytotalp").parent('label').checkbox('check');$("#babytotalp").parent('label').checkbox('check');$("#vbabytotalp").css({"display":""});tablecol--;break;}
+	   		 	case '发货单编号':{$("#buynumber").parent('label').checkbox('check');$("#buynumber").parent('label').checkbox('check');$("#vbuynumber").css({"display":""});break;}
+	   		 }
+		    	 }
+	   	 $("#tablecol").css({"colspan":'"'+tablecol+'"'});
+		}
+	function savesend(){
+		tradedots('sendMo');
+		var size=document.getElementById("ud").value+"X"+document.getElementById("lr").value;
+		var sizewh=document.getElementById("w").value+"X"+document.getElementById("h").value+"X"+$("#fontsize").siblings('a').children('input').val()+'X'+$("#fontstyle").siblings('a').children('input').val();
+		var buyerops='';
+		var sellerops='';
+		var babyops='';
+		for(index in buyerop){
+			if(buyerops=='')buyerops=buyerop[index]; else buyerops+='|,|'+buyerop[index];
+			}
+		for(index in sellerop){
+			if(sellerops=='')sellerops=sellerop[index]; else sellerops+='|,|'+sellerop[index];
+			}
+		for(index in babyop){
+			if(babyops=='')babyops=babyop[index]; else babyops+=','+babyop[index];
+			}
+		$.ajax({
+		     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/saveSendmo',
+		     type: 'POST',
+		     dataType:'html',
+		     data:{nick:semonick,buyerop:buyerops,size:size,sellerop:sellerops,babyop:babyops,sizewh:sizewh},
+		     timeout:10000,
+		     success: function(data){
+			     if(data==1){
+			    	 window.localStorage.removeItem("sendMtext"+semonick);
+			    	 layer.msg('保存成功！', 1, 1);
+					}else{
+						layer.msg('保存失败！', 1, 3);
+					}
+		     },
+		     error: function(data){
+		    	 layer.msg('保存失败！', 1, 3);
+		     }	     
+		 });
+		}
+	function onkeyval(onval){
+		var onkeys=$(onval).attr("id");
+		var onkeyn=$(onval).attr("name");
+		var onkeyv=$(onval).attr("value");
+		if(onkeyn=='buyer'){
+			for(index in buyerop){
+				if(buyerop[index].indexOf("|:|") > 0){
+					buyerop[index]=onkeyv+document.getElementById(onkeys+"t").value;
+					$("#v"+onkeys).html(document.getElementById(onkeys+"t").value);
+				}
+			}
+			}else if(onkeyn=='seller'){
+				var sellervalk='';
+				for(index in sellerop){
+					sellervalk=sellerop[index].split('|:|');
+					if(sellervalk[0]==onkeyv){
+						sellerop[index]=onkeyv+'|:|'+document.getElementById(onkeys+"t").value;
+					}
+				}
+				
+						$("#v"+onkeys).html(onkeyv+'：'+document.getElementById(onkeys+"t").value);
+				}
+		}
+function changesize(values){
+	var ud=$("#ud").val();
+	var lr=$("#lr").val();
+	switch(values){
+		case 'up':{
+			document.getElementById("ud").value=Number(ud)-1;
+			break;}
+		case 'down':{
+			document.getElementById("ud").value=Number(ud)+1;
+			break;}
+		case 'left':{
+			document.getElementById("lr").value=Number(lr)-1;
+			break;}
+		case 'right':{
+			document.getElementById("lr").value=Number(lr)+1; 
+			break;}
+	}
+}
+function yulianf(){
+	$("#iframes").empty();
+	var ssmessages='';
+	var fsmessages='';
+	var babylists='';
+	var babylist='';
+	var buyerval='';
+	for(index in buyerop){
+		 buyerval=buyerop[index].split('|:|');
+		 switch (buyerval[0]){
+		 	case '买家-姓名':{if(ssmessages=='')ssmessages='买家姓名|,|王先生'; else ssmessages+='|:|买家姓名|,|王先生'; break;}
+		 	case '买家-旺旺':{if(ssmessages=='')ssmessages='买家旺旺|,|cici1**'; else ssmessages+='|:|买家旺旺|,|cici1**';break;}
+		 	case '买家-电话':{if(ssmessages=='')ssmessages='买家电话|,|021-1112**'; else ssmessages+='|:|买家电话|,|021-1112**';break;}
+		 	case '买家-手机':{if(ssmessages=='')ssmessages='买家手机|,|150***72804'; else ssmessages+='|:|买家手机|,|150***72804';break;}
+		 	case '买家-地址':{if(ssmessages=='')ssmessages='买家地址|,|湖南 衡阳**'; else ssmessages+='|:|买家地址|,|湖南 衡阳**';break;}
+		 	case '买家-邮编':{if(ssmessages=='')ssmessages='买家邮编|,|200000'; else ssmessages+='|:|买家邮编|,|200000';break;}
+		 	case '买家-留言':{if(ssmessages=='')ssmessages='买家留言|,|记得送礼物哦**'; else ssmessages+='|:|买家留言|,|记得送礼物哦**';break;}
+		 	case '发货时间':{if(ssmessages=='')ssmessages='发货时间|,|2013-11-11'; else ssmessages+='|:|发货时间|,|2013-11-11';break;}
+		 	case '购买时间':{if(ssmessages=='')ssmessages='购买时间|,|2013-11-11'; else ssmessages+='|:|购买时间|,|2013-11-11';break;}
+		 	case '模版标题':{if(ssmessages=='')ssmessages='模版标题|,|'+document.getElementById("buytitlet").value; else ssmessages+='|:|'+'模版标题|,|'+document.getElementById("buytitlet").value;break;}
+		 }
+  	 }
+	var sellerval='';
+	 for(index in sellerop){
+		 sellerval=sellerop[index].split('|:|');
+		 switch (sellerval[0]){
+		 	case '店铺名称':{if(fsmessages=='')fsmessages='店铺名称|,|雅芙*'; else fsmessages+='|:|店铺名称|,|雅芙*';break;}
+		 	case '卖家-旺旺':{if(fsmessages=='')fsmessages='卖家旺旺|,|vv零点**'; else fsmessages+='|:|'+'卖家旺旺|,|vv零点**';break;}
+		 	case '卖家-备注':{if(fsmessages=='')fsmessages='卖家备注|,|谢谢光临,******'; else fsmessages+='|:|'+'卖家备注|,|谢谢光临,******';break;}
+		 	case '卖家-电话':{if(fsmessages=='')fsmessages='卖家电话|,|021-1111**'; else fsmessages+='|:|卖家电话|,|021-1111**';break;}
+		 	case '卖家-手机':{if(fsmessages=='')fsmessages='卖家手机|,|135***13520'; else fsmessages+='|:|卖家手机|,|135***13520';break;}
+		 	case '卖家-地址':{if(fsmessages=='')fsmessages='卖家地址|,|上海 上海市**'; else fsmessages+='|:|卖家地址|,|上海 上海市**';break;}
+		 	case '卖家-网址':{if(fsmessages=='')fsmessages='卖家网址|,|'+document.getElementById("shttpt").value; else fsmessages+='|:|卖家网址|,|'+document.getElementById("shttpt").value;break;}
+		 	case '给买家的留言':{if(fsmessages=='')fsmessages='给买家的留言|,|'+document.getElementById("sliut").value; else fsmessages+='|:|给买家的留言|,|'+document.getElementById("sliut").value;break;}
+		 }
+  	 }
+	 for(index in babyop){
+		 switch (babyop[index]){
+		 	case '订单编号':{if(fsmessages=='')fsmessages='订单编号|,|123456789'; else fsmessages+='|:|订单编号|,|123456789';break;}
+		 	case '商品名称':{if(babylists=='')babylists='商品名称'; else babylists+='|,|商品名称';break;}
+		 	case '商品编号':{if(babylists=='')babylists='商家编码'; else babylists+='|,|商家编码';break;}
+		 	case '属性':{if(babylists=='')babylists='商品属性'; else babylists+='|,|商品属性';break;}
+		 	case '单价':{if(babylists=='')babylists='单价'; else babylists+='|,|单价';break;}
+		 	case '数量':{if(babylists=='')babylists='数量'; else babylists+='|,|数量';break;}
+		 	case '优惠':{if(babylists=='')babylists='优惠'; else babylists+='|,|优惠';break;}
+		 	case '金额':{if(babylists=='')babylists='金额'; else babylists+='|,|金额';break;}
+		 	case '合计':{if(babylists=='')babylists='合计'; else babylists+='|,|合计';break;}
+		 	case '发货单编号':{if(fsmessages=='')fsmessages='发货单编号|,|201311110001'; else fsmessages+='|:|'+'发货单编号|,|201311110001';break;}
+		 }
+  	 }
+	 var babyfee='';
+	 var fontstyle=/*$('#fontsize option:selected').val()*/$('#fontsize').siblings('a').children('input').val()+';'+/*$('#fontstyle option:selected').val()*/$('#fontstyle').siblings('a').children('input').val();
+	 $("#iframes").append('<iframe src="<?php echo APP_WEB_INDEX_ROOT;?>/trade/sendMtext?vers=<?php echo REAL_ROOT_VER;?>#fsmessage='+encodeURIComponent(fsmessages)+'&ssmessage='+encodeURIComponent(ssmessages)+'&babylist='+encodeURIComponent(babylist)+'&babylists='+encodeURIComponent(babylists)+'&babyfee='+encodeURIComponent(babyfee)+'&fontstyle='+encodeURIComponent(fontstyle)+'" id="print_iframe" frameborder="no" border="0" name="iframe_a" width="820px" height="540px" onload="TestPreviewWithFrame()" ></iframe>');
+	 window.localStorage.setItem("printPreview",$("#iframes").html());
+	 openPreview();
+}
+
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-7-23
+ * Time: 18:20 
+ * 预览发货单模版
+ */	
+function openPreview(){
+	QN.application.invoke({
+	    cmd : 'openAttachWindow',
+	    param : {
+	    	event:"printPreview",
+	    	width:900,
+	    	height:550,
+	    	title:'预览发货单模版'
+	    	},
+	    success : function(rsp) {
+	    },
+	    error : function(msg) {
+	    }
+	});
+	}
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

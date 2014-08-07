@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+<div class="container" style="margin-left: 10px;">
+     <div style="display: none;" id="adv_top"></div>
+     <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+       <label> 评价状态：</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--<select style="width:100px;" onchange="selectsum();" id="checkrates" >  
+	              <option value="RATE_UNSELLER">所有</option> 
+	                <option value="RATE_BUYER_UNSELLER">买家已评</option>
+	                <option value="RATE_UNBUYER_UNSELLER">买家未评</option>
+         </select>-->
+      
+            <span class="sui-dropdown dropdown-bordered select">
+				<span class="dropdown-inner">
+					<a  role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+       		    		<input id="checkrates" value="RATE_UNSELLER" name="city" type="hidden" onchange="selectsum();">
+       		    		<i class="caret"></i>
+       		    		<span id="checkratesval">所有</span>
+       		    	</a>
+        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+           				<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="RATE_UNSELLER">所有</a></li>
+            			<li role="presentation" pointstu="pointstu" class=""><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="RATE_BUYER_UNSELLER">买家已评</a></li>             
+            			<li role="presentation" pointstu="pointstu" class=""><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="RATE_UNBUYER_UNSELLER">买家未评</a></li>
+        			</ul>
+			</span>
+		</span>
+		  <button id="plpj1" data-toggle="modal"  class="sui-btn btn-primary btn-lg"  onclick="pingyu('miss');">批量评价</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;" id="num">0</span>个待评价订单
+            </form> 
+          
+	        <div class="tab-content" style="overflow: visible;">
+				<table  class="sui-table table-striped table-bordered" style="margin-top: 5px;" >
+	        		<thead>
+	        		<tr style="background-color:silvery;">
+	        		<!-- <th width="4%">
+        				<input type="checkbox"  id="checkall" name="checkall" value="option1" class="tradeqx" /><span></span> -->
+        			<th width="4%">
+        			<label class="checkbox-pretty inline">
+        				<input type="checkbox"  id="checkall" name="checkall" value="option1" class="checkall" />&nbsp;<span class="lbl"></span>
+        			</label>
+        			</th>
+	        			<!-- <th width="4%"><input type="checkbox"  id="checkall" name="checkall" class="ace-checkbox-2" onclick= "checkAll()" /></th> -->
+	        			<th width="33%" >订单</th>
+	        			<th width="20%" >数量/实收款</th>
+	        			<th width="35%">商品信息</th>
+	        			<th width="8%">操作</th>
+	        		</tr>
+	        		</thead>
+			    	<tbody id="sampledai">
+					</tbody >
+		 		</table>
+		 			<div id="chapfyswangsx1"></div>
+		 	 </div>
+		 		<!-- 加载中的转圈 -->
+	      <div id="pjfy" tabindex="-1" class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>
+			  <!-- <div id="pjfy">
+			   		<p class="alert" style="text-align:center;margin-bottom: 0px;">奋力加载中...</p>
+			   </div> --> 
+			   <!-- 批量评价 -->
+			  <div id="batchpj" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="600px" >
+			
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">批量评价</h4>
+    					  	  </div>
+      						 <div class="modal-body" id="pingjiadata">
+		           				 <span>选择等级:</span>
+									<label class="" style="display: inline;"><input style="margin-left: 20px"  type="radio"    name="rate" value="good"  checked/><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/good.png" width="12" alt="好评"></span></label>
+								       	<label class="" style="display: inline;"><input  style="margin-left: 20px" type="radio"    name="rate" value="neutral"  /><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/neutral.png" width="12" alt="中评"></span></label>
+								        <label class="" style="display: inline;"><input style="margin-left: 20px"  type="radio"    name="rate" value="bad"  /><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/bad.png" width="12" alt="差评"></span></label>
+								        <br/><br/><span>选择评语:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								        <!-- <select class="span12" onchange="Pchoice()" style="width: 260px;" id="pingcP"></select> -->
+								           <span class="sui-dropdown dropdown-bordered select">
+													<span class="dropdown-inner">
+														<a  role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+									       		    		<input type="hidden" onchange="Pchoice()">
+									       		    		<i class="caret"></i>
+									       		    		<span >谢谢，很好的买家！</span>
+									       		    	</a>
+									        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu abcde" id="pingcP">
+									        			</ul>
+												</span>
+											</span>
+								        <textarea class="span12" id="pingconP" placeholder="" style="margin-top: 5px;height:100px; width:515px"></textarea>
+				            </div>
+      						  <div class="modal-footer">
+    							      <!-- <button type="button" data-ok="modal" onclick="batchP();" class="sui-btn btn-primary btn-large">确认评价</button>-->
+      					   		 <button  data-ok="modal" data-toggle="modal"  data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="batchP();" >确定评价</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+			
+			   <!-- 原始批量评价 -->
+			 <!--  <div id="batchpj" class="mesWindow" style="Z-INDEX:99998; POSITION:absolute;height:320px; width:560px;display:none;background-color:#FFF;">
+				 <div class="mesWindowTop" style="height:35px;">
+		            <button type="button" class="close" style="margin-top: 6px;" onclick="closeMsg('');">×</button>
+		            <h4>批量评价</h4>
+		         </div>
+				 <div class="modal-body" id="pingjiadata">
+		            <span>选择等级:</span>
+					<label class="" style="display: inline;"><input style="margin-left: 20px"  type="radio"    name="rate" value="good"  checked/><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/good.png" width="12" alt="好评"></span></label>
+			        <label class="" style="display: inline;"><input  style="margin-left: 20px" type="radio"    name="rate" value="neutral"  /><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/neutral.png" width="12" alt="中评"></span></label>
+			        <label class="" style="display: inline;"><input style="margin-left: 20px"  type="radio"    name="rate" value="bad"  /><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/bad.png" width="12" alt="差评"></span></label>
+			        <br/><br/><span>选择评语:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			        <select onchange="Pchoice()" style="width: 260px;" id="pingcP"></select>
+			        <textarea class="span12" id="pingconP" placeholder="" style="margin-top: 5px;height:100px; width:515px"></textarea>
+	            </div>
+				<div class="footer">
+					 <div  class="mesWindowBottom">	
+						 <input type="button" class="btn btn-primary" style="padding: 3px 10px;" onclick="batchP();" value="确定评价"><input type="button" onclick="closeMsg('');" style="margin-left:8px;padding: 3px 10px;" value="关闭">	
+					 </div>
+					
+				 </div>
+			 </div> -->
+	        
+	        <!--Profile Form评价-->
+	       <div id="pingjia2" tabindex="-1" role="dialog" data-hasfoot="true" data-backdrop="static" class="sui-modal hide fade" data-width="600px" data-height="260px">
+  				<div class="modal-dialog">
+    				<div class="modal-content">
+     			 		<div class="modal-header">
+        					<button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        							<h4 class="modal-title">评价</h4>
+      					</div>
+      					<div class="modal-body" id="pingjiaz" style="overflow:scroll;overflow-x:hidden; max-height: 325px;"></div>
+      					<div class="modal-footer">
+      					   <!--  <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large" onclick="batchP2();" >确定评价</button> -->
+      					    <button  data-ok="modal" data-toggle="modal"  data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="batchP2();" >确定评价</button>
+                            <button  data-dismiss="modal" class="sui-btn btn-default btn-large" onclick="closeMsg('');">关闭</button>
+    		    		</div>
+    					</div>
+  				</div>
+			</div>
+			<!-- 原始评价 -->
+		     <!-- <div id="pingjia2" class="mesWindow" style="Z-INDEX:99998; POSITION:absolute;height:400px; width:560px;display:none;background-color:#FFF;">
+				 <div class="mesWindowTop" style="height:35px;">
+		            <button type="button" class="close" style="margin-top: 6px;" onclick="closeMsg('');">×</button>
+		            <h4>评价</h4>
+		         </div>
+				 <div class="modal-body" id="pingjiaz"></div>
+				<div class="footer">
+					 <div  class="mesWindowBottom">	
+						 <input type="button" class="btn btn-primary" style="padding: 3px 10px;" onclick="batchP2();" value="确定评价"><input type="button" onclick="closeMsg('');" style="margin-left:8px;padding: 3px 10px;" value="关闭">	
+					 </div>
+				 </div>
+			 </div>-->
+		 </div> 
+</div>
+<script type="text/javascript">
+window.onload = function(){
+    QN.initTheme();
+    /*
+    $("li[name='colstate']").attr("id","");
+	$("li[colsta='color2']").attr("id","cd-dqzt");*/
+    $("#pjglsel").attr("class","dqzt");
+	onload_viptime('batchEvaluation');
+	bridge();
+	if(vipuser==0){
+		ittoolspam('AD20140730133000','plpjpf');
+	}else{
+		ittoolspam('AD20140730133000','plpjpvip');
+	}
+}
+function masterchen1234(TT){
+	selectsum();
+	console.log(TT.value);
+	
+}
+function reshow(){
+	bridge();
+}
+var page_no=1;
+var page_size=20;
+var page_nos=1;
+var page_sizes=40;
+var totalnums=0;
+var tid2='';
+var shuxue=false;
+
+function pingyu(vall){
+	
+
+	if(vall!='miss'){
+    	 $("input[name='checkone']").parent('label').checkbox('uncheck');
+    	 $("input[name='checkall']").parent('label').checkbox('uncheck');
+    	 $("#"+vall).parent('label').checkbox('check');
+		}
+	if(0==$(".ace-checkbox-2:checked").length){
+        layer.msg('没有选择的订单！',2,3)
+        return;
+    }else{
+       
+	QN.application.invoke({
+		 "cmd": "getLoginuser",
+		 "success": function (e){
+			 if(typeof  e=== 'string'){
+	            	e = JSON.parse(e);
+	            }
+		 var nick=decodeURI(e.user_nick);
+		 var fast_ratews=window.localStorage.getItem("fast_rate"+nick);
+		 if(fast_ratews==''|| fast_ratews==null){
+			 $.ajax({
+				    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getPing',
+				    type: 'POST',
+				    dataType:'html',
+				    data:{nick:nick},
+				    timeout:10000,
+				    success: function(dataP){/*获取成功*/
+					    	var dataPs=dataP;
+					    	window.localStorage.setItem("fast_rate"+nick,dataPs);
+				    	 	$("#pingcP").empty();
+					    	var valP=dataPs.split('\\n');
+					    	if(valP[0].indexOf('\n') > 0 ) valP=dataPs.split('\n');
+					    	if(valP!=null&&valP.length>1){
+						    	for(index in valP){
+							    	/*$("#pingcP").append('<option  value="'+valP[index]+'">'+valP[index]+'</option>');*/
+		                        	$("#pingcP").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+valP[index]+'">'+valP[index]+'</a></li>');
+						    	}
+					    	}else /*$("#pingcP").append('<option  value="'+dataPs+'">'+dataPs+'</option>');*/
+	                        	$("#pingcP").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+dataPs+'">'+dataPs+'</a></li>');
+					    	document.getElementById("pingconP").value =valP[0];
+					     }
+				 });
+		 }else{
+			    $("#pingcP").empty();
+		    	var valP=fast_ratews.split('\\n');
+		    	if(valP[0].indexOf('\n') > 0 ) valP=fast_ratews.split('\n');
+		    	if(valP!=null&&valP.length>1){
+			    	for(index in valP){
+				    	/*$("#pingcP").append('<option  value="'+valP[index]+'">'+valP[index]+'</option>');*/
+                    	$("#pingcP").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+valP[index]+'">'+valP[index]+'</a></li>');
+			    	}
+		    	}else /*$("#pingcP").append('<option  value="'+fast_ratews+'">'+fast_ratews+'</option>');*/
+                	$("#pingcP").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+fast_ratews+'">'+fast_ratews+'</a></li>');
+		    	document.getElementById("pingconP").value =valP[0];
+		    	$('#batchpj').modal('show');
+			 }
+		 }
+	});
+	
+	
+	 }
+ }
+ 
+function Pchoice(){
+	/*var selec= $("#pingcP").find('option:selected').val();*/
+	var selec= $("#pingcP").siblings('a').children('input').val();
+	/*var context= $("#pingconP").val();*/
+	document.getElementById("pingconP").value =selec; 
+}
+function bridge(){
+	totalnums=0;
+	page_nos=1;
+	totalSum();
+	 //setTimeout(toevalue,150);
+	 
+   }
+function toevalue(pageno){
+	var rate_status=$('#checkrates').val();
+	if(isNaN(pageno)){
+	    page_no=1;
+		}else{
+		page_no=pageno;
+			}
+	
+   	$("#sampledai").empty();
+	$("#pjfy").empty();
+	$("#chapfyswangsx1").empty();
+         QN.top.invoke({
+             "cmd": "taobao.trades.sold.get",
+             "param": {'fields':"tid,status,end_time,buyer_nick,seller_nick,buyer_rate,seller_rate,created,num,payment,pic_path,has_buyer_message,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_name,receiver_mobile,receiver_phone,orders.title,orders.price,orders.sku_properties_name,orders.pic_path,orders.refund_status,orders.num,seller_flag,type,orders.num_iid,post_fee",
+                 "status":'TRADE_FINISHED',
+                 "rate_status":rate_status,
+                 "type":'tmall_i18n,fixed,auction,guarantee_trade,step,independent_simple_trade,independent_shop_trade,auto_delivery,ec,cod,game_equipment,shopex_trade,netcn_trade,external_trade,instant_trade,b2c_cod,hotel_trade,super_market_trade,super_market_cod_trade,taohua,waimai,nopaid,step,eticket',
+                 "page_no":page_no,
+                 "page_size":page_size
+             },
+             "method": "get",
+             "success": function (rsp){
+                 if(typeof rsp === 'string'){
+                     var rsp = JSON.parse(rsp);
+                 }else{
+                     var rsp= rsp;
+                 }
+                 //var total_results=rsp.trades_sold_get_response.total_results;
+                 if(totalnums>0){
+		                 var orders = rsp.trades_sold_get_response.trades.trade;
+                	 	 var datas={};
+                 	 	 var ordreTemp=0;
+                  	 	 var post_fee=0;
+                   	     var buyer_rate='';
+                		 /*$("#samplechap").append('<thead ><tr style="background-color:silvery;"><td><input  type="checkbox"  id="checkall" name="checkall" class="ace-checkbox-2" onclick="checkAll()" /></td><td >订单</td><td >数量/实收款</td><td >商品信息</td><td >备注</td><td>操作</td></tr></thead>');*/
+                         for(index in orders)
+                         {
+	                        	 ordreTemp=0;
+	                        	 post_fee=0;
+	                             for(orderIndex in orders[index].orders.order){
+	                            	 ordreTemp+=Number(orders[index].orders.order[orderIndex].num);
+	                             }
+								
+                             var order = orders[index];
+                             if(getdates(order.end_time)<15){
+	                             datas.title=order.orders.order[0].title;
+	                             datas.tid=order.tid;
+	                             post_fee=order.orders.order[0].post_fee;
+	                             datas.num_iid=order.orders.order[0].num_iid;
+	                             datas.pic_path=order.orders.order[0].pic_path;
+	                             datas.created=order.end_time;
+	                             buyer_rate=order.buyer_rate;
+	                             if(buyer_rate=='true'){
+	                            	 datas.buyer_rate='已评价';
+		                             }else{
+		                            	 datas.buyer_rate='未评价';
+		                             }
+	                             datas.buyer_nick=order.buyer_nick;
+	                             if(isNaN(post_fee)){
+	                                 datas.post_fee='0.00';
+	                                 }else{
+	                                 datas.post_fee=post_fee.toFixed(2);
+	                                 }
+	                             datas.price=order.payment;
+	                             datas.num=ordreTemp;
+	                             //datas.price=order.price;
+	                             var source = $("#samplechapmo").html();
+	            	             var template=Handlebars.compile(source);
+	            	             var htmlstr = template(datas);
+	            	             $("#sampledai").append(htmlstr); 
+	                         }
+                         }
+                         $("#num").html(totalnums);
+	                         if(totalnums>20){
+				                 var results=Math.ceil(totalnums/20);
+	                             pagin('chapfyswangsx1','toevalue',page_no,results,totalnums);
+	                         }
+                 }else{
+                	 $("#num").html("0");
+                	 $("#sampledai").empty();
+                	 $("#chapfyswangsx1").append('<div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">您目前还没有待评价的订单哦...</div><s class="msg-icon"></s></div>');
+                 }
+
+             },
+             error: function(msp){
+                 /*请求出错处理 */
+                 /* alert(JSON.stringify(msp));*/
+                 if(typeof msp === 'string'){
+                     var msp = JSON.parse(msp);
+                 }else{
+                     var msp= msp;
+                 }
+                 if(msp.sub_code=='subuser.has-no-permission'){
+                	 /* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+                     showMsg('hint'); */
+                }else{
+                	geterrorinfo('taobao.trades.sold.get',msp);
+                 }
+             }
+         });
+}
+function selectsum(){
+	totalnums=0;
+	page_nos=1;
+	totalSum();
+	$("#checkall").parent('label').checkbox('uncheck');
+	$("#checkall").parent('label').checkbox('uncheck');
+}
+function totalSum(){
+	var rate_status=$('#checkrates').val();
+	
+	QN.top.invoke({
+        "cmd": "taobao.trades.sold.get",
+        "param": {'fields':"end_time",
+            "status":'TRADE_FINISHED',
+            "rate_status":rate_status,
+            "type":'tmall_i18n,fixed,auction,guarantee_trade,step,independent_simple_trade,independent_shop_trade,auto_delivery,ec,cod,game_equipment,shopex_trade,netcn_trade,external_trade,instant_trade,b2c_cod,hotel_trade,super_market_trade,super_market_cod_trade,taohua,waimai,nopaid,step,eticket',
+            "page_no":page_nos,
+            "page_size":page_sizes
+        },
+        "method": "get",
+        "success": function (rsp){
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var rsp= rsp;
+            }
+            shuxue=true;
+            var total_results=rsp.trades_sold_get_response.total_results;
+            if(total_results>0){
+	                var orders = rsp.trades_sold_get_response.trades.trade;
+                    for(index in orders)
+                    {
+                        var order = orders[index];
+                        if(getdates(order.end_time)<15){
+                       	 totalnums++;
+                    }
+            }
+
+        }
+     if(total_results>0){
+            if(orders.length==40){
+            	page_nos++;
+            	totalSum();
+            }else{
+            	toevalue(1);
+                }
+        }else{
+        	$("#num").html(0);
+        	$("#sampledai").empty();
+        	$("#pjfy").empty();
+        	$("#chapfyswangsx1").empty();
+          	$("#chapfyswangsx1").append('<div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">您目前还没有待评价的订单哦...</div><s class="msg-icon"></s></div>');
+            }
+	},
+	error: function(msp){
+        /*请求出错处理 */
+        /* alert(JSON.stringify(msp));*/
+        if(typeof msp === 'string'){
+            var msp = JSON.parse(msp);
+        }else{
+            var msp= msp;
+        }
+        if(msp.sub_code=='subuser.has-no-permission'){
+        	/* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+            showMsg('hint'); */
+    }else{
+    	geterrorinfo('taobao.trades.sold.get',msp);
+        }
+    }
+    });
+}
+/*查单个备注
+function mome(gtid){
+	var seller_memo='';
+	 QN.top.invoke({
+         "cmd": "taobao.trade.fullinfo.get",
+         "param": {
+             "fields":"seller_flag,seller_memo,status,seller_nick,orders.status,buyer_nick,buyer_message,alipay_no,created,pay_time,end_time,payment,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,consign_time,shipping_type,orders,total_fee,post_fee, created, tid, seller_rate,buyer_flag,adjust_fee",
+             'tid':gtid
+         },
+         "method": "get",
+         "success": function (rsp){
+             if(typeof rsp === 'string'){
+                 var    rsp = JSON.parse(rsp);
+             }else{
+                 var	rsp= rsp;
+             }
+             var trade = rsp.trade_fullinfo_get_response.trade;
+             seller_memo=trade.seller_memo;
+             if(seller_memo.length>0){
+            	 $("#mo"+gtid).html(seller_memo);
+             }else{
+            	 $("#mo"+gtid).html("无备注！");
+                 }
+         }
+	 });
+}*/
+/*function checkAll(){
+	if($("#checkall").attr("checked")){
+		$("input[name='checkone']").attr("checked",true);
+	}else{
+		$("input[name='checkone']").attr("checked",false);
+	}
+		
+}*/
+$(".checkall").click(function(){/*全选*/
+    if(this.checked){
+   	 $("input[name='checkone']").parent('label').checkbox('check');
+   	 $("input[name='checkone']").parent('label').checkbox('check');
+    }else{
+   	 $("input[name='checkone']").parent('label').checkbox('uncheck');
+   	 $("input[name='checkone']").parent('label').checkbox('uncheck');
+    }
+});
+function batchP(){
+	
+	tradePoint(user_nick,'批量评价确定');
+
+	if(vipuser==0){
+		$('#buyvip').modal('show');
+      	return;
+    }
+	var checked = document.getElementsByName("checkone");
+	var checklen=checked.length;
+	var result=$("input[name='rate']:checked").val();
+	var text=$("#pingconP").val();
+	 var num=0;
+	var allnum=0;
+	var failnum=0;
+	var oknum=0;
+	var tql='';
+	var sub_msge='';
+	for (var i=0;i<checklen;i++ )if(checked[i].checked)num++;
+
+    if(num<1){
+    	$.alert('没有选择的订单！');
+    	$("input[name='checkall']").parent('label').checkbox('uncheck');
+    	$("input[name='checkall']").parent('label').checkbox('uncheck');
+    	/*layer.msg('请选择您要评价的宝贝!',1, -1);*/
+    }else if(result!='good' && (text.length<1 || text.length>500)){
+    	layer.msg('评价内容长度只能在1~500个字之间',1, 3);
+    }else if((result != 'good') && (text==null || text == '')){
+    	layer.msg('不是好评价的必须要填写评价内容！',1, 3);
+    }else{
+    
+	    	for (var i=0;i<checklen;i++ )
+			    {
+				        if(checked[i].checked){
+					        var chevalue=checked[i].value;
+					        QN.top.invoke({
+					           	 "cmd": "taobao.traderate.list.add",
+						         "param": {'tid':chevalue,'result':result,'role':"seller",'content':text,'anony':false},
+					       		 "method": "get",
+					           	 "success": function(resp){
+							           		if(typeof resp === 'string'){
+							                    var    rsp = JSON.parse(resp);
+							                    }else{
+							                    var	rsp= resp;
+							                    }
+						                    	if(rsp.traderate_list_add_response.trade_rate.tid!='') oknum++; else failnum++; 
+						                    	if(num-oknum==failnum){
+						                    		layer.msg('成功'+oknum+'个，失败：'+failnum+'个！',2, 1);
+								  	                   bridge();
+							  		                  }
+							           			 },
+						         "error" : function (msg){
+												if(typeof msg === 'string'){
+								                    var msg = JSON.parse(msg);
+								                  }
+												sub_msge=msg.sub_msg;
+												failnum++;
+												if(num-oknum==failnum){
+														if(msg.sub_code=='subuser.has-no-permission'){
+															/* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+								                            showMsg('hint'); */
+									      	           }else{
+										      	        	 layer.msg('成功'+oknum+'个，失败：'+failnum+'个！',2, 3);
+									      	           }
+														bridge();
+									                  }
+							    			}
+							           	 });
+				           	 
+				           	 
+					           	/*tql=tql+'{insert into traderate.list (tid,result,role,content,anony) values ('+chevalue+','+result+',seller,"'+text+'",false)}';*/
+				        }
+			    }
+	    	/*QN.top.invoke({
+			    		"cmd": "tql", 
+			    		"param": {"ql":tql}, 
+			    		"method": "post",
+			    		"success": function (resp){	
+			    			if(typeof resp === 'string'){
+			                    var rsp = JSON.parse(resp);
+			                    }else{
+			                    	var rsp= resp;
+			                    }
+		                    var chengg=0;
+		                    var shibai=0;
+		                    for(index in rsp){
+			                    if(rsp[index].error_response)shibai++;else chengg++;
+			                    }
+	                    	 $("#errodatabe").html('<p>成功'+chengg+'个,失败'+shibai+'个！</p>');
+                             $("#erroinfobe").modal('show');
+                             document.getElementById('hehehebe').setAttribute("onclick", "locals()"); 
+                             document.getElementById('hahahabe').setAttribute("onclick", "locals()"); 
+                                       
+			                },
+			                error: function(msp){
+			                    if(typeof msp === 'string'){
+			                        var msp = JSON.parse(msp);
+			                    }else{
+			                        var msp= msp;
+			                    }
+			                    alert(JSON.stringify(msp));
+			                    if(msp.sub_code=='subuser.has-no-permission'){
+			                    	 $("#errodata2").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+		                             $("#erroinfo").modal('show');
+			                    }else{
+			                    	$("#errodata2").html('<p>操作失败，请重试！</p>');
+		                             $("#erroinfo").modal('show');
+			                    }
+			                }   
+			            });*/
+	    }
+	  }
+
+function combuy(pageNo){
+	  $("#sampleall").empty();
+	  $("#pjfy2").empty();
+	  QN.top.invoke({
+		  "cmd": "taobao.traderates.get",
+	    	 "param": {'fields':"tid,num_iid,rated_nick,nick,result,created,item_title,item_price,content,reply",
+		             'rate_type':'get',
+		             'role':'buyer',
+		             'result':'',
+		             'page_no':pageNo,
+		             'page_size':page_size},
+	    	 "method": "get",
+	    	 "success": function(rsp){
+              if(typeof rsp === 'string'){
+                  var rsp = JSON.parse(rsp);
+              }else{
+                  var rsp= rsp;
+              }
+              var total = rsp.traderates_get_response.total_results;
+              
+			  if(total>0){
+				  var datas={};
+	              var rsp = rsp.traderates_get_response.trade_rates.trade_rate;
+	              for(index in rsp){
+	  	    		  var rate = rsp[index];
+	  	    		  var ti=rate.created;
+		  	    	  datas.time=rate.created;
+			    	  datas.reply=rate.reply;
+			          datas.iid=rate.num_iid;
+			          datas.result=rate.result;
+			    	  datas.content=rate.content;
+			    	  datas.nick=rate.nick;
+			    	  datas.tid=rate.tid;
+			    	  datas.ti=getdates(ti);
+			    	  datas.item_price=rate.item_price;
+			    	  datas.title=rate.item_title;
+		              var source = $("#samplechapmo2").html();
+			          var template=Handlebars.compile(source);
+			          var htmlstr = template(datas);
+			          $("#sampleall").append(htmlstr); 
+	              }
+	          }else{
+	             	 $("#buyp").empty();
+	             	 $("#buyp").append('<div class="sui-msg msg-large msg-tips" style="width:100%"><div class="msg-con">您目前还没有待评价的订单哦...</div><s class="msg-icon"></s></div>');
+	              }
+          },
+          error: function(msp){
+              if(typeof msp === 'string'){
+                  var msp = JSON.parse(msp);
+              }else{
+                  var msp= msp;
+              }
+              if(msp.sub_code=='subuser.has-no-permission'){
+            	/*   $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+         	      showMsg('hint'); */
+             }else{
+            	 geterrorinfo('taobao.traderates.get',msp);
+              }
+          }  
+      });
+}
+
+/*function jies(tids,tii){
+	QN.top.invoke({
+		"cmd": "taobao.user.seller.get",
+		"param": {'fields':"type"},
+		"method": "get",
+		"success": function (rsp){
+			 if(typeof rsp === 'string'){
+                 var rsp = JSON.parse(rsp);
+             }else{
+                 var rsp= rsp;
+             }
+			var resu=rsp.user_seller_get_response.user.type;
+			if(resu=='C'){
+				document.getElementById('jsnone').setAttribute("style", ""); 
+				$("#surejs").html("确定");
+				document.getElementById('surejs').setAttribute("onclick", "locals()");
+				}else{
+					document.getElementById('jsnone2').setAttribute("style", ""); 
+					document.getElementById('surejs').setAttribute("onclick", "surejs('"+tids+"','"+tii+"')");
+					}
+		},
+		error: function(msp){
+            if(typeof msp === 'string'){
+
+                var msp = JSON.parse(msp);
+            }else{
+                var msp= msp;
+            }
+            if(msp.sub_code=='subuser.has-no-permission'){
+           	 $("#errodata2").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+             $("#erroinfo").modal('show');
+        }else{
+        	$("#errodata2").html('<p>操作失败，请重试！</p>');
+             $("#erroinfo").modal('show');
+            }
+        }  
+		});
+}*/
+function locals(){
+	window.location.href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/batchEvaluation";
+}
+/*******************日期时间转换unix时间戳****************/
+function datetime_to_unix(datetime){
+    var tmp_datetime = datetime.replace(/:/g,'-');
+    tmp_datetime = tmp_datetime.replace(/ /g,'-');
+    var arr = tmp_datetime.split("-");
+    var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+    return parseInt(now.getTime()/1000);
+}
+/*******************获取时间,0为今天,-1为一天前****************/
+function GetDateStr(AddDayCount){
+    var dd = new Date();
+    dd.setDate(dd.getDate()+AddDayCount);/*获取AddDayCount天后的日期*/
+    var y = dd.getFullYear();
+    var m = dd.getMonth()+1;/*获取当前月份的日期*/
+    var d = dd.getDate();
+    return dd.format();
+}
+function getdates(enddate){     /*     计算时间差          */
+    var date2=new Date(Date.parse(enddate.replace(/-/g,"/")));
+    var s2=date2.getTime();
+    var date1=new Date();
+    var s1=date1.getTime();
+    ms=s1-s2;
+    h=Math.floor(ms/(3600*1000*24));
+    /*m=Math.floor((ms-h*3600*1000*24)/(3600*1000));
+    s=Math.floor((ms-h*3600*1000*24-m*3600*1000)/60000);*/
+    return h;
+}
+/*function surejs(tids,ti){
+	var text=$("#jscon").val();
+    if(text.length<2||text.length>500){
+    	alert("评价解释内容长度只能在2~500个字之间");
+	    }else{
+		    if(ti<30){
+			QN.top.invoke({
+				"cmd": "taobao.traderate.explain.add",
+				"param": {'oid':tids,'reply':text},
+				"method": "get",
+				"success": function(rsp){
+					if(typeof rsp === 'string'){
+		                 var rsp = JSON.parse(rsp);
+		             }else{
+		                 var rsp= rsp;
+		             }
+					var bo=rsp.traderate_explain_add_response.is_success;
+					if(bo||bo=='true'){
+						alert("评价解释成功！");
+						}else{
+							alert("评价解释失败！");
+						}
+				},
+				error: function(msp){
+                    if(typeof msp === 'string'){
+                        var msp = JSON.parse(msp);
+                    }else{
+                        var msp= msp;
+                    }
+                    if(msp.sub_code=='subuser.has-no-permission'){
+                   	 $("#errodata2").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+                     $("#erroinfo").modal('show');
+                }else{
+                	$("#errodata2").html('<p>操作失败，请重试！</p>');
+                     $("#erroinfo").modal('show');
+                    }
+                }  
+				});
+		    }else{
+		    	alert("评价解释超时(评价后的30以内才可以解释)...");
+			    }
+    }
+	
+}*/
+
+function countbuy(){
+   	 var goodnum=0;
+   	 var neutralnum=0;
+   	 var badnum=0;
+     var allnum=0;
+     var total=0;
+     var result='';
+       QN.top.invoke({
+           "cmd": "taobao.traderates.get",
+           "param": {'fields':"tid",
+		   "rate_type":'get',
+           "role":'buyer',
+           "result":'good'
+           },
+           "method": "get",
+           "success": function (rsp){
+               if(typeof rsp === 'string'){
+                   var rsp = JSON.parse(rsp);
+               }else{
+                   var rsp= rsp;
+               }
+               goodnum = rsp.traderates_get_response.total_results;
+               QN.top.invoke({
+                   "cmd": "taobao.traderates.get",
+                   "param": {'fields':"tid",
+        		   "rate_type":'get',
+                   "role":'buyer',
+                   "result":'neutral'
+                   },
+                   "method": "get",
+                   "success": function (rsp){
+                       if(typeof rsp === 'string'){
+                           var rsp = JSON.parse(rsp);
+                       }else{
+                           var rsp= rsp;
+                       }
+                       neutralnum = rsp.traderates_get_response.total_results;
+                       QN.top.invoke({
+                           "cmd": "taobao.traderates.get",
+                           "param": {'fields':"tid",
+                		   "rate_type":'get',
+                           "role":'buyer',
+                           "result":'bad'
+                           },
+                           "method": "get",
+                           "success": function (rsp){
+                               if(typeof rsp === 'string'){
+                                   var rsp = JSON.parse(rsp);
+                               }else{
+                                   var rsp= rsp;
+                               }
+                               badnum = rsp.traderates_get_response.total_results;
+                                
+						   	 allnum=Number(goodnum)+Number(neutralnum)+Number(badnum);
+						  	 $("#getnum").html(allnum);
+                           }
+                       });
+                   },
+                   error: function(msp){
+	                    if(typeof msp === 'string'){
+	                        var msp = JSON.parse(msp);
+	                    }else{
+	                        var msp= msp;
+	                    }
+	                    if(msp.sub_code=='subuser.has-no-permission'){
+	                    	/* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+          		 	        showMsg('hint'); */
+	                    }else{
+	                    	geterrorinfo('taobao.traderates.get',msp);
+	                    }
+	                }  
+               });
+           }
+       });
+}
+/*TQL子单评价*/
+function TQLpj(tid){
+	tid2=tid;
+	$("input[name='checkone']").parent('label').checkbox('uncheck');
+	$("input[name='checkall']").parent('label').checkbox('uncheck');
+	$("#"+tid).parent('label').checkbox('check');
+	$("#pingjiaz").empty();
+	 $('#pingjia2').modal('resize');
+	QN.top.invoke({
+        "cmd": "taobao.trade.get",
+        "param": {'fields':"orders",'tid':tid},
+        "method": "get",
+        "success": function (rsp){
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var rsp= rsp;
+            }
+           var orders = rsp.trade_get_response.trade.orders.order;
+           var datas={};
+           for(index in orders)
+           {
+           	var order = orders[index];
+           	datas.price=order.price;
+           	datas.sku_properties_name=order.sku_properties_name;
+           	datas.pic_path=order.pic_path;
+           	datas.num=order.num;
+           	datas.title=order.title;
+           	datas.oid=order.oid;
+           	
+           	var source = $("#samplechapmopj").html();
+            var template=Handlebars.compile(source);
+            var htmlstr = template(datas);
+            $("#pingjiaz").append(htmlstr); 
+            $('.dropdown-toggle').dropdown();
+            pingyu2(order.oid);
+            $("#pingjia2").modal('show'); 
+            $('#pingjia2').modal('resize'); 
+       }
+           $('#pingjia2').modal('resize');   
+	},
+	error: function(msp){
+        /*请求出错处理 */
+        /* alert(JSON.stringify(msp));*/
+        if(typeof msp === 'string'){
+            var msp = JSON.parse(msp);
+        }else{
+            var msp= msp;
+        }
+        if(msp.sub_code=='subuser.has-no-permission'){
+        /* 	$("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+ 	        showMsg('hint'); */
+ 	        layer.msg("该子帐号无此操作权限，请通过主帐号设置开通相应权限！",1,3)
+    }else{
+    	geterrorinfo('taobao.trade.get',msp);
+        }
+    }  
+	});
+}
+function pingyu2(vala){
+	QN.application.invoke({
+		 "cmd": "getLoginuser",
+		 "success": function (e){
+			 if(typeof  e=== 'string'){
+	            	e = JSON.parse(e);
+	            }
+		 var nick=decodeURI(e.user_nick);
+		 var fast_ratews=window.localStorage.getItem("fast_rate"+nick);
+		 if(fast_ratews==''|| fast_ratews==null){
+			 $.ajax({
+				    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getPing',
+				    type: 'POST',
+				    dataType:'html',
+				    data:{nick:nick},
+				    timeout:10000,
+			     	success: function(dataS){/*获取成功*/
+			    		window.localStorage.setItem("fast_rate"+nick,dataS);
+			    	 	/*$("."+vala).empty();*/
+			    	 	$(".abcde").empty();
+			    	 	/*$("#"+vala).empty();*/
+			    	 /*	$("#wen_pj").empty();*/
+			    	 	
+				    	var valS=dataS.split('\\n');
+				    	if(valS[0].indexOf('\n') > 0 ) valS=dataS.split('\n');
+				    	if(valS!=null&&valS.length>1){
+					    	for(index in valS){
+						    	/*$(".sui-dropdown-menu").append('<option  value="'+valS[index]+'">'+valS[index]+'</option>');*/
+						    	/*$("."+vala).append('<option  value="'+valS[index]+'">'+valS[index]+'</option>');*/
+			                	/*$("#"+vala).append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+valS[index]+'">'+valS[index]+'</a></li>');*/
+			                	$(".abcde").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+valS[index]+'">'+valS[index]+'</a></li>');
+					    	}
+				    	}else /*$("."+vala).append('<option  value="'+dataS+'">'+dataS+'</option>');*/
+		                $(".abcde").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+dataS+'">'+dataS+'</a></li>');
+		                /*$("#wen_pj").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+dataS+'">'+dataS+'</a></li>');*/
+				    	document.getElementById("trate"+vala).value =valS[0];
+				     }
+				 });
+		 }else{
+			 $(".abcde").empty();
+			 /*$("."+vala).empty();*/
+			 /*$("#"+vala).empty();*/
+			/* $("#wen_pj").empty();*/
+			
+		    	var valS=fast_ratews.split('\\n');
+		    	if(valS[0].indexOf('\n') > 0 ) valS=fast_ratews.split('\n');
+		    	if(valS!=null&&valS.length>1){
+			    	for(index in valS){
+				    	/*$("."+vala).append('<option  value="'+valS[index]+'">'+valS[index]+'</option>');*/
+				    	/*$(".sui-dropdown-menu").append('<option  value="'+valS[index]+'">'+valS[index]+'</option>');*/
+	                /*$("#"+vala).append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+valS[index]+'">'+valS[index]+'</a></li>');*/
+	                	$(".abcde").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+valS[index]+'">'+valS[index]+'</a></li>');
+				   
+			    	}
+		    	}else /*$("."+vala).append('<option  value="'+fast_ratews+'">'+fast_ratews+'</option>');*/
+	               /* {$("#"+vala).append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+fast_ratews+'">'+fast_ratews+'</a></li>');}*/
+	                {$(".abcde").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+fast_ratews+'">'+fast_ratews+'</a></li>');}
+		    	document.getElementById("trate"+vala).value =valS[0];
+			 }
+		 }
+	});
+ }
+ 
+function Pchoice2(valac){
+	/*var selec= $("."+valac).find('option:selected').val();*/
+	var selec= $("#o"+valac).siblings('a').children('input').val();
+	document.getElementById("trate"+valac).value =selec; 
+}
+function batchP2(){
+	 $('#batchpj').modal('resize');
+	var checked = document.getElementsByName("checkone2");
+	var checklen=checked.length;
+	var result='';
+	var text='';
+	var chevalue='';
+	var num=0;
+	var oknum=0;
+	var failnum=0;
+	var tql='';
+	var j='';
+	var sub_msge='';
+	for (var i=0;i<checklen;i++ )if(checked[i].checked)num++;
+
+	for (var i=0;i<checklen;i++ )
+    {
+	        if(checked[i].checked){
+		        chevalueQ=checked[i].value;
+		        resultQ=$("input[name='rate"+chevalueQ+"']:checked").val();
+		        textQ=$("#trate"+chevalueQ).val();
+		        if(resultQ!='good'&&textQ==''){
+			        j='a';
+		        }else if(resultQ!='good'&&textQ.length<1||textQ.length>500){
+			        j='b';
+		        }
+	        }
+    }
+    if(num<1){
+    	
+    	/*$("#hints").html('<p>请选择您要评价的宝贝！</p>');
+        showMsg('hint');*/
+    	layer.msg('请选择您要评价的宝贝!',2, 1);
+    }else if(j=='a'){
+    	/*$("#hints").html('<p>不是好评价的必须要填写评价内容！</p>');
+        showMsg('hint');*/
+    	layer.msg('不是好评家的必须要填写评价内容!',2, 3);
+    }else if(j=='b'){
+    	/*$("#hints").html('<p>评价内容长度只能在1~500个字之间！</p>');
+        showMsg('hint');*/
+    	layer.msg('评价内容长度只能在1~500个字之间!',2, 3);
+	    }else{
+	    	for (var i=0;i<checklen;i++ )
+		    {
+			        if(checked[i].checked){
+				        chevalue=checked[i].value;
+				        result=$("input[name='rate"+chevalue+"']:checked").val();
+				        text=$("#trate"+chevalue).val();
+				        if(result!='good'&&text==''){
+				        	/*$("#hints").html('<p>不是好评价的必须要填写评价内容！</p>');
+				            showMsg('hint');*/
+				        	layer.msg('不会好评价的必须要填写评价内容',2, 3);
+				        }else if(result!='good'&&(text.length<1||text.length>500)){
+				        	/*$("#hints").html('<p>评价内容长度只能在1~500个字之间！</p>');
+				            showMsg('hint');*/
+				        	layer.msg('评价内容长度只能在1~500个字之间！',2, 3);
+				        }else{ 
+				       QN.top.invoke({
+				           	 "cmd": "taobao.traderate.add",
+					         "param": {'tid':tid2,'oid':chevalue,'result':result,'role':"seller",'content':text,'anony':false},
+				       		 "method": "get",
+				           	 "success": function(resp){
+					           		if(typeof resp === 'string'){
+					                    var    rsp = JSON.parse(resp);
+					                    }else{
+					                    var	rsp= resp;
+					                    }
+				                    	if(rsp.traderate_add_response.trade_rate.tid!='') oknum++; else failnum++; 
+				                    	if(num-oknum==failnum){
+					                    		/*$("#hints").html('<p>成功：'+oknum+'个，失败：'+failnum+'个！'+sub_msge+'</p>');
+									            showMsg('hint');*/
+				                    		layer.msg('成功'+oknum+'个，失败：'+failnum+'个！'+2, 1);
+						  	                    bridge();
+					  		                  }
+					           			 },
+		           			 "error" : function (msg){
+									if(typeof msg === 'string'){
+					                    var msg = JSON.parse(msg);
+					                  }
+									sub_msge=msg.sub_msg;
+									failnum++;
+									if(num-oknum==failnum){
+											if(msg.sub_code=='subuser.has-no-permission'){
+												/* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+									            showMsg('hint'); */
+						      	           }else{
+							      	        	 /*$("#hints").html('<p>成功：'+oknum+'个，失败：'+failnum+'个！'+sub_msge+'</p>');
+										         showMsg('hint');*/
+							      	        	 layer.msg('成功'+oknum+'个，失败：'+failnum+'个！',2, 3);
+						      	           }
+											bridge();
+						                  }
+				    			}
+						           	 });
+				       $('#batchpj').modal('resize');
+							  	/* tql=tql+'{insert into traderate (tid,oid,result,role,content,anony) values ('+tid2+','+chevalue+','+result+',seller,'+text+',false)}';*/
+				        }
+			        }
+		    }
+	    	/*QN.top.invoke({
+	    		"cmd": "tql", 
+	    		"param": {"ql":tql}, 
+	    		"method": "post",
+	    		"success": function (resp){	
+	    			    var rsp= '';
+		    			if(typeof resp === 'string'){
+		                    rsp = JSON.parse(resp);
+		                    }else{
+		                    	rsp= resp;
+		                    }
+	                    if(rsp[0].error_response){
+		                    if(rsp[0].error_response.sub_code=='subuser.has-no-permission'){
+		                    	$("#errodata2").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+	                             $("#erroinfo").modal('show');
+		                    }else{
+		                    	$("#errodata2").html('<p>评价失败！</p>');
+	                             $("#erroinfo").modal('show');
+		                    }
+	                    }else{
+	                    var haha2=rsp[0].traderate_add_response.trade_rate.created;
+	                    if(haha2!=''){
+	                    	$("#errodata2").html('<p>评价成功！</p>');
+                            $("#erroinfo").modal('show');
+	                	locals();
+	                    }else{
+	                    	$("#errodata2").html('<p>评价失败！</p>');
+                            $("#erroinfo").modal('show');
+		                	locals();
+		                    }
+	                    }
+	                }     
+	            });*/
+	    }
+    tradedots('batchrates');
+	  }
+function changetosp(num_id){
+    QN.plugin.invoke({
+    	"cmd": "itemDetail",
+    	"param": {
+    	'iid':num_id
+    	},
+    	"category": "shangpinguanli"
+    	});
+}
+</script>
+<script id="samplechapmo" type="text/x-handlebars-template">
+				    <tr>
+						<td>
+						<label class="checkbox-pretty inline"><input  type="checkbox"  id="{{tid}}" value="{{tid}}" name="checkone" class="ace-checkbox-2" /><span></span></label>
+						</td>
+						<td>订单号：<a href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/index?vers=<?php echo REAL_ROOT_VER;?>#tid={{tid}}&event=tradeDetail">{{tid}}</a><br/>确认时间：{{created}}<br/>旺旺：<a href="javascript:void(0)" onclick="wangwangP('{{buyer_nick}}')"><img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid={{buyer_nick}}&site=cntaobao&s=2&charset=utf-8"/>{{buyer_nick}}</a>
+						</td>
+						<td>共{{num}}笔<br/>实收款：<span style="font-size:12px; color:red;font-weight:700;">{{price}}元</span><br/>(含运费{{post_fee}})
+						</td>
+						<td><div class="sui-row-fluid" style="margin:5px 0;"><div class="span3" style="text-align:center;"><a  href="javascript:void(0)" onclick="changetosp('{{num_iid}}')"><img alt="商品图片" src="{{pic_path}}_80x80.jpg" width="60" align="middle" /></a></div>
+						<div class="span9"><p style="font-size:14px; margin:0;padding:0;"><a href="javascript:void(0)" onclick="changetosp('{{num_iid}}')">{{title}}</a></p></div></div>
+						</td>
+						<td  >
+							<a href=" tabindex="-1" data-toggle="modal" data-target="#pingjia2"  data-keyboard="false" onclick="TQLpj({{tid}})" " >评价</a>
+						</td>
+					</tr>
+</script>
+<script id="samplechapmo2" type="text/x-handlebars-template">
+<tr >
+<td ><img src="http://cdn.zzgdapp.com/trade/web/images/{{result}}.png" width="12" title="{{result}}" >{{content}}
+</td>
+<td ><a href="javascript:void(0)" onclick="wangwangP('{{nick}}')" > <img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid={{nick}}&site=cntaobao&s=2&charset=utf-8"/>{{nick}}</a>
+</td>
+<td >{{time}}
+</td>
+<td ><a href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/index?vers=<?php echo REAL_ROOT_VER;?>#tid={{tid}}&event=tradeDetail">{{title}}</a>&nbsp;<span style="font-size:14px; color:red;font-weight:700;">{{item_price}}元</span>
+</td>
+<td ><a data-toggle="modal" href="#jies" onclick="jies('{{tid}}','{{ti}}')">评价解释</a><br/>{{reply}}
+</td>
+</tr>
+					</tbody >
+		 		</table>
+
+
+</script>
+<script id="samplechapmopj" type="text/x-handlebars-template">
+        <table class="sui-table table-bordered" >
+            <tr>
+              <td  width="5%" style="display:none;"><input type="checkbox" name="checkone2" checked="checked" value="{{oid}}"/></td>
+                <td width="20%"><img alt="商品图片" src="{{pic_path}}_80x80.jpg" width="60" align="middle" /></td>
+                <td width="80%"><h3 style="font-size:12px; margin:0; padding:0; line-height:14px;">{{title}}</h3>
+                    <p style="margin:0; padding:0;">{{price}} x{{num}}</p>
+                    <p style="margin:0; padding:0;">{{sku_properties_name}}</p></td>
+            </tr>
+        </table>
+        <input  style="margin-left: 20px"  type="radio"    name="rate{{oid}}" value="good"  checked/><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/good.png" width="12" alt="好评"></span>
+        <input  style="margin-left: 20px" type="radio"    name="rate{{oid}}" value="neutral"  /><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/neutral.png" width="12" alt="中平"></span>
+        <input  style="margin-left: 20px"  type="radio"    name="rate{{oid}}" value="bad"  /><span   class="lbl"><img src="http://cdn.zzgdapp.com/trade/web/images/bad.png" width="12" alt="差评"></span>
+		        &nbsp;&nbsp;&nbsp;
+								<!--<select style="width: 260px;" onchange="Pchoice2({{oid}})" class="{{oid}}" id="{{oid}}">
+		                        </select>-->
+ 											<span class="sui-dropdown dropdown-bordered select">
+													<span  class="dropdown-inner">
+														<a   role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+									       		    		<input  type="hidden" onchange="Pchoice2({{oid}})">
+									       		    		<i class="caret"></i>
+									       		    		<span >谢谢，很好的买家！</span>
+									       		    	</a>
+									        			<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu abcde" id="o{{oid}}">
+									        			</ul>
+												</span>
+											</span>
+        <textarea  id="trate{{oid}}" placeholder="" style="margin-top: 5px;width: 500px;"></textarea>
+    </script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

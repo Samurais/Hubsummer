@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+<div class="container" style="margin-left: 10px;">
+    <div style="display: none;" id="adv_top"></div>	
+	    <ul class="sui-nav nav-tabs nav-large" id="myTab" style="margin-top: 10px;">
+		  <li id="checkone" class="active"><a data-toggle="tab" href="#home" onclick="reshow();">添加打印信息</a></li>
+		  <li id="checktwo" class=""><a data-toggle="tab" href="#printing" onclick="noprint(1);">待打印信息</a></li>
+		  <li><a data-toggle="tab" href="#printed" onclick="printed(1)">已打印信息</a></li>
+     	</ul>
+     <div class="tab-content" style="overflow: visible;">
+	    <div id="home" class="tab-pane active">
+ 				<div class="sui-well well-small" >
+						<div class="widget-header header-color-blue1" style="margin-top:10px;">
+						<h5 class="lighter smaller"><font style="color: gray;">订单查询</font></h5>
+					</div>
+					<form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+						<label>买家昵称：</label>
+							<div class="input-control control-right">
+							   <input type="text" class="input-fat" id="selname" onkeypress="event.keyCode==13?sselect():'';"><i class="sui-icon icon-touch-magnifier"></i>
+							</div>
+			            <label>订单编号：</label>
+			            <div class="input-control control-right" >
+							<input type="text" class="input-fat" id="selcid" onkeypress="event.keyCode==13?sselect():'';"><i class="sui-icon icon-touch-magnifier"></i>
+						</div>
+						<button data-toggle="modal" id="shadiao" data-target="#selectcid" class="sui-btn btn-primary"  onclick="selectdd();">查询</button>
+		             </form>
+				</div>
+				<div class="sui-well well-small" > 
+					<form class="sui-form" >
+							<div class="widget-header header-color-blue1" style="margin-top:10px;">
+								<h5 class="lighter smaller"><font style="color: gray;">发件人信息</font></h5>
+							</div>
+							<div class="widget-body">
+								<div class="widget-main padding-8">
+									<table >
+										<tr><td>卖家旺旺：<input type="text"  name="fww" id="fww" style="width:140px;"/>&nbsp;发件人：<input type="text" style="width:140px;" name="fjr" id="fjr"/>&nbsp;邮编：<input type="text" style="width:140px;" name="fyb" id="fyb"/></td></tr>
+										<tr><td>手机号码：<input type="text"  name="fsj" id="fsj" style="width:120px;"/>&nbsp;电话号码：<input type="text"  id="fdh" name="fdh" style="width:120px;"/>&nbsp;发件人单位：<input type="text"  id="fcompany" name="fcompany" style="width:130px;"/></td></tr>
+										<tr><td>发货地址：<input type="text"  name="faddr" id="faddr" style="width:100px;"/>&nbsp;<input type="text"  name="faddrs" id="faddrs" style="width:100px;"/>&nbsp;<input type="text"  name="faddrse" id="faddrse" style="width:100px;"/>&nbsp;<input type="text"  name="faddrses" id="faddrses" style="width:185px;"/></td></tr>
+									</table>
+								</div>
+							</div>
+						</form>
+				</div>
+				<div class="sui-well well-small" >
+					<form class="sui-form" > 
+						<div class="widget-header header-color-blue1" style="margin-top:10px;">
+							<h5 class="lighter smaller"><font style="color: gray;">收件人信息</font></h5>
+						</div>
+						<div class="widget-body">
+							<div class="widget-main padding-8">
+								<table >
+									<tr><td>买家旺旺：<input type="text"  name="sww" id="sww" style="width:140px;"/>&nbsp;收件人：<input type="text" style="width:140px;" name="sjr" id="sjr"/>&nbsp;邮编：<input type="text" style="width:140px;" name="syb" id="syb"/></td></tr>
+									<tr><td>手机号码：<input type="text"  name="ssj" id="ssj" style="width:120px;"/>&nbsp;电话号码：<input type="text"  id="sdh" name="sdh" style="width:120px;"/><input type="text"  id="scompany" name="scompany" style="width:130px;display:none;"/></td></td></tr>
+									<tr><td>收货地址：<input type="text"  name="saddr" id="saddr" style="width:100px;"/>&nbsp;<input type="text"  name="saddrs" id="saddrs" style="width:100px;"/>&nbsp;<input type="text"  name="saddrse" id="saddrse" style="width:100px;"/>&nbsp;<input type="text"  name="saddrses" id="saddrses" style="width:185px;"/></td></tr>
+								</table>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="sui-well well-small" >
+					<form class="sui-form" >
+						<div class="widget-header header-color-blue1" style="margin-top:10px;">
+							<h5 class="lighter smaller"><font style="color: gray;">订单信息</font></h5>
+						</div>
+						<div class="widget-body">
+							<div class="widget-main padding-8">
+								<table >
+									<tr><td>订单编号：<input type="text"  name="dddbh" id="dddbh" style="width:320px;"/></td></tr>
+									<tr><td>买家留言：<input type="text"  name="dmjly" id="dmjly" style="width:400px;"/></td></tr>
+									<tr style="display:none;"><td>买家备注：<input type="text"  name="dmjbz" id="dmjbz" style="width:400px;"/></td></tr>
+									<tr><td>卖家备注：<input type="text"  name="dwjbz" id="dwjbz" style="width:400px;"/></td></tr>
+								</table>
+							</div>
+						</div>
+						</form>
+				</div>
+				
+				<div class="sui-well well-small" >
+					<form class="sui-form" >
+						<div class="widget-header header-color-blue1" style="margin-top:10px;">
+							<h5 class="lighter smaller"><font style="color: gray;">商品列表</font></h5>
+						</div>
+						<div class="widget-body">
+							<div class="widget-main padding-8">
+								<table class="sui-table table-striped table-bordered table-hover">
+									<thead ><tr style="width:100%"><th width="20%">宝贝名称</th><th width="15%">商家编码</th><th width="15%">商品属性</th><th width="10%">单价</th><th width="10%">数量</th><th width="10%">优惠</th><th width="10%">金额</th><th width="10%">操作</th></tr></thead>
+									<tbody id="sample-table-2">
+		   
+		  							  </tbody >
+									</table>
+										<h5 style="text-align: center;"><button data-toggle="modal" data-target="#customprint" class="sui-btn btn-primary"  onclick="selectdd();">增加一行</button></h5>
+									<div>邮费：<input type="text"  name="byf" id="byf" style="width:80px;"/>&nbsp;数量合计：<input type="text" style="width:80px;" name="bnum" id="bnum"/>优惠合计：<input type="text" style="width:80px;" name="yhtotal" id="yhtotal"/>金额合计：<input type="text" style="width:80px;" name="pricet" id="pricet"/></div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="sui-well well-small" >
+					<form class="sui-form" >
+						<div class="widget-header header-color-blue1" style="margin-top:10px;">
+							<h5 class="lighter smaller"><font style="color: gray;">备注</font></h5>
+						</div>
+						<div class="widget-body" >
+							<div style="margin-left: 10px;">
+								<textarea class="span12" id="remark" placeholder="" style="margin-top: 5px;width:95%"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+					<div style="margin-top:10px;margin-bottom:10px;text-align:center;">
+						<button class="sui-btn btn-success" onclick="fastprint();">打印快递单</button>
+						<button class="sui-btn btn-success" onclick="sendprint();">打印发货单</button>
+						<button class="sui-btn btn-primary" onclick="savecustom();">&nbsp;保&nbsp;&nbsp;&nbsp;存&nbsp;</button>
+						</a>
+					</div>
+				</div>
+		 <div id="printing" class="tab-pane" style="overflow-y:hidden;">
+			 <table  class="sui-table table-striped table-bordered table-hover" style="margin-top: 5px;" >
+	        		<thead ><tr style="background-color:silvery;"><th width="5%">ID</th><th width="10%">收货人
+					</th><th width="20%">收货地址
+					</th><th width="20%">联系方式
+					</th><th width="20%">寄件备注
+					</th><th width="25%">操作
+					</th></tr></thead>
+			        <tbody id="printingba">
+				   
+				    </tbody >
+		 		</table>
+				<div id="nopfys" style="margin-top:10px"></div>
+		  </div> 
+		  
+		  <div id="printed" class="tab-pane" style="overflow-y:hidden;">
+			  <table  class="sui-table table-striped table-bordered table-hover" style="margin-top: 5px;" >
+		        		<thead ><tr style="background-color:silvery;"><th width="5%">ID</th><th width="15%">收货人
+						</th><th width="15%">收货地址
+						</th><th width="15%">联系方式
+						</th><th width="20%">寄件备注
+						</th><th width="20%">打印时间
+						</th><th width="10%">操作
+						</th></tr></thead>
+				        <tbody id="printedba">
+					   
+					    </tbody >
+			 		</table>
+					<div id="fysped" style="margin-top:10px"></div>
+		  </div> 
+		  </div>
+    <!--Profile Form增加商品信息-->
+	 <div id="customprint" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="450px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">增加商品信息</h4>
+    					  	  </div>
+      						 <div class="modal-body" >
+	      						 <form class="sui-form" >
+						             <table id="sample-tabl" class="table table-striped table-bordered table-hover" >
+										<tr ><td>宝贝名称 :</td><td><input type="text"  name="title" id="title" style="width:150px;"/></td></tr>
+										<tr ><td>商家编码:</td><td><input type="text"  name="uid" id="uid" style="width:150px;"/></td></tr>
+										<tr ><td>商品属性:</td><td><input type="text"  name="sx" id="sx" style="width:150px;"/></td></tr>
+										<tr ><td>单价:</td><td><input type="text"  name="price" id="price" style="width:150px;"/></td></tr>
+										<tr ><td>数量:</td><td><input type="text"  name="num" id="num" style="width:150px;"/></td></tr>
+										<tr ><td>优惠:</td><td><input type="text"  name="yh" id="yh" style="width:150px;"/></td></tr>
+										<tr ><td>金额:</td><td><input type="text"  name="je" id="je" style="width:150px;"/>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="sui-btn btn-mini btn-primary" onclick="jstotal()">计算</a></td></tr>
+									</table>
+									</form>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal"  data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="addbaby();" >确定</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+	    
+	 <!--Profile Form查询订单-->
+			  <div id="selectcid" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="600px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">查询订单</h4>
+    					  	  </div>
+      						 <div class="modal-body"  id="selectbody" style="overflow: scroll-y;height:300px;">
+				             	<table id="selectbodys" class="sui-table table-striped table-bordered table-hover" ></table>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal"  data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="insertcid();" >插入</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+</div>
+<script type="text/javascript">
+var nick='';
+var n=0;
+var nowtimese='';
+var shopName='';
+var tradearr=new Array();
+var custommoarr=new Array();
+var babylist=new Array();
+var text=new Array();
+var buyerop=new Array();
+var sellerop=new Array();
+var babyop=new Array();
+var gprinttime='';
+var num_iidG='';
+var titleG='';
+var uptitleG='';
+var openStatus='';
+window.onload = function(){
+	QN.initTheme();
+	$("#dyfhsel").attr("class","dqzt");
+	initialize();
+	onload_viptime('customPrint');
+	wndclose();
+	if(vipuser==0){
+		ittoolspam('AD20140730133000','zdydypf');
+	}else{
+		ittoolspam('AD20140730133000','zdydypvip');
+	}
+}
+
+function reshow(){
+	window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/customPrint?vers=<?php echo REAL_ROOT_VER;?>';
+	tradedots('printload');
+}
+function initialize(){
+            QN.application.invoke({
+          		 "cmd": "getLoginuser",
+          		 "success": function (e){
+          			 if(typeof  e=== 'string'){
+          	            	e = JSON.parse(e);
+          	            }
+          			 nick=decodeURI(e.user_nick);
+           			 getfmsg();
+		             gettbtime();
+		             getBaby();
+          		 }
+          		 });
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-12
+ * Time: 11:20
+ * 获取发件人信息
+ */
+function getfmsg(){
+	QN.top.invoke({
+        "cmd": "taobao.logistics.address.search",
+        "param":{"rdef":'send_def'},
+        "method": "get",
+        "success" : function(rsp) {
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            var addrestu=rsp.logistics_address_search_response.addresses.address_result;
+            if(addrestu==undefined||addrestu=='undefined'){
+		 	    layer.msg('您还没有设置默认发货地址请设置后再来打印！',1, 3);
+	            }else{
+	                var srult=rsp.logistics_address_search_response.addresses.address_result[0];
+	                var custmobilephone='';
+	                var custphone='';
+	                if(srult.mobile_phone!=undefined||typeof(srult.mobile_phone)!="undefined"){
+	                	custmobilephone=srult.mobile_phone;
+	                    document.getElementById("fsj").value=custmobilephone;
+	                }
+	                if(srult.phone!=undefined||typeof(srult.phone)!="undefined"){
+	                    custphone=srult.phone;
+	                    document.getElementById("fdh").value=custphone;
+	                }
+	                if(srult.area_id!=undefined||typeof(srult.area_id)!="undefined"){
+	                    document.getElementById("fyb").value=srult.area_id;
+	                }
+	                if(srult.seller_company!=undefined||typeof(srult.seller_company)!="undefined"){
+	                    document.getElementById("fcompany").value=srult.seller_company;
+	                }
+	                document.getElementById("fww").value=nick;
+	                document.getElementById("faddr").value=srult.province;
+	                document.getElementById("faddrs").value=srult.city;
+	                if(srult.country!=undefined)document.getElementById("faddrse").value=srult.country;
+	                document.getElementById("faddrses").value=srult.addr;
+	                document.getElementById("fjr").value=srult.contact_name;
+	                var wfjr=srult.contact_name+','+custmobilephone+','+custphone+','+srult.province+','+srult.city+','+srult.country+','+srult.addr;
+	                window.localStorage.setItem("faddrmessage",wfjr);
+            }
+        }
+	});
+}	
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-11
+ * Time: 下午18:30
+ * To get nick all num_iid\title\uptitle | ajax | mysql.
+ */
+function getBaby(){
+	var titleData = window.localStorage.getItem("titleData"+nick);
+	if(titleData=="null"||titleData==null){
+		$.ajax({
+		     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getTitle',
+		     type: 'POST',
+		     dataType:'html',
+		     data:{nick:nick},
+		     timeout:10000,
+		     success: function(data){
+		    	 var datatemp=eval('('+data+')');
+		    	 window.localStorage.setItem("titleData"+nick,data);
+		    	 if(datatemp!=''){
+			    	 num_iidG=datatemp[0]['num_iid'];
+			    	 titleG=datatemp[0]['title'];
+			    	 uptitleG=datatemp[0]['uptitle'];
+			    	 openStatus=datatemp[0]['status'];
+			    	 }
+		     },
+		     error:function(e){
+		    	 layer.msg('获取数据失败！',1, 3);
+			     }
+		});
+	}else{
+		var datatemp=eval('('+titleData+')');
+		if(datatemp!=''){
+	    	 num_iidG=datatemp[0]['num_iid'];
+	    	 titleG=datatemp[0]['title'];
+	    	 uptitleG=datatemp[0]['uptitle'];
+	    	 openStatus=datatemp[0]['status'];
+	    	 }
+		}
+}
+function selectdd(){
+	$("#selectbodys").html('<div class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>');
+	document.getElementById('shadiao').setAttribute("onclick", "");
+	var selcid=document.getElementById("selcid").value;
+	var selname=document.getElementById("selname").value;
+	if(selcid!=''){
+		QN.top.invoke({
+            "cmd": "taobao.trade.fullinfo.get",
+            "param": {
+                "fields":"seller_flag,seller_memo,status,seller_nick,orders.status,buyer_nick,buyer_memo,buyer_message,alipay_no,created,pay_time,end_time,payment,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,consign_time,shipping_type,orders,total_fee,post_fee, created, tid, seller_rate,buyer_flag,adjust_fee,post_fee ",
+                "tid":selcid
+            },
+            "method": "get",
+            "success": function (rsp){
+                $("#selectbodys").empty();
+                document.getElementById('shadiao').setAttribute("onclick", "selectdd()");
+                if(typeof rsp === 'string'){
+                    var rsp = JSON.parse(rsp);
+                }else{
+                    var	rsp= rsp;
+                }
+                var rsperror=rsp.msg;
+                if(rsperror!=undefined){
+                    	geterrorinfo('taobao.trade.fullinfo.get',rsperror);
+                }else{
+		                var trade = rsp.trade_fullinfo_get_response.trade;
+		                tradearr[0]=trade;
+		                var datas={};
+		                datas.tditems=trade.orders.order;
+		                datas.chestate='checked=true';
+		                datas.itemlength=datas.tditems.length;
+		                datas.buyer_nick=trade.buyer_nick;
+		                datas.tid=trade.tid;
+						datas.receiver_name= trade.receiver_name;
+		                datas.receiver_state = trade.receiver_state;
+		                datas.receiver_city = trade.receiver_city;
+		                datas.receiver_district = trade.receiver_district;
+		                datas.receiver_address = trade.receiver_address;
+		                datas.receiver_zip = trade.receiver_zip;
+		                datas.receiver_mobile = trade.receiver_mobile;
+		                datas.receiver_phone = trade.receiver_phone;
+		                var source = $("#sendlist_template").html();
+			            var template=Handlebars.compile(source);
+			            var htmlstr = template(datas);
+			            $("#selectbodys").append(htmlstr); 
+            }
+            },
+            error: function(msp){
+            	$("#selectbodys").empty();
+            	document.getElementById('shadiao').setAttribute("onclick", "selectdd()");
+                if(typeof msp === 'string'){
+                    var msp = JSON.parse(msp);
+                }else{
+                    var	msp= msp;
+                }
+                $('#selectcid').modal('hide');
+                geterrorinfo('taobao.trade.fullinfo.get',msp);
+            }
+        });
+		}else{
+			QN.top.invoke({
+                "cmd": "taobao.trades.sold.get",
+                "param": {
+                    fields:"seller_flag,seller_memo,status,seller_nick,orders.status,buyer_nick,buyer_memo,buyer_message,alipay_no,created,pay_time,end_time,payment,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,consign_time,shipping_type,orders,total_fee,post_fee, created, tid, seller_rate,buyer_flag,adjust_fee,post_fee ",
+                    buyer_nick:selname,
+                    type:'tmall_i18n,fixed,auction,guarantee_trade,step,independent_simple_trade,independent_shop_trade,auto_delivery,ec,cod,game_equipment,shopex_trade,netcn_trade,external_trade,instant_trade,b2c_cod,hotel_trade,super_market_trade,super_market_cod_trade,taohua,waimai,nopaid,step,eticket',
+                },
+                "method": "get",
+                "success": function (rsp){
+                	$("#selectbodys").empty();
+                	document.getElementById('shadiao').setAttribute("onclick", "selectdd()");
+                    if(typeof rsp === 'string'){
+                        var rsp = JSON.parse(rsp);
+                    }else{
+                        var	rsp= rsp;
+                    }
+                    var rsperror=rsp.msg;
+                    if(rsperror!=undefined){
+                    	geterrorinfo('taobao.trades.sold.get',rsperror);
+             		 	$("input[msgstu='again']").attr("onclick","closeMsg('selectcid');");
+                    }else{
+	                    var total_results=rsp.trades_sold_get_response.total_results;
+			            var datas={};
+	                    if(total_results>0){
+	                        var trade = rsp.trades_sold_get_response.trades.trade;
+	                        var chestat=true;
+	                        for(index in trade)
+	                        {
+	                            if(chestat)datas.chestate='checked=true';else datas.chestate='';
+	                            chestat=false;
+				                tradearr[index]=trade[index];
+				                datas.tditems=trade[index].orders.order;
+				                datas.itemlength=datas.tditems.length;
+				                datas.buyer_nick=trade[index].buyer_nick;
+				                datas.tid=trade[index].tid;
+								datas.receiver_name= trade[index].receiver_name;
+				                datas.receiver_state = trade[index].receiver_state;
+				                datas.receiver_city = trade[index].receiver_city;
+				                datas.receiver_district = trade[index].receiver_district;
+				                datas.receiver_address = trade[index].receiver_address;
+				                datas.receiver_zip = trade[index].receiver_zip;
+				                datas.receiver_mobile = trade[index].receiver_mobile;
+				                datas.receiver_phone = trade[index].receiver_phone;
+				                var source = $("#sendlist_template").html();
+					            var template=Handlebars.compile(source);
+					            var htmlstr = template(datas);
+					            $("#selectbodys").append(htmlstr); 
+		                        }
+	                    }else{
+	                    	layer.msg('没有搜索到您要查询的订单！',1, 3);
+	                    }
+                    }
+                },
+                error: function(msp){
+                	$("#selectbodys").empty();
+                	document.getElementById('shadiao').setAttribute("onclick", "selectdd()");
+                    if(typeof msp === 'string'){
+                        var msp = JSON.parse(msp);
+                    }else{
+                        var	msp= msp;
+                    }
+                    $('#selectcid').modal('hide');
+                    geterrorinfo('taobao.trades.sold.get',msp);
+                }
+            });
+			}
+}
+function insertcid(){
+	var result=$("input[name='selradio']:checked").val();
+	if(typeof(result)!="undefined"||result!=undefined){
+		document.getElementById("dddbh").value=result;
+		var num=0;
+		var price=0;
+		var sjbms='';
+		var spsx='';
+		var inyouhui=0;
+		var inyouhuiall=0;
+		var youfein=0;
+		var feefei=0;
+		var saddrsesd='';
+		for(var index in tradearr){
+			if(tradearr[index].tid==result){
+				if(tradearr[index].receiver_phone!=undefined||typeof(tradearr[index].receiver_phone)!="undefined"){
+					document.getElementById("sdh").value=tradearr[index].receiver_phone;
+					}
+				if(tradearr[index].receiver_mobile!=undefined||typeof(tradearr[index].receiver_mobile)!="undefined"){
+					document.getElementById("ssj").value=tradearr[index].receiver_mobile;
+					}
+	            document.getElementById("sjr").value=tradearr[index].receiver_name;
+	            document.getElementById("syb").value=tradearr[index].receiver_zip;
+	            document.getElementById("sww").value=tradearr[index].buyer_nick;
+				document.getElementById("saddr").value=tradearr[index].receiver_state;
+				document.getElementById("saddrs").value=tradearr[index].receiver_city;
+				if(tradearr[index].receiver_district!=undefined||typeof(tradearr[index].receiver_district)!="undefined")document.getElementById("saddrse").value=tradearr[index].receiver_district;
+	            saddrsesd=tradearr[index].receiver_address;
+	            saddrsesd=saddrsesd.replace(tradearr[index].receiver_state+tradearr[index].receiver_city+tradearr[index].receiver_district, "");
+	            document.getElementById("saddrses").value=saddrsesd;
+				if(tradearr[index].buyer_message!=undefined||typeof(tradearr[index].buyer_message)!="undefined"){
+				document.getElementById("dmjly").value=tradearr[index].buyer_message;
+				}
+				if(tradearr[index].buyer_memo!=undefined||typeof(tradearr[index].buyer_memo)!="undefined"){
+				document.getElementById("dmjbz").value=tradearr[index].buyer_memo;
+				}				
+				if(tradearr[index].seller_memo!=undefined||typeof(tradearr[index].seller_memo)!="undefined"){
+				document.getElementById("dwjbz").value=tradearr[index].seller_memo;
+				}
+				feefei=tradearr[index].post_fee;
+				youfein=Number(youfein)+Number(feefei);
+				var orderarr=tradearr[index].orders.order;
+				var titleval='';
+				for(indexs in orderarr){
+					titleval=getTitle(orderarr[indexs].title,orderarr[indexs].num_iid);
+					if(orderarr[indexs].outer_sku_id!=undefined||typeof(orderarr[indexs].outer_sku_id)!="undefined"){
+						sjbms=orderarr[indexs].outer_sku_id;
+						}else if(orderarr[indexs].outer_iid!=undefined||typeof(orderarr[indexs].outer_iid)!="undefined"){
+						sjbms=orderarr[indexs].outer_iid;
+						}else sjbms='';
+					if(orderarr[indexs].sku_properties_name!=undefined||typeof(orderarr[indexs].sku_properties_name)!="undefined"){
+						spsx=orderarr[indexs].sku_properties_name;
+						}else spsx='';
+					num=Number(num)+Number(orderarr[indexs].num);
+					if(orderarr.length==1){
+						inyouhui=(Number(orderarr[indexs].price)*orderarr[indexs].num-Number(orderarr[indexs].payment)+Number(feefei)).toFixed(2);
+						price=Number(price)+Number(orderarr[indexs].payment)-feefei;
+						babylist[n]=titleval+'|:'+sjbms+'|:'+spsx+'|:'+orderarr[indexs].price+'|:'+orderarr[indexs].num+'|:'+inyouhui+'|:'+(orderarr[indexs].payment-feefei);
+						$("#sample-table-2").append('<tr id="add'+n+'"><td width="20%">'+titleval+'</td><td width="15%">'+sjbms+'</td><td width="15%">'+spsx+'</td><td width="10%">'+orderarr[indexs].price+'</td><td width="5%">'+orderarr[indexs].num+'</td><td width="10%">'+inyouhui+'</td><td width="10%">'+(orderarr[indexs].payment-feefei).toFixed(2)+'</td><td id="dis'+n+'" class="caoz" width="15%"><a href="javascript:void(0);" class="sui-btn btn-mini btn-pink" onclick="babydel('+n+')">删除</a></td></tr>');
+						}else{
+							 inyouhui=(Number(orderarr[indexs].price)*orderarr[indexs].num-Number(orderarr[indexs].payment)).toFixed(2);
+							 price=Number(price)+Number(orderarr[indexs].payment);
+							 babylist[n]=titleval+'|:'+sjbms+'|:'+spsx+'|:'+orderarr[indexs].price+'|:'+orderarr[indexs].num+'|:'+inyouhui+'|:'+orderarr[indexs].payment;
+							 $("#sample-table-2").append('<tr id="add'+n+'"><td width="20%">'+titleval+'</td><td width="15%">'+sjbms+'</td><td width="15%">'+spsx+'</td><td width="10%">'+orderarr[indexs].price+'</td><td width="5%">'+orderarr[indexs].num+'</td><td width="10%">'+inyouhui+'</td><td width="10%">'+orderarr[indexs].payment+'</td><td id="dis'+n+'" class="caoz" width="15%"><a href="javascript:void(0);" class="sui-btn btn-mini btn-pink" onclick="babydel('+n+')">删除</a></td></tr>');
+							 }
+					inyouhuiall=Number(inyouhuiall)+Number(inyouhui);
+					
+				n++;
+				}
+				price=tradearr[index].payment;
+				inyouhuiall=Number(tradearr[index].total_fee)-Number(tradearr[index].payment)+Number(tradearr[index].post_fee);
+				}
+			}
+				var bnum=document.getElementById("bnum").value;
+				document.getElementById("bnum").value=Number(bnum)+Number(num);
+				var byouf=document.getElementById("byf").value;
+				document.getElementById("byf").value=(Number(byouf)+Number(youfein)).toFixed(2);
+				var yhtotal=document.getElementById("yhtotal").value;
+				document.getElementById("yhtotal").value=(Number(yhtotal)+Number(inyouhuiall)).toFixed(2);
+				var pricet=document.getElementById("pricet").value;
+				document.getElementById("pricet").value=(Number(pricet)+Number(price)).toFixed(2);
+	}else{
+        layer.msg('您没有选择要插入的宝贝！',1, 3);
+		}
+}
+function maineditMo(){
+	var mouldnamec=$('#printmc option:selected').val();
+	var epublics=1;
+	if(mouldnamec.indexOf('wsx') > 0){epublics='wsx';mouldnamec=mouldnamec.replace("wsx","") ;}
+	window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/editMo?vers=<?php echo REAL_ROOT_VER;?>#state='+mouldnamec+'&publics='+epublics;
+}
+function addbaby(){
+	var title=document.getElementById("title").value;
+	var uid=document.getElementById("uid").value;
+	var price=document.getElementById("price").value;
+	var num=document.getElementById("num").value;
+	var yh=document.getElementById("yh").value;
+	var je=document.getElementById("je").value;
+	var sx=document.getElementById("sx").value;
+	if(title==''&&uid==''){
+        layer.msg('商品名称和属性不能同时为空！',1, 3);
+	}else if(price==''){
+        layer.msg('商品价格不能同时为空！',1, 3);
+	}else if(num==''){
+        layer.msg('商品数量不能同时为空！',1, 3);
+		}else{
+		babylist[n]=title+'|:'+uid+'|:'+sx+'|:'+price+'|:'+num+'|:'+yh+'|:'+je;
+		$("#sample-table-2").append('<tr id="add'+n+'"><td width="20%">'+title+'</td><td width="15%">'+uid+'</td><td width="15%">'+sx+'</td><td width="10%">'+price+'</td><td width="5%">'+num+'</td><td width="10%">'+yh+'</td><td width="10%">'+je+'</td><td id="dis'+n+'" class="caoz" width="15%"><a href="javascript:void(0);" class="sui-btn btn-mini btn-pink" onclick="babydel('+n+')">删除</a></td></tr>');
+		n++;
+		var bnum=document.getElementById("bnum").value;
+		document.getElementById("bnum").value=Number(bnum)+Number(num);
+		var yhtotal=document.getElementById("yhtotal").value;
+		document.getElementById("yhtotal").value=Number(yhtotal)+Number(yh);
+		var pricet=document.getElementById("pricet").value;
+		document.getElementById("pricet").value=Number(pricet)+price*num-yh;
+		}
+}
+function jstotal(){
+	var price=document.getElementById("price").value;
+	var yh=document.getElementById("yh").value;
+	var num=document.getElementById("num").value;
+	document.getElementById("je").value=price*num-yh;
+}
+function babydel(nn){
+	var delbaby=babylist[nn].split('|:');
+	$("#add"+nn).remove();
+	var bnum=document.getElementById("bnum").value;
+	document.getElementById("bnum").value=bnum-delbaby[4];
+	var yhtotal=document.getElementById("yhtotal").value;
+	document.getElementById("yhtotal").value=(yhtotal-delbaby[5]).toFixed(2);
+	var pricet=document.getElementById("pricet").value;
+	document.getElementById("pricet").value=(Number(pricet)-delbaby[3]*delbaby[4]+Number(delbaby[5])).toFixed(2);
+	babylist.splice(nn,1,'');
+	n--;
+}
+function fastprint(){
+	var btitle='';
+	var bproperty='';
+	var bpropertys='';
+	var btitles='';
+	var CODINGs='';
+	var totalPrices=0;
+	var bsxnums='';
+	var babyallsx='';
+	var bbabynum='';
+	var ballnum=0;
+	if(babylist[0]!=''){
+		for(index in babylist){
+			if(babylist[index]!=''){
+				btitles=babylist[index].split('|:');
+				if(btitle=='')btitle=btitles[0]; else btitle=btitle+';'+btitles[0];
+				if(bproperty=='')bproperty=btitles[2]+'*'+btitles[4]; else bproperty=bproperty+';'+btitles[2]+'*'+btitles[4];
+				if(CODINGs=='')CODINGs=btitles[1];else CODINGs=CODINGs+';'+btitles[1];
+				ballnum=Number(ballnum)+Number(btitles[4]);
+				if(bbabynum=='')bbabynum=btitles[0]+'*'+btitles[4];else bbabynum=bbabynum+';'+btitles[0]+'*'+btitles[4];
+				if(bpropertys=='')bpropertys=btitles[0]+'/'+btitles[2]+'/'+btitles[4];else bpropertys=bpropertys+';'+btitles[0]+'/'+btitles[2]+'/'+btitles[4];
+				if(babyallsx=='')babyallsx=btitles[0]+'/'+btitles[1]+'/'+btitles[2]+'/'+btitles[4];else babyallsx=babyallsx+';'+btitles[0]+'/'+btitles[1]+'/'+btitles[2]+'/'+btitles[4];
+				if(bsxnums=='')bsxnums=btitles[1]+'/'+btitles[2]+'/'+btitles[4];else bsxnums=bsxnums+';'+btitles[1]+'/'+btitles[2]+'/'+btitles[4];
+				totalPrices=Number(totalPrices)+Number(btitles[6]);
+				}
+			}
+		}
+		totalPrices='￥：'+totalPrices;
+		var fastData=document.getElementById("fjr").value+'|Y|'+
+			 gprinttime+'|Y|'+
+			 btitle+'|Y|'+
+			 bproperty+'|Y|'+
+			 bpropertys+'|Y|'+
+			 document.getElementById("saddrs").value+'|Y|'+
+			 shopName+'|Y|'+
+			 totalPrices+'|Y|'+
+			 bbabynum+'|Y|'+
+			 ballnum+'|Y|'+
+			 bsxnums+'|Y|'+
+			 nick+'|Y|'+
+			 CODINGs+'|Y|'+
+			 document.getElementById("sww").value+'|Y|'+
+			 document.getElementById("dddbh").value+'|Y|'+
+			 document.getElementById("syb").value+'|Y|'+
+			 document.getElementById("fyb").value+'|Y|'+
+			 document.getElementById("dmjly").value+'|Y|'+
+			 document.getElementById("dwjbz").value+'|Y|'+
+			 document.getElementById("fjr").value+'|Y|'+
+			 document.getElementById("faddr").value+' '+document.getElementById("faddrs").value+' '+document.getElementById("faddrse").value+' '+document.getElementById("faddrses").value+'|Y|'+
+			 document.getElementById("faddrs").value+'|Y|'+
+			 document.getElementById("fcompany").value+'|Y|'+
+			 document.getElementById("fdh").value+'|Y|'+
+			 document.getElementById("fsj").value+'|Y|'+
+			 document.getElementById("sjr").value+'|Y|'+
+			 document.getElementById("saddr").value+' '+document.getElementById("saddrs").value+' '+document.getElementById("saddrse").value+' '+document.getElementById("saddrses").value+'|Y|'+
+			 document.getElementById("scompany").value+'|Y|'+
+			 document.getElementById("sdh").value+'|Y|'+
+			 document.getElementById("ssj").value+'|Y|'+
+			 document.getElementById("faddr").value+'|Y|'+
+			 document.getElementById("faddrs").value+'|Y|'+
+			 document.getElementById("faddrse").value+'|Y|'+
+			 document.getElementById("faddrses").value+'|Y|'+
+			 document.getElementById("saddr").value+'|Y|'+
+			 document.getElementById("saddrs").value+'|Y|'+
+			 document.getElementById("saddrse").value+'|Y|'+
+			 document.getElementById("saddrses").value+'|Y|'+
+			 babyallsx;
+			 window.localStorage.setItem("fastData",fastData);
+			 window.localStorage.setItem("printRole",'other');
+			 openFast();
+}
+    
+	function faststateU(){
+		$.ajax({
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/upPrinttime',
+		    type: 'POST',
+		    dataType:'html',
+		    data:{nick:nick,nowtimes:nowtimese,printtime:0,sendtime:1},
+		    timeout:10000,
+		    success: function(data){
+		    	 noprint(1);
+			     }
+		});
+	}
+	function faststateS(){
+			$.ajax({
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/upPrinttime',
+			    type: 'POST',
+			    dataType:'html',
+			    data:{nick:nick,nowtimes:nowtimese,printtime:1,sendtime:0},
+			    timeout:10000,
+			    success: function(data){
+			    	 noprint(1);
+				     }
+			});
+	}
+
+		function sendprint(){
+		    var sendDataa=document.getElementById("sjr").value+'|Y|'+
+			    document.getElementById("sww").value+'|Y|'+
+			    document.getElementById("sdh").value+'|Y|'+
+			    document.getElementById("ssj").value+'|Y|'+
+			    document.getElementById("saddr").value+' '+document.getElementById("saddrs").value+' '+document.getElementById("saddrse").value+' '+document.getElementById("saddrses").value+'|Y|'+
+			    document.getElementById("syb").value+'|Y|'+
+			    document.getElementById("dmjly").value+'|Y|'+
+			    shopName+'|Y|'+
+			    document.getElementById("dddbh").value+'|Y|'+
+			    document.getElementById("dwjbz").value+'|Y|'+
+			    document.getElementById("fww").value+'|Y|'+
+			    document.getElementById("fdh").value+'|Y|'+
+			    document.getElementById("fsj").value+'|Y|'+
+			    document.getElementById("faddr").value+' '+document.getElementById("faddrs").value+' '+document.getElementById("faddrse").value+' '+document.getElementById("faddrses").value+'|Y|'+
+			    document.getElementById("yhtotal").value+'|,|'+document.getElementById("byf").value+'|,|'+document.getElementById("pricet").value+'|Y|'+
+			    '|Y|'+
+			    gprinttime+'|Y|';
+		    sendDataa=sendDataa+'|-X-|'+sendDataa;
+		    var sendDatab=new Array();
+			    if(babylist!='')sendDatab[0]=babylist.join('|Y|');
+			    sendDatab=sendDatab.join('|-X-|');
+			    window.localStorage.setItem("sendDataa",sendDataa);
+			    window.localStorage.setItem("sendDatab",sendDatab);
+				window.localStorage.setItem("printRole",'customPrintsend');
+			    openSend();
+			}
+		
+	function savecustom(){
+		var fmessage={};
+		fmessage[0]=document.getElementById("fww").value;
+		fmessage[1]=document.getElementById("fjr").value;
+		fmessage[2]=document.getElementById("fyb").value;
+		fmessage[3]=document.getElementById("fsj").value;
+		fmessage[4]=document.getElementById("fdh").value;
+		fmessage[5]=document.getElementById("faddr").value+'|:|'+document.getElementById("faddrs").value+'|:|'+document.getElementById("faddrse").value+'|:|'+document.getElementById("faddrses").value;
+		fmessage[6]=document.getElementById("fcompany").value;
+	    var JSONfmessage = JSON.stringify(fmessage); 
+	    var smessage={};
+	    smessage[0]=document.getElementById("sww").value;
+	    smessage[1]=document.getElementById("sjr").value;
+	    smessage[2]=document.getElementById("syb").value;
+	    smessage[3]=document.getElementById("ssj").value;
+	    smessage[4]=document.getElementById("sdh").value;
+	    smessage[5]=document.getElementById("saddr").value+'|:|'+document.getElementById("saddrs").value+'|:|'+document.getElementById("saddrse").value+'|:|'+document.getElementById("saddrses").value;
+	    smessage[6]=document.getElementById("scompany").value;
+	    var JSONsmessage = JSON.stringify(smessage); 
+	    var dmessage={};
+	    dmessage[0]=document.getElementById("dddbh").value;
+		dmessage[1]=document.getElementById("dmjly").value;
+		dmessage[2]=document.getElementById("dmjbz").value;
+		dmessage[3]=document.getElementById("dwjbz").value;
+		dmessage[4]=document.getElementById("byf").value;
+	    var JSONdmessage = JSON.stringify(dmessage);
+	    var babylists=new Array();
+	    var i=0;
+	    for(index in babylist){
+		    if(babylist[index]!=''){
+		    	babylists[i]=babylist[index];
+		    	i++;
+			    }
+		    }
+	    var JSONbmessage = JSON.stringify(babylists); 
+	    var remark=document.getElementById("remark").value;
+	    var nowtimes=nowtimese;
+		if(smessage[1]==''){
+			layer.msg('收件人姓名不能为空！',1, 3);
+			}else if(smessage[3]==''&&smessage[4]==''){
+				layer.msg('手机和电话不能同时为空！',1, 3);
+			}else if(smessage[5]==''){
+				layer.msg('收件人地址不能为空！',1, 3);
+				}else{
+					$.ajax({
+					    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/saveCustom',
+					    type: 'POST',
+					    dataType:'html',
+					    data:{nick:nick,fmessage:JSONfmessage,smessage:JSONsmessage,dmessage:JSONdmessage,bmessage:JSONbmessage,remark:remark,nowtimes:nowtimese},
+					    timeout:10000,
+					    success: function(data){
+						    	 var datatemp=eval('('+data+')');
+						    	 if(datatemp=='保存失败'){
+						    		 layer.msg(datatemp,1, 3);
+					             }else{
+					            	 nowtimese=datatemp;
+								 	 layer.msg('保存成功！',1, 1);
+						             }
+					     },
+					    error: function(data){
+						 	 layer.msg('保存失败！',1, 3);
+					     }	     
+				 });
+				}
+	}
+	function noprint(page){
+		$("#printingba").empty();
+	
+		$("#nopfys").html('<div class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>');
+		$.ajax({
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/selCustom',
+		    type: 'POST',
+		    dataType:'html',
+		    data:{nick:nick,pageno:page,state:1},
+		    timeout:10000,
+		    success: function(data){/*获取成功*/
+		    	 $("#nopfys").empty();
+		    	 var datatemp=eval('('+data+')');
+		    	 var nptotal=datatemp['total'];
+		    	 window.noprintarr=datatemp['com'];
+		    	 var indexs=1;
+		    	 var Jsonsmessage={};
+		    	 var dianhua='';
+		    	 var fastd='';
+		    	 var sendd='';
+		    	 var noprintaddr='';
+		    	 var textInfos;
+		    	 if(nptotal>0){
+			    	 for(var index in noprintarr){
+			    		 indexs=Number(index)+1+(page-1)*20;
+					     textInfos=noprintarr[index].smessage;
+					     noprintarr[index].smessage=textInfos.replace(/\\/g,"");
+			    		 Jsonsmessage = JSON.parse(noprintarr[index].smessage);
+			    		 textInfos=noprintarr[index].fmessage;
+					     noprintarr[index].fmessage=textInfos.replace(/\\/g,"");
+					     textInfos=noprintarr[index].dmessage;
+					     noprintarr[index].dmessage=textInfos.replace(/\\/g,"");
+					     textInfos=noprintarr[index].bmessage;
+					     noprintarr[index].bmessage=textInfos.replace(/\\/g,"");
+			    		 dianhua=Jsonsmessage[3]+','+Jsonsmessage[4];
+						 if(noprintarr[index].printtime==null||noprintarr[index].printtime=='')fastd='<span style="color:#f00;">(待打)</span>';else fastd='<span style="color: #0C0;">(已打)</span>';
+						 if(noprintarr[index].sendtime==null||noprintarr[index].sendtime=='')sendd='<span style="color:#f00;">(待打)</span>';else sendd='<span style="color: #0C0;">(已打)</span>';
+						 noprintaddr=Jsonsmessage[5].split('|:|');
+						 noprintaddr=noprintaddr[0]+','+noprintaddr[1]+','+noprintaddr[2]+','+noprintaddr[3];
+				    	 $("#printingba").append('<tr style="background-color:silvery;"><td width="5%">'+indexs+'</td><td width="10%">'+Jsonsmessage[1]+'</td><td width="20%">'+noprintaddr+'</td><td width="20%">'+dianhua+'</td><td width="20%">'+noprintarr[index].remark+'</td><td width="25%"><center><a data-toggle="tab" href="#home" onclick="customedit('+index+')">编辑</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="javascript:deltypemessage('+noprintarr[index].id+',1);" >删除</a><br/>'+fastd+'<a href="javascript:void(0);" onclick="cupreviewed('+index+')">打印快递单</a><br/>'+sendd+'<a href="javascript:void(0);" onclick="sendshows('+index+')">打印发货单</a></center></td></tr>');
+				    	 }
+			    	 if(nptotal>20){
+		 	    		 var page_sum=Math.ceil(nptotal/20); 
+		 	    		 pagin('nopfys','noprint',page,page_sum,nptotal);
+		 	        	 }
+			     }else{
+			    	 var msgstr = Handlebars.compile( $('#error-msg-template').html() )({'info' : '您目前还没有待打印的订单!'});
+			    	 	msgstr = '<tr ><td colspan="7" >' + msgstr + "</td></tr>";
+		    			$("#printingba").append(msgstr);
+                 }
+		     }
+			});
+				 tradedots('noprint');
+		}
+	function customedit(vaindex){
+		 $("#sample-table-2").empty();
+		 document.getElementById("bnum").value='';
+		 document.getElementById("yhtotal").value='';
+		 document.getElementById("pricet").value='';
+		 n=0;
+		 babylist.length=0;
+		 document.getElementById("checktwo").className="";
+		 document.getElementById("checkone").className="active";
+		 nowtimese=noprintarr[vaindex].nowtimes;
+		 document.getElementById("remark").value=noprintarr[vaindex].remark;
+		 var Jsonfmessage = JSON.parse(noprintarr[vaindex].fmessage);
+		 document.getElementById("fww").value=Jsonfmessage[0];
+		 document.getElementById("fjr").value=Jsonfmessage[1];
+		 document.getElementById("fyb").value=Jsonfmessage[2];
+		 document.getElementById("fsj").value=Jsonfmessage[3];
+		 document.getElementById("fdh").value=Jsonfmessage[4];
+		 var sonfmessage=Jsonfmessage[5].split('|:|');
+		 document.getElementById("faddr").value=sonfmessage[0];
+		 document.getElementById("faddrs").value=sonfmessage[1];
+		 document.getElementById("faddrse").value=sonfmessage[2];
+		 document.getElementById("faddrses").value=sonfmessage[3];
+		var Jsonsmessage = JSON.parse(noprintarr[vaindex].smessage);
+		 document.getElementById("sww").value=Jsonsmessage[0];
+		 document.getElementById("sjr").value=Jsonsmessage[1];
+		 document.getElementById("syb").value=Jsonsmessage[2];
+		 document.getElementById("ssj").value=Jsonsmessage[3];
+		 document.getElementById("sdh").value=Jsonsmessage[4];
+		 var sonsmessage=Jsonsmessage[5].split('|:|');
+		 document.getElementById("saddr").value=sonsmessage[0];
+		 document.getElementById("saddrs").value=sonsmessage[1];
+		 document.getElementById("saddrse").value=sonsmessage[2];
+		 document.getElementById("saddrses").value=sonsmessage[3];
+		var Jsondmessage = JSON.parse(noprintarr[vaindex].dmessage);
+		 document.getElementById("dddbh").value=Jsondmessage[0];
+		 document.getElementById("dmjly").value=Jsondmessage[1];
+		 document.getElementById("dmjbz").value=Jsondmessage[2];
+		 document.getElementById("dwjbz").value=Jsondmessage[3];
+		var Jsonbmessage = JSON.parse(noprintarr[vaindex].bmessage);
+		var blists='';
+		for(var index in Jsonbmessage){
+			if(Jsonbmessage[index]!=''){
+			babylist[n]=Jsonbmessage[index];
+			blists=Jsonbmessage[index].split('|:');
+			var bnum=document.getElementById("bnum").value;
+			document.getElementById("bnum").value=Number(bnum)+Number(blists[4]);
+			var yhtotal=document.getElementById("yhtotal").value;
+			document.getElementById("yhtotal").value=Number(yhtotal)+Number(blists[5]);
+			var pricet=document.getElementById("pricet").value;
+			document.getElementById("pricet").value=Number(pricet)+blists[3]*blists[4]-blists[5];
+			$("#sample-table-2").append('<tr id="add'+n+'"><td width="20%">'+blists[0]+'</td><td width="15%">'+blists[1]+'</td><td width="15%">'+blists[2]+'</td><td width="10%">'+blists[3]+'</td><td width="5%">'+blists[4]+'</td><td width="10%">'+blists[5]+'</td><td width="10%">'+blists[6]+'</td><td id="dis'+n+'" class="caoz" width="15%"><a href="javascript:void(0);" class="sui-btn btn-mini btn-pink" onclick="babydel('+n+')">删除</a></td></tr>');
+			n++;
+			}
+		}
+		}
+	function cupreviewed(valindex){
+		var btitle='';
+		var bproperty='';
+		var bpropertys='';
+		var btitles='';
+		var CODINGs='';
+		var totalPrices=0;
+		var bsxnums='';
+		var bbabynum='';
+		var ballnum=0;
+		var babyallsx='';
+		nowtimese=noprintarr[valindex].nowtimes;
+		var babylist = JSON.parse(noprintarr[valindex].bmessage);
+		if(babylist[0]!=''){
+			for(index in babylist){
+				btitles=babylist[index].split('|:');
+				if(btitle=='')btitle=btitles[0]; else btitle=btitle+';'+btitles[0];
+				if(bproperty=='')bproperty=btitles[2]+'*'+btitles[4]; else bproperty=bproperty+';'+btitles[2]+'*'+btitles[4];
+				if(CODINGs=='')CODINGs=btitles[1];else CODINGs=CODINGs+';'+btitles[1];
+				ballnum=Number(ballnum)+Number(btitles[4]);
+				if(bbabynum=='')bbabynum=btitles[0]+'*'+btitles[4];else bbabynum=bbabynum+';'+btitles[0]+'*'+btitles[4];
+				if(bpropertys=='')bpropertys=btitles[0]+'/'+btitles[2]+'/'+btitles[4];else bpropertys=bpropertys+';'+btitles[0]+'/'+btitles[2]+'/'+btitles[4];
+				if(babyallsx=='')babyallsx=btitles[0]+'/'+btitles[1]+'/'+btitles[2]+'/'+btitles[4];else babyallsx=babyallsx+';'+btitles[0]+'/'+btitles[1]+'/'+btitles[2]+'/'+btitles[4];
+				if(bsxnums=='')bsxnums=btitles[1]+'/'+btitles[2]+'/'+btitles[4];else bsxnums=bsxnums+';'+btitles[1]+'/'+btitles[2]+'/'+btitles[4];
+				totalPrices=Number(totalPrices)+Number(btitles[6]);
+				}
+		}
+		
+		totalPrices='￥：'+totalPrices;
+		var Jsondmessage = JSON.parse(noprintarr[valindex].dmessage);
+		var Jsonfmessage = JSON.parse(noprintarr[valindex].fmessage);
+		var Jsonsmessage = JSON.parse(noprintarr[valindex].smessage);
+		var retdestination=Jsonsmessage[5].split('|:|'); 
+		var jfmsg=Jsonfmessage[5].split('|:|');
+ 		var fastData=Jsonfmessage[1]+'|Y|'+
+			 gprinttime+'|Y|'+
+			 btitle+'|Y|'+
+			 bproperty+'|Y|'+
+			 bpropertys+'|Y|'+
+			 retdestination[1]+'|Y|'+
+			 shopName+'|Y|'+
+			 totalPrices+'|Y|'+
+			 bbabynum+'|Y|'+
+			 ballnum+'|Y|'+
+			 bsxnums+'|Y|'+
+			 nick+'|Y|'+
+			 CODINGs+'|Y|'+
+			 Jsonsmessage[0]+'|Y|'+
+			 Jsondmessage[0]+'|Y|'+
+			 Jsonsmessage[2]+'|Y|'+
+			 Jsonfmessage[2]+'|Y|'+
+			 Jsondmessage[1]+'|Y|'+
+			 Jsondmessage[3]+'|Y|'+
+			 Jsonfmessage[1]+'|Y|'+
+			 jfmsg[0]+' '+jfmsg[1]+' '+jfmsg[2]+' '+jfmsg[3]+'|Y|'+
+			 jfmsg[1]+'|Y|'+
+			 Jsonfmessage[6]+'|Y|'+
+			 Jsonfmessage[3]+'|Y|'+
+			 Jsonsmessage[4]+'|Y|'+
+			 Jsonsmessage[1]+'|Y|'+
+			 retdestination[0]+' '+retdestination[1]+' '+retdestination[2]+' '+retdestination[3]+'|Y|'+
+			 Jsonsmessage[6]+'|Y|'+
+			 Jsonsmessage[3]+'|Y|'+
+			 Jsonsmessage[4]+'|Y|'+
+			 jfmsg[0]+'|Y|'+
+			 jfmsg[1]+'|Y|'+
+			 jfmsg[2]+'|Y|'+
+			 jfmsg[3]+'|Y|'+
+			 retdestination[0]+'|Y|'+
+			 retdestination[1]+'|Y|'+
+			 retdestination[2]+'|Y|'+
+			 retdestination[3]+'|Y|'+
+			 babyallsx;
+			 window.localStorage.setItem("fastData",fastData);
+			 window.localStorage.setItem("printRole",'customPrintfast');
+			 openFast();
+	}
+	    
+	function sendshows(singval){
+		var Jsonfmessage = JSON.parse(noprintarr[singval].fmessage);
+		var sonfmessage=Jsonfmessage[5].split('|:|');
+		var sonfmessage=sonfmessage[0]+' '+sonfmessage[1]+' '+sonfmessage[2]+' '+sonfmessage[3];
+
+		var Jsonsmessage = JSON.parse(noprintarr[singval].smessage);
+		var sonsmessage=Jsonsmessage[5].split('|:|');
+		var sonsmessage=sonsmessage[0]+' '+sonsmessage[1]+' '+sonsmessage[2]+' '+sonsmessage[3];
+	    var babylistss = JSON.parse(noprintarr[singval].bmessage);
+	    var Jsondmessage = JSON.parse(noprintarr[singval].dmessage);
+		
+		var babylistx='';
+		var buyerval='';
+	    var allyh=0;
+	    var allpic=0;
+	    var allyhs='';
+	    for(index in babylistss){
+	    	if(babylistx=='')babylistx=babylistss[index];else babylistx=babylistx+'|,|'+babylistss[index];
+	    	allyhs=babylistss[index].split('|:');
+	    	allyh=allyh+Number(allyhs[5]);
+	    	allpic=allpic+Number(allyhs[6]);
+		    }
+		    nowtimese=noprintarr[singval].nowtimes;
+		    var sendDataa=Jsonsmessage[1]+'|Y|'+
+		    Jsonsmessage[0]+'|Y|'+
+		    Jsonsmessage[4]+'|Y|'+
+		    Jsonsmessage[3]+'|Y|'+
+		    sonsmessage+'|Y|'+
+		    Jsonsmessage[2]+'|Y|'+
+		    Jsondmessage[1]+'|Y|'+
+		    shopName+'|Y|'+
+		    Jsondmessage[0]+'|Y|'+
+		    Jsondmessage[3]+'|Y|'+
+		    Jsonfmessage[0]+'|Y|'+
+		    Jsonfmessage[4]+'|Y|'+
+		    Jsonfmessage[3]+'|Y|'+
+		    sonfmessage+'|Y|'+
+		    allyh+'|,|'+Jsondmessage[4]+'|,|'+allpic+'|Y|'+
+		    '';
+	    var sendDatab=new Array();
+	    	if(babylistss!='')sendDatab[0]=babylistss.join('|Y|');
+		    sendDatab=sendDatab.join('|-X-|');
+		    window.localStorage.setItem("sendDataa",sendDataa);
+		    window.localStorage.setItem("sendDatab",sendDatab);
+			window.localStorage.setItem("printRole",'customPrintsend');
+		    openSend();
+			}
+		
+	function printed(page){
+		$("#printedba").empty();
+		$("#nopfys").html('<div class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>');
+		$.ajax({
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/selCustom',
+		    type: 'POST',
+		    dataType:'html',
+		    data:{nick:nick,pageno:page,state:2},
+		    timeout:10000,
+		    success: function(data){/*获取成功*/
+		    	 $("#nopfys").empty();
+		    	 datatemp=eval('('+data+')');
+		    	 var edtotal=datatemp['total'];
+		    	 window.edprintarr=datatemp['com'];
+		    	 var indexs=1;
+		    	 var Jsonsmessage={};
+		    	 var dianhua='';
+		    	 var printtimed='';
+		    	 var printedaddr='';
+		    	 var textInfos;
+		    	 if(edtotal>0){
+			    	 for(var index in edprintarr){
+			    		 indexs=Number(index)+1+(page-1)*20;
+			    		 textInfos=edprintarr[index].smessage;
+			    		 edprintarr[index].smessage=textInfos.replace(/\\/g,"");
+			    		 Jsonsmessage = JSON.parse(edprintarr[index].smessage);
+			    		 dianhua=Jsonsmessage[3]+','+Jsonsmessage[4]
+						 if(edprintarr[index].printtime>edprintarr[index].sendtime||edprintarr[index].sendtime==null)printtimed=edprintarr[index].printtime; else printtimed=edprintarr[index].sendtime;
+			    		 printedaddr=Jsonsmessage[5].split('|:|');
+			    		 printedaddr=printedaddr[0]+','+printedaddr[1]+','+printedaddr[2]+','+printedaddr[3];
+				    	 $("#printedba").append('<tr style="background-color:silvery;"><td width="5%">'+indexs+'</td><td width="15%">'+Jsonsmessage[1]+'</td><td width="15%">'+printedaddr+'</td><td width="15%">'+dianhua+'</td><td width="20%">'+edprintarr[index].remark+'</td><td width="20%">'+printtimed+'</td><td width="10%"><span><a href="javascript:deltypemessage('+edprintarr[index].id+',2)">删除</a></span></td></tr>');
+				    	 }
+			    	 if(edtotal>20){
+		 	    		 var page_sum=Math.ceil(edtotal/20); 
+		 	    		 pagin('fysped','printed',page,page_sum,edtotal);
+		 	        	 }
+			     }else{
+			    	 	var msgstr = Handlebars.compile( $('#error-msg-template').html() )({'info' : '您目前还没有待打印的订单!'});
+			    	 	msgstr = '<tr ><td colspan="7" >' + msgstr + "</td></tr>";
+		    			$("#printedba").append(msgstr);
+	                 }
+		     }
+		 });
+				 tradedots('printed');
+		}
+	function gettbtime(){
+		QN.top.invoke({
+	        "cmd": "taobao.time.get",
+	        "method": "get",
+	        "success":function (rsp){
+	            if(typeof rsp === 'string'){
+	                var rsp = JSON.parse(rsp);
+	            }else{
+	                var	rsp= rsp;
+	            }
+	            if(rsp.code!=null){
+	            }else{
+	                gprinttime=rsp.time_get_response.time;
+	                gprinttime=gprinttime.substr(0, 11);
+	                if(gprinttime==''){
+	                    var now = new Date();
+		            	var year = now.getFullYear();
+		                var month = now.getMonth() + 1;
+		                var day = now.getDate();  
+		                gprinttime=year+'-'+month+'-'+day;
+	            	}
+	            	getshop();
+	            }
+	        },
+	        error: function(msp){
+	        }
+	    });
+	}
+	function getshop(){
+		QN.top.invoke({
+	        "cmd": "taobao.shop.get",
+	        "param": {
+                "fields":"title",
+                "nick":nick
+            },
+	        "method": "get",
+	        "success":function (rsp){
+	            if(typeof rsp === 'string'){
+	                var rsp = JSON.parse(rsp);
+	            }else{
+	                var	rsp= rsp;
+	            }
+	            shopName=rsp.shop_get_response.shop.title;
+	        },
+	        error: function(msp){
+	        	if(typeof msp === 'string'){
+                    var msp = JSON.parse(msp);
+                }else{
+                    var	msp= msp;
+                }
+                geterrorinfo('taobao.shop.get',msp);
+	        }
+	    });
+		}
+
+	function changebaby(num_id){
+        QN.plugin.invoke({
+        	"cmd": "itemDetail",
+        	"param": {
+        	iid:num_id
+        	},
+        	"category": "shangpinguanli"
+        	});
+    }
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-3-11
+	 * Time: 下午14:30
+	 * To get titleSet value.
+	 */
+	function getTitle(titles,num_iid){
+		var localtitle= window.localStorage.getItem("localtitle"+nick);
+		if(localtitle=='on'){
+			var num_iidA=num_iidG.split('|Y|');
+		    var titleA=titleG.split('|Y|');
+		    var uptitleA=uptitleG.split('|Y|');
+		    for(var indexi in num_iidA){
+				if(num_iidA[indexi]==num_iid) {
+					titles=uptitleA[indexi];
+					break;
+					}
+				}
+		}
+		return titles;
+	}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-7-17
+	 * Time: 9:30 
+	 * 打印快递单弹框附属窗体
+	 */	
+	function openFast(){
+		QN.application.invoke({
+		    cmd : 'openAttachWindow',
+		    param : {
+		    	event:"openFast",
+		    	width:900,
+		    	height:630,
+		    	title:'打印快递单'
+		    	},
+		    success : function(rsp) {
+		    },
+		    error : function(msg) {
+		    }
+		});
+		}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-7-21
+	 * Time: 10:20 
+	 * 打印发货单弹框附属窗体
+	 */	
+	function openSend(){
+		QN.application.invoke({
+		    cmd : 'openAttachWindow',
+		    param : {
+		    	event:"openSend",
+		    	width:900,
+		    	height:630,
+		    	title:'打印发货单'
+		    	},
+		    success : function(rsp) {
+		    },
+		    error : function(msg) {
+		    }
+		});
+		}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-7-21
+	 * Time: 10:10 
+	 * 关闭附属窗体回调事件
+	 */	 
+	function wndclose(){
+		QN.event.regEvent({
+			"eventId":'bench.attach_wnd.close',
+			"success": function(e){
+			},
+			"notify": function (rsp){
+				var printRole=window.localStorage.getItem("printRole");
+				switch(printRole){
+					 case 'customPrintfasts':{if(nowtimese!='')faststateU();break;}
+					 case 'customPrintsends':{if(nowtimese!='')faststateS();break;}
+					 default :{window.localStorage.setItem("printRole",'other');break;}
+				 }
+				window.localStorage.removeItem("fastData");
+				window.localStorage.removeItem("sendDataa");
+				window.localStorage.removeItem("sendDatab");
+			}
+			});
+		}
+	/**
+	 * Created with need.
+	 * User: wenliang
+	 * Date: 14-7-31
+	 * Time: 14:30 
+	 * 关闭打印数据
+	 */	 
+	function deltypemessage(index,status){
+		  $("#twohints").html('<p>您确定要删除数据？</p>');
+			document.getElementById('hintok').setAttribute("onclick", "delPrintmsg('"+index+"','"+status+"');");
+			$('#twohint').modal('show');
+			}
+		function delPrintmsg(index,status){
+			$.ajax({
+			    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/delPrintmsg',
+			    type: 'POST',
+			    dataType:'html',
+			    data:{nick:nick,printid:index},
+			    timeout:10000,
+			    success: function(data){
+				     if(data==1){
+					     if(status == 1){
+					    	 noprint(1);
+						     }else if(status ==2){
+						    	 printed(1);
+							     }
+					     layer.msg('删除成功！', 1, 1);
+					     }else{
+					    	 layer.msg('删除失败！', 1, 3);
+						     }
+			     }
+			 });
+			}
+</script>
+<script id="sendlist_template" type="text/x-handlebars-template">
+		<tr>
+            <th colspan="3"><p class="font_wsl" style="margin:0; padding:0; line-height:1.2em"><input type="radio" name="selradio" {{chestate}} value="{{tid}}" />&nbsp;&nbsp;收货地址：<a onclick="wangwangP('{{buyer_nick}}');"  href="javascript:void(0);"><img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid={{buyer_nick}}&site=cntaobao&s=2&charset=utf-8"/>{{buyer_nick}}</a>&nbsp;,{{receiver_name}},{{receiver_phone}},{{receiver_mobile}},{{receiver_state}}{{receiver_city}}{{receiver_district}}{{receiver_address}},{{receiver_zip}}</p></th>
+        </tr>
+        {{#each tditems}}
+        <tr>
+            <!--<td width="5%"><input type="checkbox" name="checkboxs" checked=true value="{{oid}}" /></td>-->
+            <td width="20%"><a href="javascript:void(0);" onclick="changebaby('{{num_iid}}')"><img alt="商品图片" src="{{pic_path}}_80x80.jpg" width="60" align="middle" /></a></td>
+            <td class="80%"><h3 style="font-size:12px; margin:0; padding:0; line-height:14px;"><a href="javascript:void(0);" onclick="changebaby('{{num_iid}}')">{{title}}</a></h3>
+                <p style="margin:0; padding:0;">{{price}} x{{num}}</p>
+                <p style="margin:0; padding:0;">{{sku_properties_name}}</p>
+                {{#if outer_sku_id}}
+                <p style="margin:0;padding:0;color:gray;" >商家编码:{{outer_sku_id}}</p>
+                {{else}}
+                <p style="margin:0;padding:0;color:gray;" >商家编码:{{outer_iid}}</p>
+                {{/if}}
+            </td>
+        </tr>
+        {{/each}}
+</script>
+<script id="error-msg-template" type="text/x-handlebars-template">
+{{#if error}}
+	<div class="sui-msg msg-large msg-block msg-error" style="width:100%">
+	  <div class="msg-con">{{info}}</div>
+	  <s class="msg-icon"></s>
+	</div>
+{{else}}
+	<div class="sui-msg msg-large msg-block msg-tips" style="width:100%">
+	  <div class="msg-con">{{info}}</div>
+	  <s class="msg-icon"></s>
+	</div>
+{{/if}}
+</script>
+ <?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

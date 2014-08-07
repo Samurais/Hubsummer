@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<head>
+    <meta charset="utf-8">
+    <title>爱用交易管理</title>
+    <link href="http://g.alicdn.com/sj/qnui/1.1.2/css/sui.min.css" rel="stylesheet"/>
+	<script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery.min.js" ></script>
+	<script type="text/javascript" src="http://g.alicdn.com/sj/qnui/1.1.2/js/sui.min.js" ></script>
+	<script src="http://cdn.tbmj.net/pubcdn/handlebars-1.0.1.js"></script>
+    <link rel="stylesheet/less" href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/theme">
+    <script type="text/javascript" src="http://g.tbcdn.cn/sj/qn/lib/js/less.js"></script>
+    <script src="http://g.tbcdn.cn/sj/qn/jssdk.js"></script>
+    <script src="http://cdn.zzgdapp.com/pubcdn/layer/layer.min.js"></script>
+    <script src="http://cdn.zzgdapp.com/trade/web/js/superslide.js"></script>
+</head>
+<body style="padding:0;" >
+<div class="container" style="margin-left: 10px;margin-top:10px;position: relative;" id="previewid">
+</div>
+<script type="text/javascript">
+window.onload = function(){
+	var printPreview=window.localStorage.getItem("printPreview");
+	$("#previewid").html(printPreview);
+	}
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

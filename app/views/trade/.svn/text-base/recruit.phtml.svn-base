@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+<div class="container" style="margin-left: 10px;">
+    <center><h4 style="color:red;margin-top:-5px;">每分钟打100单,电子面单打印招募商家啦！</h4></center>
+    <div>招募条件：<a title="是使用热敏纸按系统预先设置的格式打印的面单。热敏纸打印依靠热感应显示文字，打印速度是普通针式打印机的3-5倍；大头笔信息可自动打出，节省人力成本的同时减少了人工误差；打印过程中有损坏的面单可在订单打印状态信息回传系统前重新打印，减少面单的损耗。" style="float:right;">什么是电子面单？</a></div>
+    <div style="margin-top:5px;">1、<input type="checkbox" id="openstatu" value="百世汇通"/>&nbsp;&nbsp;已成功开通电子面单服务<a style="float:right;" href="javascript:openlines('http://bangpai.taobao.com/group/thread/15074034-290311012.htm?spm=0.0.0.0.Gex2zu');">如何开通电子面单服务</a></div>
+    <div>2、  商家日均订单量在200单及以上，您的日均订单量<input type="text" id="printnums" style="width:50px;margin:0 5px 0 15px;">单。</div>
+    <div>3、  选择您经常使用快递公司（目前支持5家，后续开放更多快递公司）：</div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input value="中通快递" type="checkbox" name="wlgsxz">&nbsp;中通快递&nbsp;&nbsp;&nbsp;&nbsp;
+    <input value="百世汇通" type="checkbox" name="wlgsxz">&nbsp;百世汇通&nbsp;&nbsp;&nbsp;&nbsp;
+    <input value="宅急送" type="checkbox" name="wlgsxz">&nbsp;宅急送&nbsp;&nbsp;&nbsp;&nbsp;
+    <input value="EMS" type="checkbox" name="wlgsxz">&nbsp;EMS&nbsp;&nbsp;&nbsp;&nbsp;
+    <input value="优速快递" type="checkbox" name="wlgsxz">&nbsp;优速快递
+    <a style="float:right;" href="javascript:showMsg('showprint');">查看电子面单模板（以百世汇通为例）</a>
+    </div>
+    <div>4、  您购买了热敏打印机， 且打印纸张尺寸宽度在<span style="color:red;">10cm</span>以上，例如（仅供参考）：
+    <div><img border="0" src="http://cdn.zzgdapp.com/trade/web/images/wllogo/printj.png" /><br/>
+    <span style="color:red;text-algin:center;">	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;*如有需要，建议审核通过后，再确定是否购买，以免造成损失！</span></div>
+    </div>
+    <div>5、  如以上条件都符合，请填写报名信息表：<a href="javascript:getuserinfo();" style="float:right;" class="btn btn">点击使用当前用户信息</a>
+    </div>
+    <table style="margin-top:20px;">
+		<tr><td>卖家旺旺：<input type="text"  name="fww" id="fww" style="width:100px;"/>&nbsp;联系人：<input type="text" style="width:80px;" name="fjr" id="fjr"/>
+		手机号码：<input type="text"  name="fsj" id="fsj" style="width:80px;"/>&nbsp;电话号码：<input type="text"  id="fdh" name="fdh" style="width:80px;"/></td></tr>
+		<tr><td>发货地址：<input type="text" placeholder="省" name="faddr" id="faddr" style="width:100px;"/>&nbsp;<input type="text" placeholder="市" name="faddrs" id="faddrs" style="width:100px;"/>&nbsp;<input type="text" placeholder="区" name="faddrse" id="faddrse" style="width:100px;"/>&nbsp;<input type="text" placeholder="街道" name="faddrses" id="faddrses" style="width:210px;"/></td></tr>
+	</table>
+	<span style="color:red;text-algin:center;">	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;* 商家需提供详细的发货地址，用来确认您周围的快递网点是否支持电子面单服务</span>
+	<br/>	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onclick="tjbaoming();" style="width:150px;height:40px;" value="提交报名">&nbsp;&nbsp;审核通过后会通过旺旺或电话通知&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:openlines('http://www.siilu.com/20140513/98922.shtml');">了解更多</a>
+	<input type="button" class="btn btn-primary" style="display:;padding: 3px 10px;" onclick="againdown('downtable','面单招募商家名单');" value="开始下载">
+	<table id="downtable" style="display:none;text-align:center;width:100%;" border="1">
+					<thead >
+		            <tr><td >旺旺ID</td>
+		                <td >每日单数</td>
+		                <td >联系人</td>
+		                <td >手机号码</td>
+		                <td >电话号码</td>
+		                <td >快递公司</td>
+		                <td >发件人地址</td>
+		                </tr>
+		            </thead>
+		            <tbody  id="downtables">
+		            </tbody>
+				</table>
+	<div id="showprint" class="mesWindow" style="Z-INDEX:99998; POSITION:absolute;width:380px;height:490px;display:none;background-color:#FFF;">
+		 <div class="mesWindowTop" style="height:35px;">
+            <button type="button" class="close" style="margin-top: 6px;" onclick="closeMsg('');">×</button>
+            <h4>面单预览</h4>
+         </div>
+		 <div class="mesWindowContent" >
+			<img border="0" src="http://cdn.zzgdapp.com/trade/web/images/wllogo/printshow.jpg" />
+		 </div>
+		<div class="footer">
+			 <div  class="mesWindowBottom">
+				 <input type="button" onclick="closeMsg('');" style="margin-left:8px;padding: 3px 10px;" value="关闭">	
+			 </div>
+		 </div>
+	 </div>
+</div><!--/row-->
+<script type="text/javascript">
+window.onload = function(){
+    QN.initTheme();
+    $("#dyfhsel").attr("class","dqzt");
+    onload_viptime('customPrint');
+    getrecruit();
+}
+function tjbaoming(){
+	var checked = document.getElementsByName("wlgsxz");
+    var checklen=checked.length;
+    var num=0;
+    for (var i=0;i<checklen;i++ )if(checked[i].checked)num++;
+    var xzlogc='';
+    if($("#openstatu").attr("checked")!='checked'){
+    	$("#hints").html('<p>开通面单服务后才可以报名！</p>');
+        showMsg('hint');
+        return;
+	}else if(num<1){
+    	$("#hints").html('<p>请选择快递公司！</p>');
+        showMsg('hint');
+        return;
+    }else{
+	   	 for (var i=0;i<checklen;i++ )
+		    {
+		        if(checked[i].checked){
+			        if(xzlogc=='')xzlogc=checked[i].value;else xzlogc=xzlogc+';'+checked[i].value;
+		        }
+		    }
+	var printfww=document.getElementById("fww").value;
+	var printfjr=document.getElementById("fjr").value;
+	var printfsj=document.getElementById("fsj").value;
+	var printfdh=document.getElementById("fdh").value;
+	var printnums=document.getElementById("printnums").value;
+	var printfaddr=document.getElementById("faddr").value+' '+document.getElementById("faddrs").value+' '+document.getElementById("faddrse").value+' '+document.getElementById("faddrses").value;
+	if(printfww==''||printfjr==''||printfaddr==''||printnums==''){
+		$("#hints").html('<p>请填写完整信息！</p>');
+        showMsg('hint');
+        return;
+		}else if(printfdh==''&&printfsj==''){
+			$("#hints").html('<p>手机、电话不能都为空！</p>');
+	        showMsg('hint');
+	        return;
+		}else{
+			QN.top.invoke({
+				 "cmd": "taobao.user.seller.get",
+				 "param": {'fields':"seller_credit,type"},
+				 "method": "get",
+				 "success": function(e){
+					 if(typeof  e=== 'string'){
+			            	e = JSON.parse(e);
+			            }
+					 var lev=e.user_seller_get_response.user.seller_credit.level;
+					 var level=e.user_seller_get_response.user.type;
+					 printfaddr=printfaddr+'|Y|'+lev+'|Y|'+level;
+						$.ajax({
+						    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/recruit',
+						    type: 'POST',
+						    dataType:'html',
+						    data:{nick:printfww,xzlogc:xzlogc,printfjr:printfjr,printfsj:printfsj,printfdh:printfdh,printnums:printnums,printfaddr:printfaddr},
+						    timeout:10000,
+						    success: function(data){
+							    	 var datatemp=eval('('+data+')');
+							    	 if(datatemp=='提交失败'){
+							    		 $("#hints").html('<p>'+datatemp+'</p>');
+								 	     showMsg('hint');
+								 	     
+						             }else{
+									 	 $("#twohints").html('<p>'+datatemp+'</p>');
+									     document.getElementById('hintok').setAttribute("onclick", "backprint();");
+										 document.getElementById('hintno').setAttribute("onclick", "backprint();");
+										 showMsg('twohint');
+							             }
+						     },
+						    error: function(data){
+						    	 $("#hints").html('<p>提交失败！</p>');
+						 	     showMsg('hint');
+						     }	     
+					 });
+				 },
+				 error: function(msp){
+                     if(typeof msp === 'string'){
+                         var msp = JSON.parse(msp);
+                     }else{
+                         var msp= msp;
+                     }
+                     if(msp.sub_code=='subuser.has-no-permission'){
+                    	 /* $("#hints").html('<p>该子帐号无此操作权限，请通过主帐号设置开通相应权限！</p>');
+	          	         showMsg('hint'); */
+                    }else{
+                    	$("#hints_vip").html('<p>操作失败2：'+JSON.stringify(msp)+'</p>');
+                      	$("#hints_vips").html('<p>'+JSON.stringify(msp)+'</p>');
+                	   showMsg('hint_vip');
+                     }
+                 }
+				 });
+		}
+    }
+}
+function backprint(){
+	window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/printSend?vers=<?php echo REAL_ROOT_VER;?>';
+}
+function getuserinfo(){
+	QN.top.invoke({
+        "cmd": "taobao.logistics.address.search",
+        "param":{"rdef":'send_def'},
+        "method": "get",
+        "success" : function(rsp) {
+            if(typeof rsp === 'string'){
+                var rsp = JSON.parse(rsp);
+            }else{
+                var	rsp= rsp;
+            }
+            var addrestu=rsp.logistics_address_search_response.addresses.address_result;
+            if(addrestu==undefined||addrestu=='undefined'){
+            	$("#hints").html('<p>您还没有设置默认发货地址请设置后再来打印！</p>');
+	 	        showMsg('hint');
+	            }else{
+	                var srult=rsp.logistics_address_search_response.addresses.address_result[0];
+	                var custmobilephone='';
+	                var custphone='';
+	                if(srult.mobile_phone!=undefined||typeof(srult.mobile_phone)!="undefined"){
+	                	custmobilephone=srult.mobile_phone;
+	                    document.getElementById("fsj").value=custmobilephone;
+	                }
+	                if(srult.phone!=undefined||typeof(srult.phone)!="undefined"){
+	                    custphone=srult.phone;
+	                    document.getElementById("fdh").value=custphone;
+	                }
+	                document.getElementById("fww").value=window.localStorage.getItem("loginnick");
+	                document.getElementById("faddr").value=srult.province;
+	                document.getElementById("faddrs").value=srult.city;
+	                if(srult.country!=undefined)document.getElementById("faddrse").value=srult.country;
+	                document.getElementById("faddrses").value=srult.addr;
+	                document.getElementById("fjr").value=srult.contact_name;
+            }
+        }
+	});
+}
+
+function reshow(){
+	window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/recruit?vers=<?php echo REAL_ROOT_VER;?>';
+}
+
+function getrecruit(){
+	$("#downtables").empty();
+	$.ajax({
+	    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getrecruit',
+	    type: 'POST',
+	    dataType:'html',
+	    data:{},
+	    timeout:10000,
+	    success: function(data){
+		     var datatemp=eval('('+data+')');
+		     for(var index in datatemp){
+			 	 $("#downtables").append('<tr><td>'+datatemp[index].nick+'</td><td>'+datatemp[index].printnums+'</td><td>'+datatemp[index].printfjr+'</td><td>'+datatemp[index].printfsj+'</td><td>'+datatemp[index].printfdh+'</td><td>'+datatemp[index].xzlogc+'</td><td>'+datatemp[index].printfaddr+'</td></tr>');
+			     }
+	     },
+	    error: function(data){
+	    	 $("#hints").html('<p>提交失败！</p>');
+	 	     showMsg('hint');
+	     }	     
+ });
+}
+
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-4-18
+ * Time: 22:16
+ * 批量下载订单开始【抄袭代码者走路跌倒，说的就是你还看谁】.
+ */
+	 var againdown = (function () {
+	    var uri = 'data:application/vnd.ms-excel;base64,'
+	    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+	    , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+	    , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+	        return function (table, name) {
+	            if (!table.nodeType) table = document.getElementById(table);
+	            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML };
+	            window.location.href = uri + base64(format(template, ctx));
+	        }
+	    })()
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

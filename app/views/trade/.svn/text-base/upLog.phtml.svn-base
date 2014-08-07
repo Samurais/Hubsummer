@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<style>
+.well{
+	min-height: 20px;
+	padding: 19px;
+	margin-bottom: 20px;
+	background-color: #f5f5f5;
+	border: 1px solid #e3e3e3;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.05)
+}
+</style>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+    <!--Profile Form-->
+    <!--Container-->
+    <div class="container" style="margin-left: 10px;"><br>
+          <div style="display: none;" id="adv_top"></div>
+        <!--<ul class="breadcrumb">
+                	<li><a href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/index?vers=<?php echo REAL_ROOT_VER;?>">爱用交易</a><span class="divider">/</span></li>
+                	<li>更新日志</li>
+                </ul>-->
+                <div class="well">  
+		        	<table  width="100%"><tr>
+		          	<td colspan="2">
+		        		<h5 h5 style="margin-top:0;">升级时间2014-08-01<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.8</span></h5>
+		          	</td>
+		          </tr>
+		          <tr><td  width="80%">
+		          	<ul>
+	          			<li>新增：</li>
+			        			<ul>    
+			        		     <li>1、自定义打印 待打印/已打印 增加删除功能；</li>
+			        			</ul>
+				        	<li>优化：</li>
+			        			<ul>    
+			        		     <li>1、短信催付模版自动发送/手动发送，内容修改；</li>
+			        		     <li>2、详情页面新增修改物流功能；</li>
+			        		     <li>3、自定义短信优化；</li>
+			                   </ul>
+			            </ul>
+		             </td>
+		             <td algin="right"  width="20%">
+		             &nbsp;
+		              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-290921314.htm?spm=0.0.0.0.gV7Lx2" target="_blank">我要吐槽</a> 
+		             </td>
+		           </tr>
+		       	  </table>
+	        </div>
+                <div class="well">  
+		        	<table  width="100%"><tr>
+		          	<td colspan="2">
+		        		<h5 h5 style="margin-top:0;">升级时间2014-07-28<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.7</span></h5>
+		          	</td>
+		          </tr>
+		          <tr><td  width="80%">
+				        	<ul><li>优化：</li></ul>
+			        			<ul>    
+			        		     <li>1、订单详情全新改版；</li>
+			        		     <li>2、订单详情返回订单列表可以记住当前订单位置；</li>
+			        		     <li>3、打印发货，预览快递单和发货单全面优化；</li>
+			        		     <li>4、优化体验，界面全新改版；</li>
+			                   </ul>
+			            </ul>
+		             </td>
+		             <td algin="right"  width="20%">
+		             &nbsp;
+		              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-290896569.htm" target="_blank">我要吐槽</a> 
+		             </td>
+		           </tr>
+		       	  </table>
+	        </div>
+                
+               <div class="well">  
+	        	<table  width="100%"><tr>
+	          	<td colspan="2">
+	        		<h5 h5 style="margin-top:0;">升级时间2014-07-10<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.6</span></h5>
+	          	</td>
+	          </tr>
+	          <tr><td  width="80%">
+	          		<ul>
+	          			<li>新增：</li>
+			        			<ul>    
+			        		     <li>1、批量打印页面，新增“批量下载订单”功能；</li>
+			        		     <li>2、手动发送短信可自定义发送；</li>
+			        		     <li>3、手动发送短信新增多种选择模板；</li>
+			        		     <li>4、快递单模板新增“总件数、宝贝名称+数量、销售属性+数量”打印项；</li>
+			        			</ul>
+			        	<li>优化：</li>
+		        			<ul>    
+		        		     <li>1、自定义打印快递单会多打印打印项或者重复打印一些打印项；</li>
+		        		     <li>2、打印发货单，发货单编号重复问题；</li>
+		                   </ul>
+		            </ul>
+	             </td>
+	             <td algin="right"  width="20%">
+	             &nbsp;
+	              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-290625447.htm?spm=0.0.0.0.Kbs6pm" target="_blank">我要吐槽</a> 
+	             </td>
+	           </tr>
+	       	  </table>
+	        </div>
+              <div class="well">  
+	        	<table  width="100%"><tr>
+	          	<td colspan="2">
+	        		<h5 h5 style="margin-top:0;">升级时间2014-07-03<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.5</span></h5>
+	          	</td>
+	          </tr>
+	          <tr><td  width="80%">
+	          		<ul><li>新增：</li>
+			        			<ul>    
+			        		     <li>1、订单关怀可以自定义短信；</li>
+			        		     <li>2、交易管理首页改版；</li>
+			        			</ul>
+			        	<li>优化：</li>
+		        			<ul>    
+		        		     <li>1、批量打印列表，不显示订单子编码；；</li>
+		                   </ul>
+		              </ul>
+	             </td>
+	             <td algin="right"  width="20%">
+	             &nbsp;
+	              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-290515217.htm" target="_blank">我要吐槽</a> 
+	             </td>
+	           </tr>
+	       	  </table>
+	        </div>
+          <div class="well">  
+	        	<table  width="100%"><tr>
+	          	<td colspan="2">
+	        		<h5 h5 style="margin-top:0;">升级时间2014-06-22<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.4</span></h5>
+	          	</td>
+	          </tr>
+	          <tr><td  width="80%">
+	          		<ul><li>新增：</li>
+			        			<ul>    
+			        		     <li>1、手动发送短信功能；</li>
+			        			</ul>
+			        	<li>优化：</li>
+		        			<ul>    
+		        		     <li>1、批量发货列表，宝贝属性不显示问题；</li>
+		                   </ul>
+		               </ul>
+	             </td>
+	             <td algin="right"  width="20%">
+	             &nbsp;
+	              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-290369134.htm" target="_blank">我要吐槽</a> 
+	             </td>
+	           </tr>
+	       	  </table>
+	        </div>
+	          <div class="well">  
+	        	<table  width="100%"><tr>
+	          	<td colspan="2">
+	        		<h5 h5 style="margin-top:0;">升级时间2014-06-17<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.3</span></h5>
+	          	</td>
+	          </tr>
+	          <tr><td  width="80%">
+	          		<ul><li>新增：</li>
+			        			<ul>    
+			        		     <li>1、订单首页列表改造；</li>
+			        		     <li>2、订单安全指数显示；</li>
+			        		     <li>3、打印发货页面，新增“搜索”功能；</li>
+			        			</ul>
+			        	<li>优化：</li>
+		        			<ul>    
+		        		     <li>1、打印发货单，超过20个宝贝的订单可以在自定义打印里面正常打印；</li>
+		        		     <li>2、批量发货、批量打印将自动过滤掉退款中的订单；</li>
+		                   </ul>
+		                  </ul>
+	             </td>
+	             <td algin="right"  width="20%">
+	             &nbsp;
+	              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-290313623.htm?spm=0.0.0.0.lYUirj" target="_blank">我要吐槽</a> 
+	             </td>
+	           </tr>
+	       	  </table>
+	        </div>
+          <div class="well">  
+        	<table  width="100%"><tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-06-09<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.2</span></h5>
+          	</td>
+          </tr>
+          <tr><td  width="80%">
+          		<ul><li>新增：</li>
+		        			<ul>    
+		        		     <li>1、差评师拦截宝贝白名单设置；</li>
+		        		     <li>2、差评师拦截旺旺白名单设置；</li>
+		        			</ul>
+		       </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-290165444.htm?spm=0.0.0.0.YOHZvY" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>
+          <div class="well">  
+        	<table  width="100%"><tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-05-28<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.1</span></h5>
+          	</td>
+          </tr>
+          <tr><td  width="80%">
+          		<ul><li>新增：</li>
+		        			<ul>    
+		        		     <li>1、差评师拦截新增“发出过中差评买家”拦截条件；</li>
+		        		     <li>2、旺旺插件核对地址可以使用快捷键发送信息（默认快捷键：Ctrl+Q）；</li>
+		        			</ul>
+               <li>优化：</li>
+        		<ul>    
+        		     <li>1、个别用户使用核对地址和旺旺催付提示成功，但是信息没发过去；</li>
+        		     <li>2、发货页面，不显示买家昵称；</li>
+                 </ul>
+               </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-290049641.htm?spm=0.0.0.0.SIrYKK" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>
+          <div class="well">  
+        	<table  width="100%"><tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-05-5<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.5.0</span></h5>
+          	</td>
+          </tr>
+          <tr><td  width="80%">
+          		<ul><li>新增：</li>
+		        			<ul>    
+		        		     <li>1、批量评价页面新增“买家已评、买家未评”选项；</li>
+		        		     <li>2、可以关闭购物车子订单；</li>
+		        		     <li>3、新增圆通快递新版模板；</li>
+		        			</ul>
+               <li>优化：</li>
+        		<ul>    
+        		     <li>1、购物车订单，不能修改订单属性问题；</li>
+        		     <li>2、由于调用量有限，所以买家留言需要点击才可以可以查看；</li>
+        		     <li>3、同一台电脑，登陆主账号子账号，一个账号编辑编辑了催付短语，另外一个账号不同步问题；</li>
+                 </ul>
+               </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-289762748.htm?spm=0.0.0.0.2PvfDH" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>
+           <div class="well">  
+        	<table  width="100%"><tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-04-29<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.9</span></h5>
+          	</td>
+          </tr>
+          <tr><td  width="80%">
+               <ul><li>优化：</li>
+        		<ul>    
+        		     <li>1、评价条数大于1500的时候显示错误问题；</li>
+        		     <li>2、打印发货如果快递选择的“其它”进行二次确认，以免发货错误；</li>
+        		     <li>3、发货失败对失败原因详细信息进行显示；</li>
+        		     <li>4、当批量打印时，宝贝简称获取失败问题；</li>
+        		     <li>5、购物车订单，详情页面评价弹框信息显示不全问题；</li>
+        		     <li>6、旺旺插件，商城用户改运费页面，实收款可以实时变化；</li>
+        		     <li>7、旺旺插件，虚拟用户，点击核对地址无反应问题；</li>
+        		     <li>8、批量发货，增加按照递减自动填充单号；</li>
+        		     <li>9、批量评价、自动评价、自定义打印，添加使用教程入口；</li>
+        		     <li>10、差评师拦截，开启后，再进入软件，还显示未开启；</li>
+                 </ul>
+                 </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-289689723.htm?spm=0.0.0.0.RiacXu" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>
+          <div class="well">  
+        	<table  width="100%"><tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-04-26<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.8</span></h5>
+          	</td>
+          </tr>
+          <tr><td  width="80%">
+               <ul><li>新增：</li>
+        		<ul>    
+        		     <li>1、差评师拦截功能；</li>
+        		     <li>2、开通中差评预警电台；</li>
+        		     <li>3、显示卖家版本信息；</li>
+        		     <li>4、新增关注电台有礼；</li>
+        		     <li>5、好评有奖（限高级版）；</li>
+                 </ul>
+                </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-289646854.htm?spm=0.0.0.0.4E5WFu" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>
+           <div class="well">  
+        	<table  width="100%"><tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-04-25<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.7</span></h5>
+          	</td>
+          </tr>
+          <tr><td  width="80%">
+               <ul><li>新增：</li>
+        		<ul>    
+        		     <li>1、可以直接打印已发货订单；</li>
+        		     <li>2、打印列表，可以显示订单详细信息；</li>
+                 </ul>
+                 <li>优化：</li>
+                 <ul>    
+        		     <li>1、修复批量发货，漏单问题；</li>
+        		     <li>2、修改编辑个人模板时，显示的是公共模板；</li>
+        		     <li>3、合并订单以后，不显示买家留言；</li>
+        		     <li>4、订单列表，评价状态显示错误；</li>
+        		     <li>5、搜索买家昵称，成功的订单不显示评价状态；</li>
+        		     <li>6、高级版用户宝贝简称可设置100个；</li>
+                 </ul>
+                 </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-289633975.htm?spm=0.0.0.0.yp3aLA" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>
+          <div class="well">  
+        	<table  width="100%"><tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-04-12<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.6</span></h5>
+          	</td>
+          </tr>
+          <tr><td  width="80%">
+               <ul><li>新增：</li>
+        		<ul>    
+        		     <li>1、可以打印拆单发货和货到付款的订单；</li>
+        		     <li>2、可以打印参加天天特价或者买就送等类似活动的订单；</li>
+                 </ul>
+                <li>优化：</li>
+                 <ul>    
+        		     <li>1、pc交易所有的错误提示；</li>
+        		     <li>2、购物车订单，会把取消的宝贝也打印出来问题；</li>
+        		     <li>3、打印快递单编号日期显示不对问题；</li>
+        		     <li>4、自定义打印页面，不显示卖家地址里面的公司名称问题；</li>
+        		     <li>5、自定义打印，待打印和已打印只显示20条数据不能显示更多问题；</li>
+        		     <li>6、轻任务列表，不显示买家昵称问题；</li>
+                 </ul>
+                 </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-289487656.htm?spm=0.0.0.0.LqctbY" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>
+                <div class="well">  
+        	<table  width="100%">
+          <tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-03-17<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.5</span></h5>
+          	</td>
+          </tr>
+          <tr>
+          	<td  width="80%">
+               <ul><li>新增：</li>
+        		<ul>    
+        		     <li>商品简称功能；</li>
+        		     <li>新增“韵达快递新版、顺丰速递、圆通VIP、百世汇通”等快递单新模板 ；</li>
+                 </ul>
+                </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-289154899.htm?spm=0.0.0.0.BAx4X5&qq-pf-to=pcqq.c2c" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>
+                
+                <div class="well">  
+        	<table  width="100%">
+          <tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-03-05<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.4</span></h5>
+          	</td>
+          </tr>
+          <tr>
+          	<td  width="80%">
+               <ul><li>新增：</li>
+        		<ul>    
+        		     <li>发货单模板设置字体大小和样式功能 ；</li>
+                 </ul>
+            <li>优化：</li>
+            	<ul>    
+        		     <li>发货单字体太小的问题； </li>
+        		     <li>退款中的订单列表页面部显示退款状态的问题； </li>
+                 </ul>
+                 </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-288986863.htm?spm=0.0.0.0.xEKtkW" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div> 
+                <div class="well">  
+        	<table  width="100%">
+          <tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-02-21<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.3</span></h5>
+          	</td>
+          </tr>
+          <tr>
+          	<td  width="80%">
+               <ul><li>新增：</li>
+        		<ul>    
+        		     <li>“三个月前”订单显示入口 ；</li>
+                     <li>旺旺插件订单详情，显示买家评价内容；</li>                     
+                 </ul>
+            	<ul><li>优化：</li></ul>
+            	<ul>    
+        		     <li>旺旺插件轻任务，添加多个任务，买家昵称显示错误； </li>
+                 </ul>
+                </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-288849711.htm?spm=0.0.0.0.2HK9Qi" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>     
+                
+         <div class="well">  
+        	<table  width="100%">
+          <tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-01-17<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.2</span></h5>
+          	</td>
+          </tr>
+          <tr>
+          	<td  width="80%">
+               <ul><li>新增：</li>
+        		<ul>    
+        		     <li>快递单模板，增加大字黑体始发地打印项 ；</li>
+                     <li>快递单模板新增“省、市、区”打印项；</li>                     
+                 </ul>
+            <li>优化：</li>
+            	<ul>    
+        		     <li>打印发货单运费和实收款显示不确定的问题；</li>
+                     <li>批量打印，有留言的订单却显示在无留言且无备注的分类里面 ；</li>
+                     <li>新增发货地址，如果没有“区”特殊保存处理；</li>
+                     <li>发货选择物流公司，添加“邮政平邮”物流公司； </li>
+                     <li>批量打印，一页显示多条，不能刷新问题； </li>
+                 </ul>
+                </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-288630862.htm?spm=0.0.0.0.JX2PYK" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>     
+        
+
+         <div class="well">  
+        	<table  width="100%">
+          <tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-01-11<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.1</span></h5>
+          	</td>
+          </tr>
+          <tr>
+          	<td  width="80%">
+               <ul><li>新增：</li>
+        		<ul>    
+        		     <li>在发货页面可以修改发货地址和退货地址；</li>
+                     <li>旺旺插件退款中的订单完善退款流程；</li>
+                     <li>旺旺插件旺旺催付内容可以自定义；</li>
+                     <li>旺旺插件订单详情显示订单评价状态；</li>
+                 </ul>
+            <li>优化：</li>
+            	<ul>    
+        		     <li>订单详情页面，优惠信息显示不对的问题；</li>
+                     <li>待发货订单，修改发货地址特殊省市处理不当的问题；</li>
+                 </ul>
+                </ul>
+             </td>
+             <td algin="right"  width="20%">
+             &nbsp;
+              <a class="sui-btn btn-large btn-warning" role="button" href="http://bangpai.taobao.com/group/thread/15074034-288555601.htm?spm=0.0.0.0.tn00qT" target="_blank">我要吐槽</a> 
+             </td>
+           </tr>
+       	  </table>
+        </div>              
+                          
+        <div class="well">  
+        	<table  width="100%">
+          <tr>
+          	<td colspan="2">
+        		<h5 h5 style="margin-top:0;">升级时间2014-01-03<span class="pull-right" style="font-size:12px; font-weight:normal;">爱用交易 V1.4.0</span></h5>
+          	</td>
+          </tr>
+          <tr>
+          	<td  width="80%">
+               <ul>
+        	<li>新增：</li>
+        		<ul>    
+        		     <li>在退款信息页面显示退款时间；</li>
+                     <li>订单详情页面显示发票抬头；</li>
+                     <li>订单列表增加一键复制收货信息按钮；</li>
+                     <li>增加“不显示已关闭订单”按钮；</li>
+                     <li>旺旺插件，点击订单编号直接跳订单详情；</li>
+                 </ul>
+            <li>优化：</li>
+            	<ul>    
+        		     <li>评价短语如果有特殊字符评价失败问题；</li>
+                     <li>退款信息页面，增加旺旺联系买家；</li>
+                     <li>打印发货单时，多笔订单优惠信息显示不正确问题；</li>
+                 </ul>
+             </td>
+           </tr>
+       	  </table>
+        </div>
+        
+        <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.9<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-12-28</span></h5>
+        <ul>
+        	<li>新增：</li>
+        		<ul>    
+        		     <li>核对地址，增加温馨提示；</li>
+                     <li>搜索订单，点击回车键，可以直接显示搜索出的内容；</li>
+                     <li>详情页面，增加系统确认时间；</li>
+                 </ul>
+            <li>修复：</li>
+            	<ul>    
+        		     <li>添加备注，不填写内容也可以保存成功；</li>
+                     <li>自动评价，快捷短语有特殊字符无法操作的bug；</li>
+                 </ul>
+        </ul>
+        </div>
+         <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.8<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-12-24</span></h5>
+        <ul>
+        	<li>新增：</li>
+        		<ul>    
+        		     <li>显示购物车订单、手机订单、信用卡支付标识；</li>
+                     <li>显示运费险；</li>
+                     <li>显示交易佣金；</li>
+                     <li>显示买家积分及获得积分；</li>
+                     <li>显示货到付款费用；</li>
+                     <li>快递单模板，添加的自定义打印项，内容可以换行打印；</li>
+                 </ul>
+        </ul>
+        </div>
+        <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.7<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-12-07</span></h5>
+        <ul>
+        	<li>新增：</li>
+        		<ul>
+                     <li>批量打印发货单功能；</li>
+                     <li>自定义打印发货单；</li>
+                     <li>发货单模板编辑；</li>
+                     <li>用户使用教程；</li>
+                 </ul>
+        </ul>
+        </div>
+        
+         <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.6<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-11-28</span></h5>
+        <ul>
+        	<li>新增：</li>
+        		<ul>
+                     <li>旺旺催付功能；</li>
+                     <li>可添加更多快递单打印项；</li>
+                     <li>自动评价定时评价，抢评；</li>
+                     <li>自动评价黑名单过滤；</li>
+                     <li>自动评价中差评邮件预警；</li>
+                 </ul>
+        	<li>优化：</li>
+                <ul>
+                     <li>收货地址信息空格处理；</li>
+                     <li>天猫商家修改运费问题；</li>
+                     <li>实收款显示更清晰明了；</li>
+                     <li>退款订单错误处理；</li>
+                     <li>修复了打印的一些bug；</li>
+                 </ul>
+        </ul>
+        </div>
+        <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.5<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-11-22</span></h5>
+        <ul>
+        	<li>新增打印发货：</li>
+        		<ul>
+                     <li>单/批量打印快递单；</li>
+                     <li>自动填充运单号；</li>
+                 </ul>
+        	<li>新增快递单模版：</li>
+                <ul>
+                     <li>可添加自定义背景图片模版；</li>
+                     <li>可编辑公共模版到人个模版（自定义个人模版）；</li>
+                     <li>默认、预览和删除个人模版；</li>
+                 </ul>
+        	<li>新增自定义打印</li>
+        </ul>
+        </div>
+       <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.4<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-11-06</span></h5>
+        <ul>
+        	<li>新增地址库的修改和删除功能；</li>
+        	<li>修正了以下问题：</li>
+                <ul>
+                     <li>货到付款详情页面的发货时物流公司错误问题；</li>
+                     <li>货到付款列表页已发货信息显示错乱问题；</li>
+                     <li>购物车订单中多笔退款信息会刷出重复订单的修复；</li>
+                     <li>和对方子账号旺旺聊天时，跳基础插件无法查看订单的修复；</li>
+                 </ul>
+        </ul>
+        </div>
+                
+      <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.3<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-10-14</span></h5>
+        <ul>
+        	<li>新增同意退款；</li>
+        	<li>新增修改订单属性；</li>
+        	<li>修正了以下问题：</li>
+                <ul>
+                     <li>列表页面直接显示买家地址和评价内容；</li>
+                     <li>订单详情一键发送物流公司和单号；</li>
+                     <li>发货页面，增加备注和留言内容；</li>
+                 </ul>
+        </ul>
+        </div>
+	 <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.2<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-10-09</span></h5>
+        <ul>
+        	<li>修正了以下问题：</li>
+                <ul>
+                     <li>快捷查询该买家的所有订单；</li>
+                     <li>订单详情显示货到付款信息、支付宝帐户、店铺优惠名称、订单来源；</li>
+                     <li>订单列表页备注和留言直接显示，显示订单数；</li>
+                     <li>物流动态增加一键发送物流信息到旺旺；</li>
+                 </ul>
+        </ul>
+        </div>
+        
+        
+        
+        <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3.1<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-9-23</span></h5>
+        <ul>
+        	<li>修正了以下问题：</li>
+                <ul>
+                     <li>接入无限额改价组件；</li>
+                     <li>修改物流功能；</li>
+                     <li>备忘、评价、退款留言使用快捷短语功能；</li>
+                     <li>收货地址、最新物流信息一键发布到旺旺功能；</li>
+                </ul>
+        </ul>
+        </div>
+        
+        
+        
+        <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.3<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-9-17</span></h5>
+        <ul>
+        	<li>新增自动评价功能；</li>
+        	<li>修正了以下问题：</li>
+                <ul>
+                     <li>订单列表显示卖家备注和买家留言内容；</li>
+                     <li>退款信息页面，增加商家编码；</li>
+                     <li>发货页面增加手机号码和商家编码；</li>
+                     <li>改价页面，增加商家编码，收货地址里面增加电话号码；</li>
+                     <li>修正了页面样式和一些提示信息；</li>
+                </ul>
+        </ul>
+        </div>
+        
+        <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.2 内测版<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-9-11</span></h5>
+        <ul>
+        <li>启用H5缓存机制，提升性能；</li>
+        	<li>修正了以下问题：</li>
+                <ul>
+                     <li>天猫卖家，屏蔽拒绝退款功能；（该功能需要天猫专属的API来解决，后续考虑接入）</li>
+                     <li>订单详情增加付款时间和确认时间；</li>
+                     <li>无需物流发货，提示“运单号不能为空”的问题；</li>
+                     <li>好评填写内容的提示；</li>
+                </ul>
+        </ul>
+        </div>
+        
+        <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.1 内测版<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-8-31</span></h5>
+        <ul>
+        	<li>实现订单批量发货；</li>
+        	<li>实现订单批量免邮；</li>
+        	<li>实现订单批量备注；</li>
+        	<li>实现订单批量评价；</li>
+        	<li>实现商城订单评价解释；</li>
+        	<li>修正公共接口Tradelist方法；</li>
+        </ul>
+        </div>
+        
+        <div class="well">
+        <h5 style="margin-top:0;">爱用交易 V1.0 内测版<span class="pull-right" style="font-size:12px; font-weight:normal;">2013-8-23</span></h5>
+        <p>内测版本上线。</p>
+        <ul>
+        	<li>订单管理（订单改价、发货、评价、关闭、退款、修改收货地址、延长收货时间、物流跟踪、查询退款）；</li>
+        	<li>评价管理（分类查看评价内容）；</li>
+        	<li>发货信息设置；</li>
+        	<li>常用短语设置（评价短语、备注短语、退款短语）；</li>
+        	<li>千牛消息中心对接；</li>
+        	<li>呼出千牛旺旺；</li>
+        </ul>
+        <p>爱用交易团队成员：PD（<span style="color: #900;">yq830222</span>）、RD（<span style="color:#900;">zhangwh_12</span>、<span style="color:#900;">vigossde</span>、<span style="color:#900;">vv零点空间</span>、<span style="color:#900;">chen923897754</span>）、QA（<span style="color:#900;">dressa2z</span>）。</p>
+       
+        </div>
+</div><!--/row-->
+<script type="text/javascript">
+window.onload = function(){
+    QN.initTheme();
+    onload_viptime('upLog');
+    ittoolspam('AD20140730133000','gxrzp');
+}
+function tests(){
+	confirm(1);
+	 QN.application.invoke({
+		 "cmd": "getLoginuser",
+		 "success": function (e){
+			var nick= decodeURI(e.user_nick);
+		 	var id=decodeURI(e.user_id);
+		 	confirm(nick+id);
+		 	 QN.top.invoke({
+		    		"cmd": "taobao.qianniu.task.create",
+		    		"param": {"title":"test-Lighttask-title","content":"test-Light-task-content","sender_uid":id,"sender_nick":nick},
+		    		"method": "post",
+		    		"success": function (rsp){
+		    			document.write(rsp);  
+		    			confirm(1);
+		    			confirm(rsp);
+			    		},
+			    	"error":function(e){
+                           confirm(JSON.stringify(e));
+                           document.write(JSON.stringify(e));
+				     }	
+		    	});
+ 	 	}
+ 	 });
+}
+function reshow(){
+	window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/upLog?vers=<?php echo REAL_ROOT_VER;?>';
+}
+</script>
+<?php require_once ('app/views/public/footer.php');?>
+</body>
+</html>

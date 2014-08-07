@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<style type="text/css">
+	.mainpic{height:;width:;background-image:url('') ;background-size: 100% 100%;background-repeat: no-repeat; }
+	.text{border:1px solid black;background-color:;cursor:move;line-height:100%;}
+	.corner {
+			position: absolute; display: inline; bottom:1px; right:1px;
+			width:0px; 
+			height:0px; 
+			overflow:hidden; 
+			border-top:8px solid #ccc; 
+			border-right:8px solid #000; 
+			cursor:se-resize;
+		}
+	</style>
+<body style="overflow:auto;">
+<?php require_once ("app/views/public/top.php");?>
+<div class="container-fluid" style="margin-left: 10px;">
+    <div style="display: none;" id="adv_top"></div>
+				<div class="form-actions" style="margin-top: 10px;">
+		            <button class="sui-btn btn-primary" onclick="save();">保存模版</button>
+		            <button class="sui-btn btn-primary" onclick="PreviewTest();">预览模版</button>
+		            <button data-toggle="modal" data-target="#bjtp" class="sui-btn btn-primary" >更换快递单背景图片</button>
+	            <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+				             选择模版：<span class="sui-dropdown dropdown-bordered select"> 
+							<span class="dropdown-inner"> <a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+								<input value="" name="category" type="hidden" onchange="selectop();"><i class="caret"></i><span id="mouldnamec"></span></a>
+									<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu category" name="category" id="mouldnamecs" style="max-height: 200px; overflow-y: auto;">
+									</ul>
+							</span>
+						</span>
+							<label>模版名称：</label><input type="text" id="mouldname">
+				             快递公司：<span class="sui-dropdown dropdown-bordered select"> 
+								<span class="dropdown-inner"> <a id="selects" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+									<input value="" name="category" type="hidden" onchange="selectops();"><i class="caret"></i><span id="companies"></span><span style="display:none;" id="companiese"></span></a>
+										<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu category" name="category" id="companie" style="max-height: 200px; overflow-y: auto;">
+										</ul>
+								</span>
+							</span>
+						</form>
+		             <form class="sui-form sui-row-fluid form-horizontal" style="margin-top: 10px;" >
+						<label>模版宽高(毫米)：</label>
+							<div class="input-control control-right">
+							   <input type="text" class="span1" id="w" value=""> x
+		                		<input type="text" class="span1" id="h" value="">
+							</div>
+						<label>打印偏移校正(毫米)：</label>
+							   <i class="sui-icon icon-arrow-up" onclick="changesize('up')"></i>&nbsp;<input type="text" class="span1" id="ud" value="0" />&nbsp;<i class="sui-icon icon-arrow-down" onclick="changesize('down')"></i>&nbsp;&nbsp;&nbsp;
+		                	   <i class="sui-icon icon-arrow-left" onclick="changesize('left')"></i>&nbsp;<input type="text" class="span1" id="lr" value="0" />&nbsp;<i class="sui-icon icon-arrow-right" onclick="changesize('right')"></i> 
+		             </form>
+	            </div>
+	         <!-- <span id="x">0</span>;<span id="y">0</span>  -->
+		     <div class="sui-well well-small" style="position:inherit;margin-top: 10px;width:865px">  
+		                <span class="sui-dropdown dropdown-bordered"><span class="dropdown-inner">
+			                <a class="dropdown-toggle" role="button" href="javascript:void(0);" data-toggle="dropdown" data-trigger="hover">字体样式<i class="caret"></i></a>
+						    <ul class="sui-dropdown-menu" role="menu" aria-labelledby="drop1">
+						      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changef('宋体');">宋体</a></li>
+						      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changef('楷体');">楷体</a></li>
+						      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changef('微软雅黑');">微软雅黑</a></li>
+						    </ul>
+					    </span></span>
+	                
+		                <span class="sui-dropdown dropdown-bordered"><span class="dropdown-inner">
+				                <a class="dropdown-toggle" role="button" href="javascript:void(0);" data-toggle="dropdown" data-trigger="hover">字体大小 <i class="caret"></i></a>
+							    <ul class="sui-dropdown-menu" role="menu" aria-labelledby="drop1">
+							      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changes(14);">14px</a></li>
+							      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changes(16);">16px</a></li>
+							      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changes(18);">18px</a></li>
+							      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changes(20);">20px</a></li>
+							      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changes(22);">22px</a></li>
+							      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changes(24);">24px</a></li>
+							      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changes(36);">36px</a></li>
+							      <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:changes(48);">48px</a></li>
+							    </ul>
+					    </span></span>
+					    
+					    <span class="sui-dropdown dropdown-bordered"><span class="dropdown-inner"><a class="dropdown-toggle" role="button" href="#" data-toggle="dropdown"><i class="caret"></i>添加打印项</a>
+		                    <ul class="sui-dropdown-menu" role="menu" aria-labelledby="drop1">
+		                      <li class="dropdown-submenu" role="presentation"><a tabindex="-1" role="menuitem" href="#">
+		                            <i class="sui-icon icon-caret-right pull-right"></i>发件人信息</a>
+			                        <ul class="sui-dropdown-menu">
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('fname');">发件人姓名</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('FpostCode');">发件人邮编</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('fphone');">发件人电话</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('fmobile');">发件人手机</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('f_shen');">发件人/省</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('f_shi');">发件人/市</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('f_qu');">发件人/区</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('f_deil');">发件人详细地址</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('faddress');">发件人地址</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('date');">发件人发件日期</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('fcompany');">发件人单位名称</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('names');">签名</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('fsaddr');">始发地</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('sellerNick');">卖家旺旺</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('shopName');">卖家店铺名称</a></li>
+			                        </ul>
+		                      </li>
+		                      <li class="dropdown-submenu" role="presentation"><a tabindex="-1" role="menuitem" href="#">
+		                            <i class="sui-icon icon-caret-right pull-right"></i>宝贝信息</a>
+			                        <ul class="sui-dropdown-menu">
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('ballnum');">总件数</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('btitle');">宝贝名称</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('CODING');">商家编码</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('bproperty');">销售属性+（数量）</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('bbabynum');">宝贝名称+（数量）</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('bpropertys');">宝贝名称/销售属性/数量</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('bsxnums');">商家编码/销售属性/数量</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('babyall');">宝贝名称/商家编码/销售属性/数量</a></li>
+			                        </ul>
+		                      </li>
+		                      <li class="dropdown-submenu" role="presentation"><a tabindex="-1" role="menuitem" href="#">
+		                            <i class="sui-icon icon-caret-right pull-right"></i>收件人信息</a>
+			                        <ul class="sui-dropdown-menu">
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('sname');">收件人姓名</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('SpostCode');">收件人邮编</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('sphone');">收件人电话</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('smobile');">收件人手机</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('s_shen');">收件人/省</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('s_shi');">收件人/市</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('s_qu');">收件人/区</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('s_deil');">收件人详细地址</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('saddress');">收件人地址</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('destination');">收件人所在城市</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('scompany');">收件人单位名称</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('buyerNick');">买家旺旺</a></li>
+			                        </ul>
+		                      </li>
+		                      <li class="dropdown-submenu" role="presentation"><a tabindex="-1" role="menuitem" href="#">
+		                            <i class="sui-icon icon-caret-right pull-right"></i>订单信息</a>
+			                        <ul class="sui-dropdown-menu">
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('orderNumber');">订单编号</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('sellerRemark');">卖家备注</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('buyerMessage');">买家留言</a></li>
+			                          <li role="presentation"><a tabindex="-1" role="menuitem" href="javascript:add('totalPrices');">总价</a></li>
+			                        </ul>
+		                      </li>
+		                      <li class="divider" role="presentation"></li>
+		                      <li role="presentation"><a tabindex="-1" role="menuitem" data-toggle="modal" data-target="#customadd" href="#">自定义打印项</a></li>
+		                    </ul></span></span>
+					    
+		                <div class="sui-btn-group">
+		                      <a class="sui-btn" href="javascript:changeb();">加粗</a>
+		                </div>
+		                <div class="sui-btn-group">
+		                      <a class="sui-btn" href="javascript:deletemo();">删除</a>
+		                </div>
+						<div  class="mainpic" id="main" style="margin-top:5px;top:10px;">
+						</div>
+	        </div>
+		
+	 <!--Profile Form打印预览-->
+		 <div class="mesWindowContent" id="printPreview" style="display:none;position: relative;">
+		        <div id="printPreviewboby" style="background-size: 100% 100%;"></div>
+		 </div>
+    <!--Profile Form更换背景图片-->
+    <div id="bjtp" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="500px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">更换背景图片</h4>
+    					  	  </div>
+      						 <div class="modal-body" >
+	      						 <form class="sui-form"  id="picfile" name="picfile" >
+									<label class="control-label">上传图片 ：</label>
+									<div class="controls">
+										<span><input type="file" id="file" name="file" style="display:none;" onchange="previewImageLogo(this);"/><button type="button" class="sui-btn btn-primary" onclick="file.click()" value="">浏览本地图片</button>
+										<div><img src="" width="100mm" id="logopic" height="100mm"/></div>
+									</div><br/> 
+									<label class="control-label">图片的宽高：</label>
+									<div class="controls">
+							                <input type="text" class="span1" id="cw" value="230"> x
+							                <input type="text" class="span1" id="ch" value="127">（毫米）请输入实际图片的宽高
+							         </div>
+					        	</form>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal"  data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="fileajax();" >确定</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+    
+    <!--Profile Form自定义打印项-->
+     <div id="customadd" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade" data-backdrop="static" class="sui-modal hide fade" data-width="490px" >
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    						  <div class="modal-header">
+      								  <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+       									 <h4 id="myModalLabel" class="modal-title">自定义打印项</h4>
+    					  	  </div>
+      						 <div class="modal-body" >
+	      						 <form class="sui-form"  id="picfile" name="picfile" >
+									请输入您要添加的打印内容：<input type="text"  name="customaddtxt" id="customaddtxt" style="width:260px;"/>
+					        	</form>
+				             </div>
+      						  <div class="modal-footer">
+      					   		 <button  data-ok="modal" data-toggle="modal"  data-keyboard="false" class="sui-btn btn-primary btn-lg" onclick="add('customaddtxt');" >确定</button>
+       							 <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+      						 </div>
+    					</div>
+  					</div>
+			  </div>
+</div><!--/row-->
+<script type="text/javascript">
+window.onload = function(){
+    QN.initTheme();
+    $("#dyfhsel").attr("class","dqzt");
+	getmo();
+	onload_viptime('editMo');
+	if(vipuser==0){
+		ittoolspam('AD20140730133000','fhdmbpf');
+	}else{
+		ittoolspam('AD20140730133000','fhdmbpvip');
+	}
+}
+var num=0;
+var nick='';
+var customn=1;
+var mainw=document.all.main.offsetWidth;
+var mainh=document.all.main.offsetHeight;
+var viewpicture='';
+var stringarr='';
+var moprice='';
+var imastate='';
+var savestate='';
+var companiesparr=new Array();
+var shash=window.location.hash.substr(1);
+var params = shash.split('&');
+var map = new HashMap();
+for (var i in params) {
+    var p = params[i].split("=");
+    if (p.length == 2) {
+        map.put(p[0], p[1]);
+    }
+}
+var publics = map.get("publics");
+var state = map.get("state");
+var text=new Array();
+	function test(obj){
+		var key=$(obj).attr("id");
+		var wkey='font'+key;
+		var smyWidth=document.getElementById(wkey).style.width;
+		var smyHeight=document.getElementById(wkey).style.height;
+		smyWidth=smyWidth.replace("px","");
+		smyHeight=smyHeight.replace("px","");
+		var smyWidt=smyWidth-10;
+		var smyHeigh=smyHeight-10;
+		smyWidth=Number(smyWidth)+10;
+		smyHeight=Number(smyHeight)+10;
+		var slx=$('#font'+key).offset().left;
+		var sly=$('#font'+key).offset().top;
+		var sx,sy;
+		var event = event||window.event;
+		sx=event.clientX+document.body.scrollLeft - document.body.clientLeft;
+		sy=event.clientY+document.body.scrollTop - document.body.clientTop;
+		var lwidth=sx-slx;
+		var lheight=sy-sly;
+		/*var xxxx=sx-Number(slx);
+		var yyyy=sy-Number(sly);
+		$("#x").html(Number(smyWidt)+','+xxxx+','+Number(smyWidth));
+		$("#y").html(Number(smyHeigh)+','+yyyy+','+Number(smyHeight));*/
+		if(Number(slx)+Number(smyWidt)<sx&&sx<Number(slx)+Number(smyWidth)&&Number(sly)+Number(smyHeigh)<sy&&sy<Number(sly)+Number(smyHeight)){
+			$("#"+wkey).css({"cursor":"se-resize"});
+			}else{
+				$("#"+wkey).css({"cursor":"move"});
+				}
+	}
+	var dragF={
+		locked:false,
+		lastObj:undefined,
+		drag:function(obj){
+				var key=$(obj).attr("id");
+				var wkey='font'+key;
+			obj.onmousedown=function(e){
+				mainw=document.all.main.offsetWidth;
+				mainh=document.all.main.offsetHeight;
+				var e = e ? e : window.event;
+				if(!window.event) {/*阻止ff浏览器下拖动a,img的默认事件*/
+					e.preventDefault();
+				}
+				dragF.locked=true;
+				obj.style.position="absolute";
+				obj.style.zIndex="100";
+				if (dragF.lastObj&&dragF.lastObj!=obj) {
+					dragF.lastObj.style.zIndex = "1";
+				}
+				dragF.lastObj=obj;
+				var tempX=obj.offsetLeft;
+				var tempY=obj.offsetTop;
+				dragF.x=e.clientX;
+				dragF.y=e.clientY;
+				document.onmousemove=function(e){
+					var e = e ? e : window.event;
+					if(dragF.locked==false) return false;
+					var oX =tempX+e.clientX-dragF.x;
+					var oY = tempY+e.clientY-dragF.y;
+					var tops = $('#main').offset().top;
+					var left = $('#main').offset().left;
+					var lx=$('#font'+key).offset().left;
+					var ly=$('#font'+key).offset().top;
+					for(index in text){
+						if(text[index][0]==key){
+							text[index][1]=ly-tops;
+							text[index][2]=lx-left;
+							}
+						}
+					if(oX<left)oX=left;
+					if(oX>mainw+left-80)oX=mainw+left-80;
+					if(oY<tops)oY=tops;
+					if(oY>mainh+tops-20)oY=mainh+tops-20;
+
+					var myWidth=document.getElementById(wkey).style.width;
+					var myHeight=document.getElementById(wkey).style.height;
+					myWidth=myWidth.replace("px","");
+					myHeight=myHeight.replace("px","");
+					var myWidt=myWidth-10;
+					var myHeigh=myHeight-10;
+					myWidth=Number(myWidth)+10;
+					myHeight=Number(myHeight)+10;
+					var oXX =e.clientX + document.body.scrollLeft - document.body.clientLeft;
+					var oYY =e.clientY + document.body.scrollTop - document.body.clientTop;
+					var lwidth=oXX-lx;
+					var lheight=oYY-ly;
+					if(Number(lx)+Number(myWidt)<oXX&&oXX<Number(lx)+Number(myWidth)&&Number(ly)+Number(myHeigh)<oYY&&oYY<Number(ly)+Number(myHeight)){
+						for(index in text){
+							if(text[index][0]==key){
+								text[index][4]=lwidth;
+								text[index][5]=lheight;
+								}
+							}
+						$("#"+wkey).css({"width":lwidth + "px", "height":lheight + "px"});
+					}else{
+						$(obj).css({"left":oX + "px", "top":oY + "px"});
+						}
+
+					if(window.event) {/*阻止ie下a,img的默认事件*/
+						e.returnValue=false;
+					}
+					
+				}
+				document.onmouseup=function(){
+					dragF.locked=false;
+				}
+			}
+		}
+	}
+
+function getmo(){
+	QN.top.invoke({
+		 "cmd": "taobao.logistics.companies.get",
+		 "param": {'fields':"id,code,name",'order_mode':'online'},
+		 "method": "get",
+		 "success": function(rsp){
+	  		 if(typeof  rsp=== 'string'){
+						rsp = JSON.parse(rsp);
+		            }
+		    		if(rsp.error_response){
+		    			layer.msg('调取物流公司失败！', 1, 3);
+			    	}else if(rsp.logistics_companies_get_response){
+		    			 for(index in rsp.logistics_companies_get_response.logistics_companies.logistics_company){
+			    			 var order=rsp.logistics_companies_get_response.logistics_companies.logistics_company[index];
+			    			 companiesparr[index]=order.name+','+order.code+','+order.id;
+		    			 }
+		    			 QN.application.invoke({
+		    				 "cmd": "getLoginuser",
+		    				 "success": function (e){
+		    					 if(typeof  e=== 'string'){
+		    			            	e = JSON.parse(e);
+		    			            }
+		    				     nick=decodeURI(e.user_nick);
+					    		 companiesP();
+		    				 }
+		    			 });
+		    			 
+		    		}
+				},
+				 error: function(msp){
+	                  if(typeof msp === 'string'){
+	                      var msp = JSON.parse(msp);
+	                  }else{
+	                      var msp= msp;
+	                  }
+	                  layer.msg('操作失败，请重试！', 1, 3);
+	              }  
+	});
+}
+function companiesP(){
+	var printmo=window.localStorage.getItem("printmo"+nick);
+	printmo=eval('('+printmo+')');
+	var publicmo=printmo['publicmo'];
+	var privatemo=printmo['privatemo'];
+		if(state==null||state==''){
+		    	$("#mouldnamec").html('可选择其它模版再编辑');
+			    $("#mouldnamecs").append('<li role="presentation" ><span style="color:red;">个人模版</span></li>');
+			    for(var index in privatemo){
+			    	$("#mouldnamecs").append('<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+privatemo[index]['mouldname']+'wsx">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+privatemo[index]['mouldname']+'</a></li>');
+				    }
+			    $("#mouldnamecs").append('<li role="presentation" ><span style="color:red;">公共模版</span></li>');
+		        for(index in publicmo){
+		        	$("#mouldnamecs").append('<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+publicmo[index]['mouldname']+'">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+publicmo[index]['mouldname']+'</a></li>');
+		       		 }
+	       		var compansp='';
+		        for(index in companiesparr){
+		        	compansp=companiesparr[index].split(',');
+	       			if($("#companies").html()=='')$("#companies").html(compansp[0]);
+	       			if($("#companiese").html()=='')$("#companiese").html(compansp[0]+','+compansp[1]+','+compansp[2]);
+		        	$("#companie").append('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+compansp[0]+','+compansp[1]+','+compansp[2]+'">'+compansp[0]+'</a></li>');
+		        }
+			}else{
+ 		 	    if(state==1) printmo=printmo['publicmo']; else printmo=printmo['privatemo'];
+ 	 		 	  	var pripu='';
+ 	 	 		 	var pripus='';
+			    	var compgs='';
+			    	var compges='';
+			        var compansp='';
+				    $("#mouldnamecs").append('<li role="presentation" ><span style="color:red;">个人模版</span></li>');
+				    for(var index in privatemo){
+					    	compgs=privatemo[index]['companie'].split(',');
+					    	if(state==privatemo[index]['mouldname']){
+					    		pripu=state;
+					    		pripus=compgs[1];
+					    		stringarr=privatemo[index]['mould'];
+						    	document.getElementById("mouldname").value=state;
+						    	var wh=privatemo[index]['size'];
+						    	moprice=privatemo[index]['moprice'];
+						    	wh=wh.split('X');
+						    	document.getElementById("w").value=wh[0];
+						    	document.getElementById("h").value=wh[1];
+						    	var tl=privatemo[index]['offset'];
+						    	tl=tl.replace("'","");
+						    	tl=tl.split('X');
+						    	document.getElementById("ud").value=tl[0];
+						    	document.getElementById("lr").value=tl[1];
+						    	var width=wh[0]+"mm";
+						    	var height=wh[1]+"mm";
+						    	$("#mouldnamec").html(privatemo[index]['mouldname']);
+						    	$("#mouldnamecs").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+privatemo[index]['mouldname']+'wsx">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+privatemo[index]['mouldname']+'</a></li>');
+						    }else{
+						    	$("#mouldnamecs").append('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+privatemo[index]['mouldname']+'wsx">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+privatemo[index]['mouldname']+'</a></li>');
+					    	}
+					    }
+				    $("#mouldnamecs").append('<li role="presentation" ><span style="color:red;">公共模版</span></li>');
+				    for(var index in publicmo){
+			        	compges=publicmo[index]['companie'].split(',');
+				        	if(state==publicmo[index]['mouldname']){
+				        		if(pripu!=state){
+				        			pripus=compges[1];
+				        			stringarr=publicmo[index]['mould'];
+				        			document.getElementById("mouldname").value=state;
+							    	var wh=publicmo[index]['size'];
+							    	moprice=publicmo[index]['moprice'];
+							    	wh=wh.split('X');
+							    	document.getElementById("w").value=wh[0];
+							    	document.getElementById("h").value=wh[1];
+							    	var tl=publicmo[index]['offset'];
+							    	tl=tl.replace("'","");
+							    	tl=tl.split('X');
+							    	document.getElementById("ud").value=tl[0];
+							    	document.getElementById("lr").value=tl[1];
+							    	var width=wh[0]+"mm";
+							    	var height=wh[1]+"mm";
+							    	$("#mouldnamec").html(publicmo[index]['mouldname']);
+							    	$("#mouldnamecs").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+publicmo[index]['mouldname']+'">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+publicmo[index]['mouldname']+'</a></li>');
+				        		}else{
+							    	$("#mouldnamecs").append('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+publicmo[index]['mouldname']+'">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+publicmo[index]['mouldname']+'</a></li>');
+					        		}
+					    	}else{
+						    	$("#mouldnamecs").append('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+publicmo[index]['mouldname']+'">&nbsp;&nbsp;&nbsp;&nbsp;┗━'+publicmo[index]['mouldname']+'</a></li>');
+						    	}
+			        	}
+				    $("#companies").empty();
+				    $("#companiese").empty();
+			        for(var index in companiesparr){
+			        	compansp=companiesparr[index].split(',');
+			        	if(pripus==compansp[1]){
+			        		if($("#companies").html()=='')$("#companies").html(compansp[0]);
+			       			if($("#companiese").html()=='')$("#companiese").html(compansp[0]+','+compansp[1]+','+compansp[2]);
+			        		$("#companie").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+compansp[0]+','+compansp[1]+','+compansp[2]+'">'+compansp[0]+'</a></li>');
+			        	}else{
+			        		$("#companie").append('<li role="presentation" pointstu="pointstu" ><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+compansp[0]+','+compansp[1]+','+compansp[2]+'">'+compansp[0]+'</a></li>');
+			        	}
+			        }
+				     $("#main").css({"background-image":"url('"+'http://itradeprint.oss.aliyuncs.com/'+moprice+"')","width":width,"height":height});
+			    	 viewpicture='http://itradeprint.oss.aliyuncs.com/'+moprice;
+			    	 initialize();
+				}
+		$('.dropdown-toggle').dropdown();
+	}
+
+function add(valadd){
+	var bool=true;
+	var values=valadd;
+	for(index in text){
+		if(text[index][0]==values){
+			bool=false;
+		}
+	}
+	var svalue='';
+	if(values.indexOf('stom') > 0){
+		//$("input[msgstu='again']").attr("onclick","closeMsg('customadd');");
+		values=values+Math.floor(Math.random()*100);
+		svalues=document.getElementById("customaddtxt").value;
+		if(svalues.indexOf(',') > -1||svalues.indexOf(';') > -1)svalue='wsx';
+		}
+	if(svalue==''){
+		if(bool||values.indexOf('stom') > 0){
+			switch(values){
+			 case 'names':{value="签名";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 'date':{value="发件人发件日期";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'btitle':{value="宝贝名称";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'bproperty':{value="商品属性（数量）";var wsxv=values+',0,0,16,140,20,宋体,normal,true';break;}
+			 case 'bbabynum':{value="宝贝名称（数量）";var wsxv=values+',0,0,16,140,20,宋体,normal,true';break;}
+			 case 'ballnum':{value="总件数";var wsxv=values+',0,0,16,140,20,宋体,normal,true';break;}
+			 case 'bpropertys':{value="宝贝名称/销售属性/数量";var wsxv=values+',0,0,16,180,40,宋体,normal,true';break;}
+			 case 'destination':{value="收件人所在城市";var wsxv=values+',0,0,24,180,30,微软雅黑,bold,true';break;}
+			 case 'shopName':{value="卖家店铺名称";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'totalPrices':{value="总价";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'bsxnums':{value="商家编码/销售属性/数量";var wsxv=values+',0,0,16,180,40,宋体,normal,true';break;}
+			 
+			 case 'buyerNick':{value="买家旺旺";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'sellerNick':{value="卖家旺旺";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'buyerMessage':{value="买家留言";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'sellerRemark':{value="卖家备注";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'CODING':{value="商家编码";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'SpostCode':{value="收件人邮编";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'FpostCode':{value="发件人邮编";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'orderNumber':{value="订单编号";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'fname':{value="发件人姓名";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 'faddress':{value="发件人地址";var wsxv=values+',0,0,16,160,40,宋体,normal,true';break;}
+			 case 'fcompany':{value="发件人单位名称";var wsxv=values+',0,0,16,160,20,宋体,normal,true';break;}
+			 case 'fphone':{value="发件人电话";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'fmobile':{value="发件人手机";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'fsaddr':{value="始发地";var wsxv=values+',0,0,24,180,30,微软雅黑,bold,true';break;}
+			 case 'sname':{value="收件人姓名";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 'saddress':{value="收件人地址";var wsxv=values+',0,0,16,160,40,宋体,normal,true';break;}
+			 case 'scompany':{value="收件人单位名称";var wsxv=values+',0,0,16,160,20,宋体,normal,true';break;}
+			 case 'sphone':{value="收件人电话";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'smobile':{value="收件人手机";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'f_shen':{value="发件人/省";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 'f_shi':{value="发件人/市";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 'f_qu':{value="发件人/区";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 'f_deil':{value="发件人详细地址";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 's_shen':{value="收件人/省";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 's_shi':{value="收件人/市";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 's_qu':{value="收件人/区";var wsxv=values+',0,0,16,80,20,宋体,normal,true';break;}
+			 case 's_deil':{value="收件人详细地址";var wsxv=values+',0,0,16,120,20,宋体,normal,true';break;}
+			 case 'babyall':{value="宝贝名称/商家编码/销售属性/数量";var wsxv=values+',0,0,16,180,40,宋体,normal,true';break;}
+			 default :{value=document.getElementById("customaddtxt").value;var wsxv=values+',0,0,14,180,40,宋体,normal,true,'+value;break;}
+			 }
+			 var arrd2=wsxv.split(',');
+			 text.push(arrd2);
+			$("#main").append('<div id="'+values+'" onclick="changesta('+values+')" style="position:absolute;left:0 px;top:0 px;"  onmouseover="dragF.drag(this);" onmousemove="test('+values+')"><div id="font'+values+'" class="text" style="font-size:'+arrd2[3]+'px;width:'+arrd2[4]+'px;height:'+arrd2[5]+'px;font-family:'+arrd2[6]+';font-weight:'+arrd2[7]+';">'+value+'</div></div>');
+	
+			}
+		}else{
+			layer.msg('自定义内容含非法字符不能添加！', 1, 3);
+			}
+}
+function initialize(){
+	text.length=0;
+	var arrd=stringarr.split(';');
+	var arrd2='';
+	var wang='';
+	for(index in arrd){
+		arrd2=arrd[index].split(',');
+		text[index]=arrd2;
+		wang=arrd2[0];
+			switch(wang){
+				 case 'names':{value="签名";break;}
+				 case 'date':{value="发件人发件日期";break;}
+				 case 'btitle':{value="宝贝名称";break;}
+				 case 'bproperty':{value="商品属性（数量）";break;}
+				 case 'bpropertys':{value="宝贝名称/销售属性/数量";break;}
+				 case 'destination':{value="收件人所在城市";break;}
+				 case 'bbabynum':{value="宝贝名称（数量）";break;}
+				 case 'ballnum':{value="总件数";break;}
+				 case 'shopName':{value="卖家店铺名称";break;}
+				 case 'totalPrices':{value="总价";break;}
+				 case 'bsxnums':{value="商家编码/销售属性/数量";break;}
+
+				 case 'buyerNick':{value="买家旺旺";break;}
+				 case 'sellerNick':{value="卖家旺旺";break;}
+				 case 'buyerMessage':{value="买家留言";break;}
+				 case 'sellerRemark':{value="卖家备注";break;}
+				 case 'CODING':{value="商家编码";break;}
+				 case 'SpostCode':{value="收件人邮编";break;}
+				 case 'FpostCode':{value="发件人邮编";break;}
+				 case 'orderNumber':{value="订单编号";break;}
+				 case 'fname':{value="发件人姓名";break;}
+				 case 'faddress':{value="发件人地址";break;}
+				 case 'fcompany':{value="发件人单位名称";break;}
+				 case 'fsaddr':{value="始发地";break;}
+				 case 'fphone':{value="发件人电话";break;}
+				 case 'fmobile':{value="发件人手机";break;}
+				 case 'sname':{value="收件人姓名";break;}
+				 case 'saddress':{value="收件人地址";break;}
+				 case 'scompany':{value="收件人单位名称";break;}
+				 case 'sphone':{value="收件人电话";break;}
+				 case 'smobile':{value="收件人手机";break;}
+
+				 case 'f_shen':{value="发件人/省";break;}
+				 case 'f_shi':{value="发件人/市";break;}
+				 case 'f_qu':{value="发件人/区";break;}
+				 case 'f_deil':{value="发件人详细地址";break;}
+				 case 's_shen':{value="收件人/省";break;}
+				 case 's_shi':{value="收件人/市";break;}
+				 case 's_qu':{value="收件人/区";break;}
+				 case 's_deil':{value="收件人详细地址";break;}
+				 case 'babyall':{value="宝贝名称/商家编码/销售属性/数量";break;}
+				 default :{value=arrd2[9];break;}
+			 }
+			var x=$('#main').offset().left;
+			var y=$('#main').offset().top;
+			x=Number(x)+Number(arrd2[2]);
+			y=Number(y)+Number(arrd2[1]);
+			$("#main").append('<div id="'+wang+'" onclick="changesta('+wang+')" style="position:absolute;left:'+x+'px;top:'+y+'px;"  onmouseover="dragF.drag(this);" onmousemove="test('+wang+')"><div id="font'+wang+'" class="text" style="font-size:'+arrd2[3]+'px;width:'+arrd2[4]+'px;height:'+arrd2[5]+'px;font-family:'+arrd2[6]+';font-weight:'+arrd2[7]+';">'+value+'</div></div>');
+		}
+}
+
+function changes(vals){
+	for(index in text){
+		if(text[index][0]==state){
+			text[index][3]=vals;
+			}
+		}
+	if(state!=''){
+		$("#font"+state).css({"background-color":"silver","font-size":vals});
+	}
+}
+function changef(valf){
+	for(index in text){
+		if(text[index][0]==state){
+			text[index][6]=valf;
+			}
+		}
+	if(state!=''){
+		$("#font"+state).css({"background-color":"silver","font-family":valf});
+	}
+}
+function changeb(){
+	for(index in text){
+		if(text[index][0]==state){
+			if(text[index][7]=='bold')text[index][7]='normal'; 
+			else if(text[index][7]=='normal')text[index][7]='bold';
+			var valb=text[index][7];
+			}
+		}
+	if(state!=''){
+		$("#font"+state).css({"background-color":"silver","font-weight":valb});
+	}
+}
+function reshow(){
+	if(savestate==''){
+		if(publics==null)publics='';
+		window.location.href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/editMo?vers=<?php echo REAL_ROOT_VER;?>#state="+state+"&publics="+publics;
+	}else{
+		window.location.href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/editMo?vers=<?php echo REAL_ROOT_VER;?>#state="+savestate;
+	} 
+}
+function changesta(vals){
+	$(".corner").remove();
+	$("#font"+state).css({"background-color":""});
+	var keys=$(vals).attr("id");
+	state=keys;
+	$("#font"+state).css({"background-color":"#ccc"});
+	$("#font"+state).append('<div class="corner"></div>');
+}
+function deletemo(){
+	for(index in text){
+		if(text[index][0]==state){
+			text.splice(index,1);
+		}
+	}
+	$("#"+state).remove();
+}
+function changesize(values){
+	var ud=$("#ud").val();
+	var lr=$("#lr").val();
+	switch(values){
+		case 'up':{
+			document.getElementById("ud").value=Number(ud)-1;
+			break;}
+		case 'down':{
+			document.getElementById("ud").value=Number(ud)+1;
+			break;}
+		case 'left':{
+			document.getElementById("lr").value=Number(lr)-1;
+			break;}
+		case 'right':{
+			document.getElementById("lr").value=Number(lr)+1; 
+			break;}
+	}
+}
+var selectopsval='';
+function selectops(){
+	selectopsval=$("#selects input").val();
+}
+function selectop(){
+	$("#main").empty();
+	var mouldnamec=$("#select input").val();
+	var printmo=window.localStorage.getItem("printmo"+nick);
+	var printmo=eval('('+printmo+')');
+	if(mouldnamec.indexOf('wsx') > 0){
+			mouldnamec=mouldnamec.replace("wsx","");
+			var printmo=printmo['privatemo'];
+		}else var printmo=printmo['publicmo'];
+	for(var index in printmo){
+    	if(printmo[index]['mouldname']==mouldnamec){
+	    	imastate='';
+    		stringarr=printmo[index]['mould'];
+	    	document.getElementById("mouldname").value=mouldnamec;
+	    	moprice=printmo[index]['moprice'];
+	    	var companiesel=printmo[index]['companie'];
+	    	companiesel=companiesel.split(',');
+	    	var wh=printmo[index]['size'];
+	    	wh=wh.split('X');
+	    	document.getElementById("w").value=wh[0];
+	    	document.getElementById("h").value=wh[1];
+	    	var tl=printmo[index]['offset'];
+	    	tl=tl.replace("'","");
+	    	tl=tl.split('X');
+	    	document.getElementById("ud").value=tl[0];
+	    	document.getElementById("lr").value=tl[1];
+	    	var width=wh[0]+"mm";
+	    	var height=wh[1]+"mm";
+	    	$("#companie").empty();
+    		$("#main").css({"background-image":"url('"+'http://itradeprint.oss.aliyuncs.com/'+moprice+"')","width":width,"height":height});
+    		viewpicture='http://itradeprint.oss.aliyuncs.com/'+moprice;
+	    	var compansp='';
+	    	$("#companies").empty();
+		    $("#companiese").empty();
+	        for(index in companiesparr){
+	        	compansp=companiesparr[index].split(',');
+	        	if(compansp[1]==companiesel[1]){
+	        		if($("#companies").html()=='')$("#companies").html(compansp[0]);
+	        		if($("#companiese").html()=='')$("#companiese").html(compansp[0]+','+compansp[1]+','+compansp[2]);
+			    	$("#companie").append('<li role="presentation" pointstu="pointstu" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+compansp[0]+','+compansp[1]+','+compansp[2]+'">'+compansp[0]+'</a></li>');
+	        	}else{
+			    	$("#companie").append('<li role="presentation" pointstu="pointstu"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="'+compansp[0]+','+compansp[1]+','+compansp[2]+'">'+compansp[0]+'</a></li>');
+	        	}
+	        }
+	        initialize();
+	     	break;
+        	}
+    	}
+	$('.dropdown-toggle').dropdown();
+}
+
+function previewImageLogo(file)  
+{	
+	var files=document.getElementById("file").value;
+	if (/\.(gif|jpg|jpeg|png|JPG|PNG)$/.test(files)) {
+		if (file.files[0].size >= 600000) {
+			layer.msg('上传的图片过大，必须小于600KB', 1, 3);
+		 }else{
+			var reader = new FileReader(); 
+			reader.onload =function(evt){
+				$('#logopic').attr({src: evt.target.result});
+				$("#main").css({"background-image":"url('"+evt.target.result+"')"});
+				viewpicture='';
+				$("#printPreviewboby").css({"background-image":"url('"+evt.target.result+"')"});
+				moprice='nickimage/';
+				imastate='1';
+			}
+			reader.readAsDataURL(file.files[0]);
+		}			
+	 }else {
+		 layer.msg('上传的文件不是图片！(格式必须是jpg,png或gif)', 1, 3);
+	}
+}
+function fileajax(){
+	if(moprice.indexOf('kima') > 0&&imastate=='1'){
+	var cwidth=document.getElementById("cw").value;
+	var cheight=document.getElementById("ch").value;
+	document.getElementById("w").value=cwidth;
+	document.getElementById("h").value=cheight;
+	cwidth=cwidth+'mm';
+	cheight=cheight+'mm';
+	$("#main").css({"width":cwidth,"height":cheight});
+	}
+}
+function save(){
+	if(moprice.indexOf('kima') > 0&&imastate=='1'){
+		var form = document.getElementById("picfile");   
+		var formData = new FormData(form);   
+		$.ajax({    
+			url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/scprice',        
+			type: 'POST',              
+			data: formData,              
+			cache: false,        
+			contentType: false,        
+			processData: false,                
+			beforeSend: function(data){ },        
+			success: function(data){
+				var imagexx=eval('('+data+')');
+				if(imagexx=='fail'){
+					layer.msg('上传图片失败！', 1, 3);
+					}else{
+						moprice=imagexx;
+						saves();
+						}
+			  },       
+			error: function(data){
+				layer.msg('上传图片失败！', 1, 3);
+			 }   
+		});
+	}else saves();
+	}
+
+function saves(){
+	tradePoint(nick,'保存快递单模板');
+	if(vipuser==0){
+		$('#buyvip').modal('show');
+      	return;
+    }
+	if(selectopsval=='')companie=$("#companiese").html();else companie=selectopsval;
+	var mouldname=document.getElementById("mouldname").value;
+	if(mouldname!=''){
+		var size=document.getElementById("w").value+"X"+document.getElementById("h").value;
+		var offset=document.getElementById("ud").value+"X"+document.getElementById("lr").value;
+		var mould='';
+		var mould2='';
+		for(index in text){
+			if(text[index][9]==undefined||typeof(text[index][9])=="undefined"){
+				mould2=text[index][0]+','+text[index][1]+','+text[index][2]+','+text[index][3]+','+text[index][4]+','+text[index][5]+','+text[index][6]+','+text[index][7]+','+text[index][8];
+				}else{
+				if(text[index][9].indexOf("undefined")==0)mould2=text[index][0]+','+text[index][1]+','+text[index][2]+','+text[index][3]+','+text[index][4]+','+text[index][5]+','+text[index][6]+','+text[index][7]+','+text[index][8];else mould2=text[index][0]+','+text[index][1]+','+text[index][2]+','+text[index][3]+','+text[index][4]+','+text[index][5]+','+text[index][6]+','+text[index][7]+','+text[index][8]+','+text[index][9];
+				}
+			if(mould==''){
+				mould=mould2;
+				}else{
+				mould+=';'+mould2;
+			}
+			}
+		$.ajax({
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/upMo',
+		    type: 'POST',
+		    dataType:'html',
+		    data:{nick:nick,companie:companie,size:size,mould:mould,offset:offset,mouldname:mouldname,moprice:moprice},
+		    timeout:10000,
+		    success: function(data){
+		    	      var datatemp=eval('('+data+')');
+		    	      savestate=mouldname;
+		    	      window.localStorage.removeItem("printmo"+nick);
+		    	      layer.msg(datatemp, 1, 1);
+		     },
+		     error: function(data){
+		    	 layer.msg('保存失败！', 1, 3);
+		     }	     
+		 });
+	}else{
+		layer.msg('模版名不能为空！', 1, 3);
+		}
+}
+	
+function PreviewTest(){
+    /*var img = new Image();
+    img.src = viewpicture;
+    img.onload = function () {
+    var canvas = document.createElement("canvas");
+    width =this.width;
+    height =this.height;
+    }*/
+	$("#printPreviewboby").empty();
+	var width=document.getElementById("w").value+'mm';
+	var height=document.getElementById("h").value+'mm';
+	if(viewpicture!='')$("#printPreviewboby").css({"background-image":"url('"+viewpicture+"')","width":width,"height":height});else $("#printPreviewboby").css({"width":width,"height":height});
+	var value='';
+	var x=0;
+	var y=0;
+	for(index in text){
+			switch(text[index][0]){
+				 case 'names':{value="签名";break;}
+				 case 'date':{value="发件人发件日期";break;}
+				 case 'btitle':{value="宝贝名称";break;}
+				 case 'bproperty':{value="商品属性（数量）";break;}
+				 case 'bpropertys':{value="宝贝名称/销售属性/数量";break;}
+				 case 'destination':{value="收件人所在城市";break;}
+				 case 'bbabynum':{value="宝贝名称（数量）";break;}
+				 case 'ballnum':{value="总件数";break;}
+				 case 'bsxnums':{value="商家编码/销售属性/数量";break;}
+
+				 case 'shopName':{value="卖家店铺名称";break;}
+				 case 'totalPrices':{value="总价";break;}
+				 case 'buyerNick':{value="买家旺旺";break;}
+				 case 'sellerNick':{value="卖家旺旺";break;}
+				 case 'buyerMessage':{value="买家留言";break;}
+				 case 'sellerRemark':{value="卖家备注";break;}
+				 case 'CODING':{value="商家编码";break;}
+				 case 'SpostCode':{value="收件人邮编";break;}
+				 case 'FpostCode':{value="发件人邮编";break;}
+				 case 'orderNumber':{value="订单编号";break;}
+				 case 'fname':{value="发件人姓名";break;}
+				 case 'faddress':{value="发件人地址";break;}
+				 case 'fcompany':{value="发件人单位名称";break;}
+				 case 'fsaddr':{value="始发地";break;}
+				 case 'fphone':{value="发件人电话";break;}
+				 case 'fmobile':{value="发件人手机";break;}
+				 case 'sname':{value="收件人姓名";break;}
+				 case 'saddress':{value="收件人地址";break;}
+				 case 'scompany':{value="收件人单位名称";break;}
+				 case 'sphone':{value="收件人电话";break;}
+				 case 'smobile':{value="收件人手机";break;}
+				 case 'f_shen':{value="发件人/省";break;}
+				 case 'f_shi':{value="发件人/市";break;}
+				 case 'f_qu':{value="发件人/区";break;}
+				 case 'f_deil':{value="发件人详细地址";break;}
+				 case 's_shen':{value="收件人/省";break;}
+				 case 's_shi':{value="收件人/市";break;}
+				 case 's_qu':{value="收件人/区";break;}
+				 case 's_deil':{value="收件人详细地址";break;}
+				 case 'babyall':{value="宝贝名称/商家编码/销售属性/数量";break;}
+				 default :{value=text[index][9];break;}
+			 }
+			x=Number(text[index][2])+15;
+			y=Number(text[index][1])+5;
+			$("#printPreviewboby").append('<div style="position:absolute;left:'+x+'px;top:'+y+'px;width:'+text[index][4]+'px;height:'+text[index][5]+'px;"><span style="font-size:'+text[index][3]+'px;font-family:'+text[index][6]+';font-weight:'+text[index][7]+';">'+value+'</span></div>');
+			window.localStorage.setItem("printPreview",$("#printPreview").html());
+			openPreview();
+		}
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-7-23
+ * Time: 17:00 
+ * 预览快递单模版
+ */	
+function openPreview(){
+	QN.application.invoke({
+	    cmd : 'openAttachWindow',
+	    param : {
+	    	event:"printPreview",
+	    	width:900,
+	    	height:550,
+	    	title:'预览快递单模版'
+	    	},
+	    success : function(rsp) {
+	    },
+	    error : function(msg) {
+	    }
+	});
+	}
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

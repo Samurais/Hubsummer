@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<body>
+<?php require_once ("app/views/public/top.php");?>
+    <div class="container" style="margin-left: 10px;">
+        <div style="display: none;" id="adv_top"></div>
+        <form class="sui-form" style="margin-top: 10px;">
+	        <a href="javascript:void(0);" class="sui-btn btn-primary" onclick="addNewmo();">添加新模版</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	 			<div class="input-control control-right" >
+								<input type="text" class="input-fat" id="companie" placeholder="请输入快递公司名称" ><i class="sui-icon icon-touch-magnifier"></i>
+							</div>
+	          <a href="javascript:void(0);" class="sui-btn btn-primary" onclick="selectmo(1);">查询</a>
+        </form>
+        
+   		 <ul class="sui-nav nav-tabs nav-large" style="margin-top: 10px;">
+		  <li class="active"><a data-toggle="tab" href="#publicmo" onclick="selectstate();">公共快递单模版</a></li>
+		  <li ><a data-toggle="tab" href="#privatemo" onclick="selectstate2(1);">个人快递单模版</a></li>
+     	</ul>
+     	
+        <div class="tab-content" style="overflow: visible;">
+		 	 <div id="publicmo" class="tab-pane active">
+					<table class="sui-table table-striped table-bordered table-hover" style="text-align:center;">
+			            <thead><tr><th width="7%">序号</th><th width="23%">模板名称</th><th width="20%">模版尺寸</th><th width="23%">快递公司</th><th width="26%">操作</th></tr></thead>
+	       				<tbody id="fastmo"></tbody>
+	       			</table>
+					<div id="fastmoage" style="margin-top:5px"><div class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div></div>
+		 		 </div>
+		 		 <div id="privatemo" class="tab-pane">
+					<table class="sui-table table-striped table-bordered table-hover" style="text-align:center;">
+						<thead><tr><th width="7%">序号</th><th width="23%">模板名称</th><th width="20%">模版尺寸</th><th width="23%">快递公司</th><th width="26%">操作</th></tr></thead>
+	       				<tbody id="fastmo2"></tbody>
+					</table>
+					<div id="fastmoage2" style="margin-top:5px"><div class="sui-loading loading-small " style="overflow: hidden;"><i class="sui-icon icon-pc-loading"></i></div></div>
+		 		 </div>
+		  </div>
+	    <!--Profile Form打印预览-->
+			 <div class="mesWindowContent" id="printPreview" style="display:none;position: relative;">
+			       <div id="printPreviewboby" style="background-size: 100% 100%"></div>
+			 </div>
+    </div>
+<script type="text/javascript">
+window.onload = function(){
+	QN.initTheme();
+	$("#dyfhsel").attr("class","dqzt");
+	getPrintmo();
+	onload_viptime('fastMo');
+	if(vipuser==0){
+		ittoolspam('AD20140730133000','kddmbpf');
+	}else{
+		ittoolspam('AD20140730133000','kddmbpvip');
+	}
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-31
+ * Time: 晚上21:45 
+ * 优化打印数据.
+ */
+var pageNo=1
+var page_size=20;
+var nick='';
+var sstates='fastmo';
+var sstate=1;
+var indexi=1;
+function reshow(){
+	getPrintmo();
+}
+function selectstate(){
+	sstates='fastmo';
+}
+function selectstate2(){
+	if(sstate==1||sstate==3){
+		sstate=2;
+	}
+	sstates='fastmo2';
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-31
+ * Time: 下午18:30 
+ * 获取所有打印数据.【更新】
+ */
+function getPrintmo(){
+	QN.application.invoke({
+		 "cmd": "getLoginuser",
+		 "success": function (e){
+			 if(typeof  e=== 'string'){
+	            	e = JSON.parse(e);
+	            }
+		     nick=decodeURI(e.user_nick);
+		     var printmo=window.localStorage.getItem("printmo"+nick);
+		     if(printmo==null||printmo=='null'){
+		    	 $.ajax({
+				     url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/getPrintmo',
+				     type: 'POST',
+				     dataType:'html',
+				     data:{nick:nick},
+				     timeout:10000,
+				     error: function(){
+				    	 layer.msg('获取数据失败！', 1, 1);
+				     },		     
+				     success: function(printdata){
+				    	window.localStorage.setItem("printmo"+nick,printdata);
+				        showpublic(1);
+				        showprivate(1);
+				     }
+			     });
+		     }else{
+		    	 showpublic(1);
+			     showprivate(1);
+			  }
+		 }
+	});
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-31
+ * Time: 下午16:30 
+ * 显示公共模板.【更新】
+ */
+function showpublic(onpage){
+	$("#fastmo").empty();
+	var printmo=window.localStorage.getItem("printmo"+nick);
+	printmo=eval('('+printmo+')');
+	var publicmo=printmo['publicmo'];
+	var companiep='';
+	var datas={};
+	var source = $("#publicmo-template").html();
+	var template=Handlebars.compile(source);
+	var total_page=Math.ceil(publicmo.length/page_size);
+	var htmlstr='';
+	$("#fastmoage").empty();
+	for(var pages=(onpage-1)*page_size; pages<(onpage-1)*page_size+page_size&&pages<publicmo.length;pages++){
+			companiep=publicmo[pages]['companie'].split(',');
+			datas.pageid=pages+1;
+			datas.mouldname=publicmo[pages]['mouldname'];
+			datas.mouldsize=publicmo[pages]['size'];
+			datas.companiep=companiep[0];
+			htmlstr = template(datas);
+            $("#fastmo").append(htmlstr); 
+	  }
+	if(publicmo.length>0)pagin("fastmoage","showpublic",onpage,total_page,publicmo.length); 
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-31
+ * Time: 下午17:10 
+ * 显示个人模板.【更新】
+ */
+function showprivate(onpage){
+	$("#fastmo2").empty();
+	var printmo=window.localStorage.getItem("printmo"+nick);
+	printmo=eval('('+printmo+')');
+	var privatemo=printmo['privatemo'];
+	var companiep='';
+	var datas={};
+	var source = $("#privatemo-template").html();
+	var template=Handlebars.compile(source);
+	var total_page=Math.ceil(privatemo.length/page_size);
+	var htmlstr='';
+	$("#fastmoage2").empty();
+	for(var pages=(onpage-1)*page_size; pages<(onpage-1)*page_size+page_size&&pages<privatemo.length;pages++){
+			companiep=privatemo[pages]['companie'].split(',');
+			if(privatemo[pages]['sign']!=1){
+				source = $("#privatemo2-template").html();
+				template=Handlebars.compile(source);
+				datas.modefault=privatemo[pages]['mouldname'];
+			}else{
+				source = $("#privatemo-template").html();
+				template=Handlebars.compile(source);
+				datas.modefault='已默认';
+			}
+			datas.pageid=pages+1;
+			datas.mouldname=privatemo[pages]['mouldname'];
+			datas.mouldsize=privatemo[pages]['size'];
+			datas.companiep=companiep[0];
+			htmlstr = template(datas);
+            $("#fastmo2").append(htmlstr);
+	  }
+	  if(privatemo.length>0)pagin("fastmoage2","showprivate",onpage,total_page,privatemo.length); else $("#fastmoage2").append('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">您还没有设置过个人模版！</div><s class="msg-icon"></s></div>');
+}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-31
+ * Time: 下午16:00 
+ * 根据快递公司查询模版.【更新】
+ */
+function selectmo(pagesel){
+	sstate=3;
+	$("#"+sstates).empty();
+	var companie=document.getElementById("companie").value;
+	var printmo=window.localStorage.getItem("printmo"+nick);
+	printmo=eval('('+printmo+')');
+	 if(sstates=='fastmo'){
+			var printmos=printmo['publicmo'];
+			var fastmoage='fastmoage';
+			var fastmo='fastmo';
+			var sources='privatemo-template';
+		}else{
+			var printmos=printmo['privatemo'];
+			var fastmoage='fastmoage2';
+			var fastmo='fastmo2';
+			var sources='publicmo-template';
+		}
+	    $("#"+fastmoage).empty();
+		$("#"+fastmo).empty();
+		var companiep='';
+		var indexsi=0;
+		var datas={};
+		for(var index in printmos){
+			companiep=printmos[index]['companie'].split(',');
+			if(companiep[0].indexOf(companie) > -1){
+				datas={};
+				indexsi++
+				if(sstates!='fastmo'){
+					if(printmos[index]['sign']!=1){
+						sources = "privatemo2-template";
+						datas.modefault=printmos[index]['mouldname'];
+					}else{
+						sources ="privatemo-template";
+						datas.modefault='已默认';
+					}
+				}else{
+					var sources='publicmo-template';
+					}
+				datas.pageid=indexsi;
+				datas.mouldname=printmos[index]['mouldname'];
+				datas.mouldsize=printmos[index]['size'];
+				datas.companiep=companiep[0];
+				var source = $("#"+sources).html();
+				var template=Handlebars.compile(source);
+				htmlstr = template(datas);
+			    $("#"+fastmo).append(htmlstr);
+				}
+		}
+		if(indexsi<1){
+			$("#"+fastmoage).append('<div class="sui-msg msg-large msg-tips" style="width:100%;"><div class="msg-con" id="tjloading">没有查询到您要查询的快递公司！</div><s class="msg-icon"></s></div>');
+			}
+	}
+/**
+ * Created with need.
+ * User: wangsx
+ * Date: 14-3-31
+ * Time: 下午15:40 
+ * 默认个人打印模版.【更新】
+ */
+	function defaultmo(mouldname){
+		tradePoint(nick,'设为默认快递单');
+		if(sstates=='fastmo'&&vipuser==0){
+			$('#buyvip').modal('show');
+	      	return;
+	    }
+		$.ajax({
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/defaultpuMo',
+		    type: 'POST',
+		    dataType:'html',
+		    data:{nick:nick,mouldname:mouldname},
+		    timeout:10000,
+		    success: function(data){
+				     if(data==1){
+				    	 layer.msg('默认失败！个人模版数量达限', 1, 1);
+					     }else{
+					    	  window.localStorage.removeItem("printmo"+nick);
+						      getPrintmo();
+						      layer.msg('默认成功！', 1, 1);
+					     }
+		     }
+		 });
+		}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-3-31
+	 * Time: 下午15:30 
+	 * 删除个人打印模版.【更新】
+	 */
+	function deletemo(mouldname){
+	    $("#twohints").html('<p>您确定要删除这个模版,删除后将无法恢复！</p>');
+		document.getElementById('hintok').setAttribute("onclick", "delmo2('"+mouldname+"');");
+		$('#twohint').modal('show');
+		}
+	function delmo2(mouldname){
+		$.ajax({
+		    url: '<?php echo APP_WEB_INDEX_ROOT;?>/iytrade/delMo',
+		    type: 'POST',
+		    dataType:'html',
+		    data:{nick:nick,mouldname:mouldname},
+		    timeout:10000,
+		    success: function(data){
+			     if(data==1){
+			    	 layer.msg('删除成功！', 1, 1);
+				 	 window.localStorage.removeItem("printmo"+nick);
+				 	 getPrintmo();
+				     }else{
+				    	 layer.msg('删除失败！', 1, 3);
+					     }
+		     }
+		 });
+		}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-3-31
+	 * Time: 下午15:50 
+	 * 打印模版预览.【更新】
+	 */
+	function PreviewTest(mouldname){
+		$("#printPreviewboby").empty();
+		var printmo=window.localStorage.getItem("printmo"+nick);
+		printmo=eval('('+printmo+')');
+		var publicmo=printmo['publicmo'];
+		var privatemo=printmo['privatemo'];
+    	if(sstates=='fastmo2'){
+	        for(var index in privatemo){
+		        if(privatemo[index]['mouldname']==mouldname){
+			    	var arrd=privatemo[index]['mould'].split(';');
+			        var viewpicture='http://itradeprint.oss.aliyuncs.com/'+privatemo[index]['moprice'];
+					var wh=privatemo[index]['size'].split('X');
+			    	break;
+			        }
+		        }
+    	}else{
+	        for(var index in publicmo){
+		        if(publicmo[index]['mouldname']==mouldname){
+			    	var arrd=publicmo[index]['mould'].split(';');
+			        var viewpicture='http://itradeprint.oss.aliyuncs.com/'+publicmo[index]['moprice'];
+					var wh=publicmo[index]['size'].split('X');
+			    	break;
+			        }
+		        }
+        	}
+    	var arrd2='';
+    	var text=new Array();
+    	var width=wh[0]+"mm";
+    	var height=wh[1]+"mm";
+		$("#printPreviewboby").css({"background-image":"url('"+viewpicture+"')","width":width,"height":height});
+		var value='';
+		var x=0;
+		var y=0;
+		for(index in arrd){
+			arrd2=arrd[index].split(',');
+			text[index]=arrd2;
+				switch(text[index][0]){
+					 case 'names':{value="签名";break;}
+					 case 'date':{value="发件人发件日期";break;}
+					 case 'btitle':{value="宝贝名称";break;}
+					 case 'bproperty':{value="商品属性（数量）";break;}
+					 case 'bpropertys':{value="宝贝名称/销售属性/数量";break;}
+					 case 'destination':{value="收件人所在城市";break;}
+					 case 'shopName':{value="卖家店铺名称";break;}
+					 case 'totalPrices':{value="总价";break;}
+					 case 'bbabynum':{value="宝贝名称（数量）";break;}
+					 case 'ballnum':{value="总件数";break;}
+					 case 'bsxnums':{value="商家编码/销售属性/数量";break;}
+
+					 case 'buyerNick':{value="买家旺旺";break;}
+					 case 'sellerNick':{value="卖家旺旺";break;}
+					 case 'buyerMessage':{value="买家留言";break;}
+					 case 'sellerRemark':{value="卖家备注";break;}
+					 case 'CODING':{value="商家编码";break;}
+					 case 'SpostCode':{value="收件人邮编";break;}
+					 case 'FpostCode':{value="发件人邮编";break;}
+					 case 'orderNumber':{value="订单编号";break;}
+					 case 'fname':{value="发件人姓名";break;}
+					 case 'faddress':{value="发件人地址";break;}
+					 case 'fsaddr':{value="始发地";break;}
+					 case 'fcompany':{value="发件人单位名称";break;}
+					 case 'fphone':{value="发件人电话";break;}
+					 case 'fmobile':{value="发件人手机";break;}
+					 case 'sname':{value="收件人姓名";break;}
+					 case 'saddress':{value="收件人地址";break;}
+					 case 'scompany':{value="收件人单位名称";break;}
+					 case 'sphone':{value="收件人电话";break;}
+					 case 'smobile':{value="收件人手机";break;}
+					 case 'f_shen':{value="发件人/省";break;}
+					 case 'f_shi':{value="发件人/市";break;}
+					 case 'f_qu':{value="发件人/区";break;}
+					 case 'f_deil':{value="发件人详细地址";break;}
+					 case 's_shen':{value="收件人/省";break;}
+					 case 's_shi':{value="收件人/市";break;}
+					 case 's_qu':{value="收件人/区";break;}
+					 case 's_deil':{value="收件人详细地址";break;}
+					 case 'babyall':{value="宝贝名称/商家编码/销售属性/数量";break;}
+					 default :{value=text[index][9];break;}
+				 }
+				x=Number(text[index][2])+15;
+				y=Number(text[index][1])+8;
+				$("#printPreviewboby").append('<div style="position:absolute;left:'+x+'px;top:'+y+'px;width:'+text[index][4]+'px;height:'+text[index][5]+'px;"><span style="font-size:'+text[index][3]+'px;font-family:'+text[index][6]+';font-weight:'+text[index][7]+';">'+value+'</span></div>');
+			}
+			window.localStorage.setItem("printPreview",$("#printPreview").html());
+			openPreview();
+	}
+	function addNewmo(){
+		tradePoint(nick,'添加新快递单模板');
+		tradedots('fastMo');
+		if(vipuser==0){
+			$('#buyvip').modal('show');
+	      	return;
+	    }
+		window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/editMo?vers=<?php echo REAL_ROOT_VER;?>';
+		}
+	/**
+	 * Created with need.
+	 * User: wangsx
+	 * Date: 14-7-23
+	 * Time: 11:20 
+	 * 预览快递单模版
+	 */	
+	function openPreview(){
+		QN.application.invoke({
+		    cmd : 'openAttachWindow',
+		    param : {
+		    	event:"printPreview",
+		    	width:900,
+		    	height:550,
+		    	title:'预览快递单模版'
+		    	},
+		    success : function(rsp) {
+		    },
+		    error : function(msg) {
+		    }
+		});
+		}
+</script>
+<script id="publicmo-template" type="text/x-handlebars-template">
+<tr><td>{{pageid}}</td><td>{{mouldname}}</td><td>{{mouldsize}}</td><td>{{companiep}}</td><td><a href="javascript:defaultmo('{{mouldname}}');">设为默认</a>&nbsp;&nbsp;<a href="javascript:PreviewTest('{{mouldname}}')">预览</a>&nbsp;&nbsp;<a href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/editMo?vers=<?php echo REAL_ROOT_VER;?>#state={{mouldname}}&publics=1" >编辑</a></td></tr>'
+</script>
+<script id="privatemo-template" type="text/x-handlebars-template">
+<tr><td>{{pageid}}</td><td>{{mouldname}}</td><td>{{mouldsize}}</td><td>{{companiep}}</td><td>{{modefault}}&nbsp;&nbsp;<a href="javascript:PreviewTest('{{mouldname}}')">预览</a>&nbsp;&nbsp;<a href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/editMo?vers=<?php echo REAL_ROOT_VER;?>#state={{mouldname}}" >编辑</a>&nbsp;&nbsp;<a href="javascript:deletemo('{{mouldname}}')" >删除</a></td></tr>'
+</script>
+<script id="privatemo2-template" type="text/x-handlebars-template">
+<tr><td>{{pageid}}</td><td>{{mouldname}}</td><td>{{mouldsize}}</td><td>{{companiep}}</td><td><a href="javascript:defaultmo('{{modefault}}');">设为默认</a>&nbsp;&nbsp;<a href="javascript:PreviewTest('{{mouldname}}')">预览</a>&nbsp;&nbsp;<a href="<?php echo APP_WEB_INDEX_ROOT;?>/trade/editMo?vers=<?php echo REAL_ROOT_VER;?>#state={{mouldname}}" >编辑</a>&nbsp;&nbsp;<a href="javascript:deletemo('{{mouldname}}')" >删除</a></td></tr>'
+</script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>

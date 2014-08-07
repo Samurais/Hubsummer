@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" manifest='jywebcacheapp.manifest'>
+<?php require_once ("app/views/public/head.php");?>
+<style type="text/css">
+    .abc {
+        background-color: #CCC;
+        width: 200px;
+        overflow:hidden;
+        text-overflow:ellipsis;/*文字溢出的部分隐藏并用省略号代替*/
+        white-space:nowrap;/*文本不自动换行*/
+</style>
+<body scroll="no" >
+<?php require_once ("app/views/public/top.php");?>
+    <div class="container" style="margin-top:10px;margin-left:10px;">
+	<div style="display: none;" id="adv_top"></div>
+	         <div id="zhurw" style="overflow:scroll;overflow-x:hidden;overflow-y:hidden;">
+	        <div style="text-align:right;"></div>
+	               </div>
+	          <div id="zirw" style="overflow:scroll;overflow-x:hidden;overflow-y:hidden;">
+            </div>
+      </div>
+<script>
+window.onload = function(){
+    QN.initTheme();
+    $("#indexsel").attr("class","dqzt");
+    onload_viptime('details_page');
+};
+		$(document).ready(function(){	
+			setTimeout(getnicks,100);
+		});
+		var  shash=window.location.hash.substr(1);
+		var params = shash.split('&');
+		var p = params[0].split('=')[1];
+        var sta = params[1].split('=')[1];
+        if(sta!="alld"&&sta!="my"&&sta!="alls"&&sta!="untreated"){
+            $("#bt").html('订单管理');
+        }
+		var up=true;
+		var bjj;
+	   var z_id;
+       var datas={};
+       var datass={};
+       var no_zrw=-1;
+        function callbackfun(){
+            if(sta!="alld"&&sta!="my"&&sta!="alls"&&sta!="untreated"){
+                window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/index?vers=<?php echo REAL_ROOT_VER;?>#gsta='+sta;
+            }else{
+                window.location.href='<?php echo APP_WEB_INDEX_ROOT;?>/trade/gentlytask?vers=<?php echo REAL_ROOT_VER;?>#sta='+sta;
+            }
+        }
+        function reshow(){
+            getTaskRecursive();
+        }
+		function getTaskRecursive(){
+			z_id=0;
+		    datas={};
+			datass={};
+			bjj=0;
+			$("#zhurw").html('');
+			$("#zirw").html('');
+			QN.top.invoke({
+				 "cmd": "taobao.qianniu.tasks.get",
+				 "param": {"fields":"meta.id,finish_strategy,meta.gmt_create,content,title,memo,gmt_create,sub_biz_type,gmt_finished,id,receiver_nick,receiver_uid,biz_type,status,biz_id,biz_nick,status,total_count,sender_nick","page_size":100,"current_page":1,"need_meta":true,"metadata_ids":p},
+				 "method": "get",
+				 "success": function (e){
+					/*document.write(JSON.stringify(e)+'---错误');*/
+					 if(typeof  e=== 'string'){
+			            	e = JSON.parse(e);
+			            }
+			            var resp=e.qianniu_tasks_get_response.tasks;
+			            resp=resp.q_task;
+			            datas.cjr=resp[0].sender_nick;
+			            datas.rw_title=resp[0].meta.title;
+			            datas.rw_content=resp[0].meta.content+" ";
+			            datas.rw_start=resp[0].meta.gmt_create;
+			            datas.rw_end=resp[0].meta.end_time;
+			            datas.tz_state=resp[0].meta.reminder_flag;/*　　第0位表示是否需要状态变更通知，第1位表示是否需要超时通知，第2位表示是否需要取消通知。*/
+			            datas.rw_bs=resp[0].meta.finish_strategy; /* 0-一个人完成任务即算任务完成，1-每个人都需要完成任务才算整个任务完成*/
+			           /* datas.rw_yxq=resp[0].meta.Priority;/* 任务优先级 0-低 1-中 2-高*/
+			            var str='';
+			            var j=0;
+			            for(var i in resp){
+				            if(i==no_zrw-1){
+				            	datass.ii=j+1;
+				            	datass.rw_bz=resp[i].memo;
+                                    z_id=resp[i].id;
+                                    datass.z_id=resp[i].id;
+					            }else{
+					           	 j++;
+				            	 datass.ii=j;
+                                datass.z_id=resp[i].id;
+		                          var zrw=resp[i].receiver_nick;
+
+		                          str=str+'<input type="hidden"  id="checkboxhide" name="jsr" value="'+zrw+'" />'+zrw+'<br>';
+
+
+                          datass.zrw=zrw;
+                                datass.istasks="1";
+                          /*datass.zxzt=resp[i].status;/* 0-未执行，1-执行中，2-已完成，3-超时，4-取消，5-忽略,6-转发*/
+                          switch (resp[i].status){
+					     	 case 0:
+						     	 datass.dataTaskStartCss="sui-label label-warning";
+							     datass.dataTaskStart="未处理";
+						     	 break;
+					     	 case 1:
+						     	 datass.dataTaskStartCss="sui-label label-important";
+							     datass.dataTaskStart="执行中";
+						     	 break;
+					     	 case 2:
+                                 datass.istasks="";
+						     	 datass.dataTaskStartCss="sui-label label-success";
+							     datass.dataTaskStart="已完成";
+						     	 break;
+					     	 case 3:
+						     	 datass.dataTaskStartCss="sui-label label-impor";
+							     datass.dataTaskStart="超时";
+						     	 break;
+					     	 case 4:
+						     	datass.istasks="";
+						     	 datass.dataTaskStartCss="sui-label label-info";
+							     datass.dataTaskStart="取消";
+						     	 break;
+					     	 case 5:
+						     	 datass.dataTaskStartCss="sui-label label-info";
+							     datass.dataTaskStart="忽略";
+						     	 break;
+					     	 case 6:
+                                 datass.istasks="";
+						     	 datass.dataTaskStartCss="sui-label label-info";
+							     datass.dataTaskStart="已转交";
+						     	 break;
+					     	 }
+                         /* var zxlx=resp[i].biz_type; member客户,trade订单,item商品*/
+                          if(resp[i].biz_type=="member"){
+                        	  datass.zxlx="客户沟通";
+                              }else if(resp[i].biz_type=="trade"){
+                            	  datass.zxlx="订单处理";
+                                  }else{
+                                	  datass.zxlx="商品管理";
+                                      }
+                          /*datass.ywzlx=resp[i].sub_biz_type; TradeModify 修改价格/收货地址,TradeDelay延长收货时间,TradeReturn退换货/退款,TradeShipQuery查件/问题件,TradeInvoice开发票,TradeBadComment中差评,other其它 */
+                              if(resp[i].sub_biz_type=="TradeModify"){
+                            	  datass.ywzlx="修改价格/收货地址";
+                                  }else if(resp[i].sub_biz_type=="TradeDelay"){
+                                	  datass.ywzlx="延长收货时间";
+                                      }else if(resp[i].sub_biz_type=="TradeReturn"){
+                                	  datass.ywzlx="退换货/退款";
+                                      }else if(resp[i].sub_biz_type=="TradeShipQuery"){
+                                	  datass.ywzlx="查件/问题件";
+                                      }else if(resp[i].sub_biz_type=="TradeInvoice"){
+                                	  datass.ywzlx="开发票";
+                                      }else if(resp[i].sub_biz_type=="TradeBadComment"){
+                                	  datass.ywzlx="中差评";
+                                      }else if(resp[i].sub_biz_type=="other"){
+                                	  datass.ywzlx="其它";
+                                      }
+
+                          datass.ywid=resp[i].biz_id;
+                          datass.rwwc_time=resp[i].gmt_finished;
+                          datass.rw_bz=resp[i].memo;
+                          if(resp[i].receiver_uid!=uid){
+                              datass.istasks="";
+                          }
+                        if(datass.rwwc_time==undefined){
+                            datass.rwwc_time="- -";
+                        }
+                        if(datass.rw_bz==undefined){
+                            datass.rw_bz="- -";
+                        }
+                         var source1 = $("#zlm_list_template").html();
+     				     var template1=Handlebars.compile(source1);
+     				     var htmlstr = template1(datass);
+     				     $("#zirw").append(htmlstr).trigger('create');
+				            }
+				            }
+                           if(datas.rwbs==""){
+                               datas.rwbs="--";
+                           }
+			         var source = $("#alls_list_template").html();
+				     var template=Handlebars.compile(source);
+				     var htmlstr = template(datas);
+				     $("#zhurw").append(htmlstr).trigger('create');
+
+				     $("#rwbs").html('');
+				     if(datas.rw_bs==0){
+
+				    	 $("#rwbs").append('<input  type="hidden" name="beiwf" value="0"  />一个人完成任务即算任务完成<br> ');
+					     }else{
+
+					    	 $("#rwbs").append('<input type="hidden" name="beiwf" value="1"/>每个人都需要完成任务才算整个任务完成');
+						     }
+				$("#jsr").html('');
+				$("#jsr").append(str);
+
+			}
+	 		 });
+			
+		}
+		function up_rwy(){
+			up=false;
+			getTaskRecursive();
+			$("#batchnameinfo").modal('show');
+			}
+		function batchname(){
+			up=true;
+			var aaa=new Array();
+			var title=document.getElementById('title').value;
+			var content=document.getElementById('content').value;
+			var dt=document.getElementById('start').value;
+			dt = dt.replace(/-/g,'/'); 
+			var date = new Date(dt); 
+			var start = date.getTime();
+			var dt1=document.getElementById('end').value;
+			dt1 = dt1.replace(/-/g,'/'); 
+			var date1 = new Date(dt1); 
+			var end = date1.getTime();
+			var tongz=document.getElementsByName('checkboxhide');
+			/*var yxq=document.getElementsByName('yxq');*/
+			var tz='';
+       for(var i=0;i<tongz.length;i++){
+           if(tongz[i].checked==true){
+           if(i!=tongz.length-1){
+    	  tz=tz+tongz[i].value;
+           }else{
+        	   tz=tz+tongz[i].value;
+               }
+           }
+       }
+         var jsonmeta = {"id":p,"title":title,"content":content,"start_time":start,"end_time":end,"reminder_flag":tz};
+         var jsonObj = {meta: JSON.stringify(jsonmeta)};
+           QN.top.invoke({
+				 "cmd": "taobao.qianniu.taskmeta.update",
+				 "param":jsonObj,
+                 "method": "get",
+				 "success": function (e){
+					/*document.write(JSON.stringify(e)+'---错误');*/
+					var aa=e.qianniu_taskmeta_update_response.result;
+					/*$("#hints").html('<p>修改成功！</p>');
+                    showMsg('hint');*/
+					layer.msg('修改成功！',2,1);
+					getTaskRecursive();
+				 },
+				 "error": function (result){
+					 /*$("#hints_vip").html('<p>修改失败，请重试！</p>');*/
+				     $("#hints_vips").html('<p>错误方法【batchname】：'+JSON.stringify(result)+'</p>');
+				   	 /*showMsg('hint_vip');*/
+				   	 layer.msg('修改失败，请重试！',2,3);
+					 }
+				 });
+           
+			}
+		function up_zrw(zrw_num){
+			no_zrw=zrw_num;
+			getTaskRecursive();
+			$("#batchnameinfo1").modal('show');
+			}
+		function batchname1(){
+			no_zrw=-1;
+			var tongz=document.getElementsByName('zt');
+			var rwbz=document.getElementById('rwbz').value;
+			var tz='';
+			  for(var i=0;i<tongz.length;i++){
+		           if(tongz[i].checked==true){
+			           if(tz==''){
+			        	   tz=tz+tongz[i].value;
+				           }else{
+				        	tz=tz+','+tongz[i].value;
+				           }
+		           }
+		       }
+          QN.top.invoke({
+				 "cmd": "taobao.qianniu.task.update",
+				 "param":{
+	                  "task_id":z_id,
+	                  "status":tz,
+	                  "memo":rwbz
+	                 },	 
+                 "method": "get",
+				 "success": function (e){
+					var aa=e.qianniu_task_update_response.result;
+					/*$("#hints").html('<p>修改成功！</p>');
+	                showMsg('hint');*/
+					layer.msg('修改成功！',2,1);
+					getTaskRecursive();
+				 },
+				 "error": function (result){
+					 /*$("#hints_vip").html('<p>修改失败，请重试！</p>');*/
+				     $("#hints_vips").html('<p>错误方法【batchname1】：'+JSON.stringify(result)+'</p>');
+				   	 /*showMsg('hint_vip');*/
+				   	 layer.msg('修改失败，请重试！',2,3)
+					 }
+				 });
+			}
+		function quxiao(){
+			up=true;
+			no_zrw=-1;
+			getTaskRecursive();
+			}
+        var uid;
+        function getnicks(){
+			 QN.application.invoke({
+				 "cmd": "getLoginuser",
+				 "success": function (e){
+					 if(typeof  e=== 'string'){
+			            	e = JSON.parse(e);
+			            }
+			            if(e.sub_user_id==""){
+			            	uid=e.user_id;
+			            }else{
+			            	uid=e.sub_user_id;
+			            }
+                     getTaskRecursive();
+				 }
+			 });
+			
+		}
+         function disposeTask(id){
+             QN.component.invoke({
+                 category:'qtask_deal',
+                 param:{
+                     task_ids:[id]
+                 },
+                 error : function(msg, cmd, param) {
+
+                 },
+                 success : function(rsp, cmd, param) {
+                	 /*$("#hints").html('<p>任务处理成功！</p>');
+  	                 showMsg('hint');*/
+                	 layer.msg('任务处理成功！',2, 1);
+                     getTaskRecursive();
+                 }
+             });
+         }
+        function lianxikf(nick){
+            QN.wangwang.invoke({
+                category: 'wangwang',
+                cmd: 'chat',
+                param: {'uid':"cntaobao"+nick},
+                success: function (rsp) {
+                },
+                error: function (msg) {
+
+                }
+            });
+        }
+         	    </script>
+	    <script id="alls_list_template" type="text/x-handlebars-template">
+            <h4>任务描述：</h4>
+		  <table  class="sui-table table-striped table-bordered table-hover table-zebra" style="margin-bottom: 10px;">
+			        <tr ><td width="20%" style="text-align:right">创建人:</td><td><a onclick="lianxikf('{{cjr}}');" href="#" >
+                                <img border="0" id="wwkfim" src="http://amos.im.alisoft.com/online.aw?v=2&uid={{cjr}}&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" />
+                                {{cjr}}</a></td></tr>
+                    <tr ><td width="20%" style="text-align:right">任务标题:</td><td>{{rw_title}}</td></tr>
+                    <tr ><td width="20%" style="text-align:right">任务描述:</td><td><span style="color:red;display:inline-block;word-break:break-all;">{{rw_content}}</span></td></tr>
+                    <tr ><td width="20%" style="text-align:right">创建时间:</td><td>{{rw_start}}</td></tr>
+              <!--  <tr ><td  width="20%" style="text-align:right">通知提醒状态:</td><td id="tongz"></td></tr>-->
+               <tr ><td width="20%" style="text-align:right">完成标识:</td><td id="rwbs"></td></tr>
+                <!-- <tr ><td width="20%">任务优先级:</td><td id="yxq"></td></tr>-->
+                    <tr ><td width="20%" style="text-align:right">全部处理人:</td><td id="jsr"></td></tr>
+		</table>
+       </script>
+		<script id="up_alls_list_template" type="text/x-handlebars-template">
+		  <table  class="sui-table table-striped table-bordered table-hover table-zebra" style="margin-bottom: 10px;">
+                    <tr ><td width="20%" style="text-align:right">任务标题:</td><td><input type="text"  name="title" id="title" style="width:160px;" value="{{rw_title}}"/></td></tr>
+                    <tr ><td width="20%" style="text-align:right">任务内容:</td><td><input type="text"  name="content" id="content" style="width:160px;" value="{{rw_content}}"/></td></tr>
+                    <tr ><td width="20%" style="text-align:right">任务开始时间:</td><td><input type="text"  name="start" id="start" style="width:160px;" value="{{rw_start}}"/></td></tr>
+                    <tr ><td width="20%" style="text-align:right">任务结束时间:</td><td><input type="text"  name="end" id="end" style="width:160px;" value="{{rw_end}}"/></td></tr>
+                    <tr ><td  width="20%" style="text-align:right">通知提醒状态:</td><td id="tongz1"></td></tr>
+                   <!-- <tr ><td width="20%">任务优先级:</td><td id="yxq"></td></tr>-->
+		</table>
+       </script>
+       <!-- <script id="up_zlm_list_template" type="text/x-handlebars-template">
+		   <h4>处理情况-{{ii}}：</h4>
+            <table  class="table table-striped table-bordered table-hover" >
+                    <tr ><td width="20%" style="text-align:right">执行状态:</td><td id="zxzt"></td></tr>
+                     <tr ><td width="20%" style="text-align:right">任务标注:</td><td><input type="text"  name="rwbz" id="rwbz" style="width:160px;" value="{{rw_bz}}"/></td></tr>
+            </table>
+       </script>-->
+       <script id="zlm_list_template" type="text/x-handlebars-template" width="100%">
+		   <h4>处理情况-{{ii}}：</h4>
+           <!-- <div style="text-align:right;  margin-bottom:3px"><button class="btn btn-primary btn-small" onclick="up_zrw({{ii}});" id="plsbut" >更新任务 </button></div> -->
+            <table  class="sui-table table-striped table-bordered table-hover table-zebra" width="80%" >
+                    <tr ><td width="20%" style="text-align:right">处理人:</td><td><a onclick="lianxikf('{{zrw}}');" href="#" >
+                                <img border="0" id="wwkfim" src="http://amos.im.alisoft.com/online.aw?v=2&uid={{zrw}}&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" />
+                                {{zrw}}</a></td></tr>
+                    <tr ><td width="20%" style="text-align:right">处理状态:</td><td><span class="{{dataTaskStartCss}}">{{dataTaskStart}}</span>{{#if istasks}}<a  href="#" style="float: right;margin-right: 20px" class="btn btn-small btn-primary" data-dismiss="modal" onclick="disposeTask({{z_id}});">处理任务</a>{{/if}}</td></tr>
+                    <tr ><td width="20%" style="text-align:right">业务类型:</td><td>{{zxlx}}</td></tr>
+                    <tr ><td width="20%" style="text-align:right">子类型:</td><td>{{ywzlx}}</td></tr>
+                    <tr ><td width="20%" style="text-align:right">业务ID:</td><td>{{ywid}}</td></tr>
+                    <tr ><td width="20%" style="text-align:right">完成时间:</td><td>{{rwwc_time}}</td></tr>
+                    <tr ><td width="20%" style="text-align:right">处理信息:</td><td><span style="color:red;display:inline-block;word-break:break-all;">{{rw_bz}}</span></td></tr>
+            </table>
+       </script>
+<?php require_once ("app/views/public/footer.php");?>
+</body>
+</html>
